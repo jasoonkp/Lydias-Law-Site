@@ -8,3 +8,4 @@
 - Maria Adil
 - Regina Gil
 - Alex Giovannini
+- Nayeli Flores Valdez
