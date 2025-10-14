@@ -6,3 +6,4 @@
 - Jason Prakash
 - Moises Robledo
 - Maria Adil
+- Regina Gil
