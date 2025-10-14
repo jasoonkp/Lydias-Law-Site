@@ -1,0 +1,1 @@
+# \migrations directory is a blueprint for all changes in app's database models
