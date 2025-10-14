@@ -1,5 +1,6 @@
 # Lydias-Law-Site
 
-# Hunter Powell 
-
-# Moises Robledo
+# Authors
+- Hunter Powell
+- Michael Kenny
+- Moises Robledo
