@@ -1,3 +1,5 @@
 # Lydias-Law-Site
 
-# Hunter Powell 
+# Authors
+- Hunter Powell
+- Michael Kenny
