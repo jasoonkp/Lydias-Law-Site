@@ -7,3 +7,4 @@
 - Moises Robledo
 - Maria Adil
 - Regina Gil
+- Alex Giovannini
