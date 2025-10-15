@@ -8,14 +8,36 @@
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    
+    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-        <li class="nav-item"><a class="nav link" href="{% url 'login' %}">Login</a></li>
-        <li class="nav-item"><a class="btn btn-primary ms-lg-2" href="{% url 'schedule' %}">Schedule</a></li>
+      <ul class="navbar-nav mx-auto" style="background-color: rgba(255, 255,255, 0.15); border-radius: 50px; padding: 0.5rem 1.5rem;">
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'practice-areas' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'practice-areas' %}" style="font-weight: 500;">Practice Areas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'about' %}bg-white{% else %}text-white{% endif %}"
+            href="{% url 'about' %}" style="font-weight: 500;">About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'contact' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'contact' %}" style="font-weight: 500;">Contact
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'payment' %}">Payment
+          </a>
+        </li>
       </ul>
+
+      <!-- Login Button -->
+      <div class="d-flex ms-3">
+        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'login' %}" style="background-color: #2d7a73; font-weight: 500;">Login</a>
+      </div>      
     </div>
   </div>
 </nav>
