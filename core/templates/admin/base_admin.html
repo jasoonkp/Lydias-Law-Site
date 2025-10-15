@@ -1,29 +1,75 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Admin Dashboard - Lydia's Law{% endblock %}</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <style>
-    .admin-content {
-      min-height: calc(100vh - 76px);
-      background-color: #f8f9fa;
-    }
-  </style>
-  {% block extra_css %}{% endblock %}
-</head>
-<body>
-  {% include "partials/admin_navbar.html" %}
-  <main class="admin-content">
-    <div class="container-fluid py-4">
-      {% block content %}{% endblock %}
-    </div>
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-  {% block extra_js %}{% endblock %}
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Admin Dashboard - Lydia's Law{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <style>
+      .admin-content {
+        min-height: calc(100vh - 76px);
+        background-color: #f8f9fa;
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+    {% include "partials/admin_navbar.html" %}
+
+    <main class="admin-content">
+      <div class="container-fluid py-4">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    {% block footer %}
+    <footer class="mt-auto">
+      <div class="fixed-bottom bg-white border-top shadow-sm">
+        <div class="container py-3 text-center small text-muted">
+          <!--
+            This entire section will need to be reworked to account for the database.
+            Lydia will have the ability to edit and change the footer at her will, which requires,
+            us to fetch the stored information from the database and display it here.
+          -->
+          <p class="details">
+            The Law Office of Lydia A. Suprun
+          </p>
+          <p class="address">
+            601 University Ave, Ste 123, Sacramento, CA 95825
+          </p>
+    
+          <ul class="nav justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_schedule' %}">Schedule</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_transactions' %}">Transactions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_clients' %}">Clients</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_editor' %}">Editor</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_history' %}">History</a>
+            </li>
+          </ul>
+    
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+
 </html>

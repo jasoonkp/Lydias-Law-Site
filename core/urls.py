@@ -6,9 +6,11 @@ from . import views
 urlpatterns = [
     # Public pages
     path("", views.home, name="home"),
+    path("practice-areas/", views.practice_areas, name="practice-areas"),
     path("about/", views.about, name="about"),
     path("services/", views.services, name="services"),
     path("contact/", views.contact, name="contact"),
+    path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
     path("login/", views.login, name="login"),
 

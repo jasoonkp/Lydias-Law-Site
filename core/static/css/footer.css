@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+body {
+    /* Main body consists of Crimson Text font. */
+    font-family: 'Crimson Text', Georgia, 'Times New Roman', Times, serif;
+    color: #000000;
+}
+
+a, a:link, a:visited {
+    /* Default state for links. */
+    color: #000 !important;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    /* Hover actions for links, underline acts as highlight. */
+    color: #000 !important;
+    text-decoration: underline;
+}
+
+footer .nav-link {
+    /* This forces the color of the links. */
+    color: #000 !important;
+}
+
+.fixed-bottom {
+    /* Background color for Footer. */
+    background: rgba(120, 156, 148, 0.58) !important;
+}
+
+.fixed-bottom .container {
+    /* This forces the color of the detailed text inside footer. */
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.fixed-bottom .container p.details {
+    /* This is for the details text above the address. */
+    margin-top: -0.5rem;
+    margin-bottom: -0.5rem;
+}
+
+.fixed-bottom .container p.address {
+    /* This is for the address text above the links. */
+    margin-bottom: -0.8rem;
+}
+
+.fixed-bottom .container .nav {
+    /* This is for the ul list of nav links. */
+    margin-top: 0.5rem;
+    margin-bottom: -0.5rem;
+}

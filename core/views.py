@@ -6,9 +6,11 @@ from django.contrib.auth.decorators import login_required
 
 # Public views
 def home(r): return render(r, "home.html")
+def practice_areas(r): return render(r, "practice-areas.html")
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html")
+def payment(r): return render(r, "payment.html")
 def schedule(r): return render(r, "schedule.html")
 def login(r): return render(r, "login.html")
 
