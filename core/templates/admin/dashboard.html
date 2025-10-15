@@ -1,0 +1,141 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Dashboard - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    background-color: #e8ebe9;
+  }
+  .dashboard-title {
+    font-family: serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    text-align: center;
+    margin: 2rem 0;
+    color: #2d3748;
+  }
+  .calendar-card {
+    background-color: #a8c5be;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .appointments-card {
+    background-color: #a8c5be;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .appointments-header {
+    background-color: #5a7a73;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: serif;
+    font-size: 1.25rem;
+  }
+  .appointment-item {
+    background-color: #8ba9a3;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #2d7a73;
+  }
+  .appointment-title {
+    font-family: serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .appointment-detail {
+    font-size: 0.9rem;
+    color: #2d3748;
+    margin: 0.25rem 0;
+  }
+  .approve-btn {
+    background-color: #a8c5be;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    color: #2d3748;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+  }
+  .approve-btn:hover {
+    background-color: #95b3ac;
+  }
+  .calendar-placeholder {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .calendar-month {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="dashboard-title">Welcome to your Dashboard</h1>
+
+  <div class="row g-4">
+    <!-- Calendar Section -->
+    <div class="col-lg-6">
+      <div class="calendar-card">
+        <div class="calendar-placeholder">
+          <div class="calendar-month">October 2025</div>
+          <div class="text-center text-muted">
+            <p>Calendar placeholder</p>
+            <p class="small">Interactive calendar will be implemented here</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="approve-btn">Approve Pending Appointments</button>
+      </div>
+    </div>
+
+    <!-- Upcoming Appointments Section -->
+    <div class="col-lg-6">
+      <div class="appointments-card">
+        <div class="appointments-header">
+          Upcoming Appointments
+        </div>
+
+        <div class="appointment-item">
+          <div class="appointment-title">Appointment 1</div>
+          <div class="appointment-detail">Date: dd/mm/yyyy</div>
+          <div class="appointment-detail">Time: hh:mm</div>
+          <div class="appointment-detail">Location: address/zoom-link</div>
+        </div>
+
+        <div class="appointment-item">
+          <div class="appointment-title">Appointment 2</div>
+          <div class="appointment-detail">Date: dd/mm/yyyy</div>
+          <div class="appointment-detail">Time: hh:mm</div>
+          <div class="appointment-detail">Location: address/zoom-link</div>
+        </div>
+
+        <div class="appointment-item">
+          <div class="appointment-title">Appointment 3</div>
+          <div class="appointment-detail">Date: dd/mm/yyyy</div>
+          <div class="appointment-detail">Time: hh:mm</div>
+          <div class="appointment-detail">Location: address/zoom-link</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

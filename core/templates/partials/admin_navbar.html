@@ -1,0 +1,45 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg" style="background-color: #5a7a73;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand text-white d-flex align-items-center" href="{% url 'home' %}">
+      <img src="{% static 'images/logo.png' %}" alt="Law Office of Lydia A. Suprun" style="width: 100px; height: 100px;" class="me-3">
+    </a>
+
+    <button class="navbar-toggler text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+      <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="adminNav">
+      <ul class="navbar-nav mx-auto" style="background-color: rgba(255, 255, 255, 0.15); border-radius: 50px; padding: 0.5rem 1.5rem;">
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_dashboard' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_dashboard' %}" style="font-weight: 500;">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_schedule' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_schedule' %}" style="font-weight: 500;">Schedule</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_transactions' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_transactions' %}" style="font-weight: 500;">Transactions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_clients' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_clients' %}" style="font-weight: 500;">Clients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_editor' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_editor' %}" style="font-weight: 500;">Editor</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'admin_history' %}bg-white{% else %}text-white{% endif %}"
+             href="{% url 'admin_history' %}" style="font-weight: 500;">History</a>
+        </li>
+      </ul>
+
+      <div class="d-flex ms-3">
+        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'logout' %}" style="background-color: #2d7a73; font-weight: 500;">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>

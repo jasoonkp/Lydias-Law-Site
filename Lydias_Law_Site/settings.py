@@ -90,8 +90,16 @@ WSGI_APPLICATION = 'Lydias_Law_Site.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-#    "default": dj_database_url.parse(env("DATABASE_URL"), engine="django.db.backends.mysql")
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
+
+# Uncomment below for MySQL/PostgreSQL in production:
+# DATABASES = {
+#     "default": dj_database_url.parse(env("DATABASE_URL"), engine="django.db.backends.mysql")
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -130,7 +138,8 @@ USE_TZ = True
 STATIC_URL = "/static/"
 #STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Only use whitenoise in production
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
