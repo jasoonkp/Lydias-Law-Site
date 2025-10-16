@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}
+
+a.btn-custom {
+    background-color: #2d7a73;
+    font-weight: 500;
+    color: white !important;
+    transition: background-color 0.3s ease; /* smooth fade */
+}
+
+/* change color on hover */
+a.btn-custom:hover {
+    background-color: #24665f !important; /* slightly darker green */
+    color: white !important; /* keep text white */
+    text-decoration: none; /* remove underline on hover */
+}

@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 <nav class="navbar navbar-expand-lg border-bottom" style="background-color: #5a7a73;">
   <div class="container-fluid px-4">
     
@@ -36,10 +38,7 @@
 
       <!-- Login Button -->
       <div class="d-flex ms-3">
-        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'client_dashboard' %}" style="background-color: #2d7a73; font-weight: 500;">Client Login</a>
-      </div>      
-      <div class="d-flex ms-3">
-        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'admin_dashboard' %}" style="background-color: #2d7a73; font-weight: 500;">Admin Login</a>
+        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'login' %}">Login</a>
       </div>
     </div>
   </div>
