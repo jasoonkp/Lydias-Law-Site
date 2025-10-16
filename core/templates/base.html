@@ -12,7 +12,11 @@
   </head>
 
   <body class="d-flex flex-column min-vh-100">
-    {% include "partials/navbar.html" %}
+    {% if role == "user" %}
+      {% include "partials/client_navbar.html" %}
+    {% else %}
+      {% include "partials/navbar.html" %}
+    {% endif %}
     
     <main class="container py-4 pb-5">
       {% block content %}{% endblock %}

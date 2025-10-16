@@ -32,15 +32,32 @@
             href="{% url 'payment' %}">Payment
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'payment' %}">Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'payment' %}">Schedule
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'payment' %}">Transactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+            href="{% url 'payment' %}">Accounts
+          </a>
+        </li>
       </ul>
 
       <!-- Login Button -->
       <div class="d-flex ms-3">
-        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'login' %}?role=user" style="background-color: #2d7a73; font-weight: 500;">Client Login</a>
+        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'home' %}?role=guest" style="background-color: #2d7a73; font-weight: 500;">Logout</a>
       </div>      
-      <div class="d-flex ms-3">
-        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'admin_dashboard' %}" style="background-color: #2d7a73; font-weight: 500;">Admin Login</a>
-      </div>
     </div>
   </div>
 </nav>
