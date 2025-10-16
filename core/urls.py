@@ -23,6 +23,16 @@ urlpatterns = [
     path("administrator/dashboard/history/", views.admin_history, name="admin_history"),
     path("administrator/logout/", views.logout_view, name="logout"),
 
+    # client pages 
+    path("client/about/", views.client_about, name="client_about"),
+    path("client/account/", views.client_account, name="client_account"),
+    path("client/contact/", views.client_contact, name="client_contact"),
+    path("client/dashboard/", views.client_dashboard, name="client_dashboard"),
+    path("client/payment/", views.client_payment, name="client_payment"),
+    path("client/practice-areas/", views.client_practice_areas, name="client_practice_areas"),
+    path("client/schedule/", views.client_schedule, name="client_schedule"),
+    path("client/transactions/", views.client_transactions, name="client_transactions"),
+
     # I have these paths below commented out because when we implement authentication, users will be authenticated with the auth_views method
 
     #path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),

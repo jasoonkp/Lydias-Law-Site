@@ -34,3 +34,21 @@ def logout_view(r):
     from django.contrib.auth import logout
     logout(r)
     return render(r, "logout.html")
+
+# Client Views
+#@login_required
+def client_about(r): return render(r, "client/about.html")
+#@login_required
+def client_account(r): return render(r, "client/account.html")
+#@login_required
+def client_dashboard(r): return render(r, "client/dashboard.html")
+#@login_required
+def client_contact(r): return render(r, "client/contact.html")
+#@login_required
+def client_payment(r): return render(r, "client/payment.html")
+#@login_required
+def client_practice_areas(r): return render(r, "client/practice-areas.html")
+#@login_required
+def client_schedule(r): return render(r, "client/schedule.html")
+#@login_required
+def client_transactions(r): return render(r, "client/transactions.html")
