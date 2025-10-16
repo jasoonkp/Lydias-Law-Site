@@ -1,0 +1,42 @@
+    {% block footer %}
+    <footer class="mt-auto">
+      <div class="fixed-bottom bg-white border-top shadow-sm">
+        <div class="container py-3 text-center small text-muted">
+          <!--
+            This entire section will need to be reworked to account for the database.
+            Lydia will have the ability to edit and change the footer at her will, which requires,
+            us to fetch the stored information from the database and display it here.
+          -->
+          <p class="details">
+            The Law Office of Lydia A. Suprun
+          </p>
+          <p class="address">
+            601 University Ave, Ste 123, Sacramento, CA 95825
+          </p>
+    
+          <ul class="nav justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_schedule' %}">Schedule</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_transactions' %}">Transactions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_clients' %}">Clients</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_editor' %}">Editor</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2" href="{% url 'admin_history' %}">History</a>
+            </li>
+          </ul>
+    
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+

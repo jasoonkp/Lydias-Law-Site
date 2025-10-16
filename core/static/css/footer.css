@@ -25,7 +25,14 @@ footer .nav-link {
 
 .fixed-bottom {
     /* Background color for Footer. */
-    background: rgba(120, 156, 148, 0.58) !important;
+    background: #5a7a73 !important; 
+    position: static !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100%;
+    transform: none !important;
+    box-shadow: none;
 }
 
 .fixed-bottom .container {
