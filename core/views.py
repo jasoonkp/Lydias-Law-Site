@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 # Public views
 def home(r): 
     role = r.GET.get("role", "guest")
-    return render(r, "login.html", {"role": role})
+    return render(r, "home.html", {"role": role})
 def practice_areas(r): return render(r, "practice-areas.html")
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")

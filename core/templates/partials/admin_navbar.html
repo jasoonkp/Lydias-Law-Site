@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 <nav class="navbar navbar-expand-lg" style="background-color: #5a7a73;">
   <div class="container-fluid px-4">
     <a class="navbar-brand text-white d-flex align-items-center" href="{% url 'home' %}">
@@ -38,8 +40,8 @@
       </ul>
 
       <div class="d-flex ms-3">
-        <a class="btn text-white px-4 py-2 rounded-pill" href="{% url 'home' %}" style="background-color: #2d7a73; font-weight: 500;">Logout</a>
+        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'home' %}">Logout</a>
       </div>
     </div>
-  </div>
+  </div> 
 </nav>
