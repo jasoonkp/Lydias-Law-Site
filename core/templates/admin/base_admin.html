@@ -19,13 +19,13 @@
   <body>
     {% include "partials/admin_navbar.html" %}
 
-    {% include "partials/admin_footer.html" %}
-
     <main class="admin-content">
       <div class="container-fluid py-4">
         {% block content %}{% endblock %}
       </div>
     </main>
+
+    {% include "partials/admin_footer.html" %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
