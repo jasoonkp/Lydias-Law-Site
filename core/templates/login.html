@@ -1,8 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow px-5 py-4" style="width: 35rem; background-color: rgb(120, 156, 148, 0.17); border-radius: 1rem; border: none;">
+        <h3 class="mb-4" style="color: #333333;">Login</h3>
 
-        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'client_dashboard' %}">Client Login</a>
-     
-        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'admin_dashboard' %}">Admin Login</a>
+        <form>
+            <div class="mb-3">
+                <label for="email" class="form-label mb-0" style="color: #BDBDBD">Email</label>
+                <input type="email" class="form-control" id="email" style="border-radius: 1.5rem;" required> 
+            </div>
+
+            <div class="mb-0">
+                <label for="password" class="form-label mb-0" style="color: #BDBDBD">Password</label>
+                <input type="password" class="form-control" id="password" style="border-radius: 1.5rem;" required>
+            </div>
+
+            <p class="text-end small mb-4">
+                <a href="#" class="text-decoration-none" style="color: #BDBDBD !important;">Forgot password?</a>
+            </p>
+
+            <div class="d-grid mb-4">
+                <button type="submit" class="btn text-white w-100" style="background-color: #2d7a73; border-radius: 1.5rem;">Login</button>
+            </div>
+            <button type="button" class="btn w-100 mb-4 d-flex align-items-center justify-content-center gap-3" 
+                style="background-color: white; color: rgba(0, 0, 0, 0.5); border-radius: 2rem;">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+                <span>Login with Google</span>
+            </button>
+
+        </form>
+
+        <div class="text-center small">
+            <span style="color: #BDBDBD !important">Are you an Admin?</span>
+            <a href="#" class="text-decoration-none" style="color: #115A5C !important">Login</a>
+        </div>
+        <div class="text-center small" style="color: #BDBDBD !important;">
+            <span style="color: #BDBDBD !important">Don't have an account?</span>
+            <a href="#" class="text-decoration-none" style="color: #115A5C !important">Sign up</a>
+        </div>
+
+    </div>
+</div>
 {% endblock %}
