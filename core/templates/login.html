@@ -21,7 +21,7 @@
             </p>
 
             <div class="d-grid mb-4">
-                <button type="submit" class="btn text-white w-100" style="background-color: #2d7a73; border-radius: 1.5rem;">Login</button>
+                <a href="{% url 'client_dashboard' %}" class="btn w-100" style="background-color: #2d7a73; border-radius: 1.5rem; color: white !important;">Login</a>
             </div>
             <button type="button" class="btn w-100 mb-4 d-flex align-items-center justify-content-center gap-3" 
                 style="background-color: white; color: rgba(0, 0, 0, 0.5); border-radius: 2rem;">
@@ -33,7 +33,7 @@
 
         <div class="text-center small">
             <span style="color: #BDBDBD !important">Are you an Admin?</span>
-            <a href="#" class="text-decoration-none" style="color: #115A5C !important">Login</a>
+            <a href="{% url 'admin_dashboard' %}" class="text-decoration-none" style="color: #115A5C !important">Login</a>
         </div>
         <div class="text-center small" style="color: #BDBDBD !important;">
             <span style="color: #BDBDBD !important">Don't have an account?</span>
