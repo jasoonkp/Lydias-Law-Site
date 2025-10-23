@@ -87,6 +87,12 @@
     min-height: 180px;
   }
 
+  .consultation-section-text {
+    font-family: serif;
+    font-size: 2rem;
+    color: black;
+  }
+
   .container-practice-areas {
     max-width: 900px;
     margin: 0 auto;
@@ -207,6 +213,8 @@
 
   <!-- consultation section - space reserved for consultation button (separate task) -->
   <div class="consultation-section">
+    <div class="consultation-section-text my-1">Schedule a Consultation Today</div>
+    <a class="btn btn-custom px-4 py-2 rounded-pill my-1" href="{% url 'contact' %}">Book Appointment</a>
   </div>
 </div>
 
