@@ -13,6 +13,7 @@ urlpatterns = [
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
     path("login/", views.login, name="login"),
+    path("signup/", views.signup, name="signup"),
 
     # admin panel pages (using 'administrator' to avoid conflict with django "admin" keyword)
     path("administrator/", views.admin_dashboard, name="admin_dashboard"),
