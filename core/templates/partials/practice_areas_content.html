@@ -1,0 +1,214 @@
+{% load static %}
+
+<style>
+  .practice-areas-header {
+    text-align: center;
+    padding: 2rem 0 3rem 0;
+    font-family: 'DM Sans', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+  }
+
+  .practice-area-card {
+    display: flex;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .practice-area-image {
+    flex-shrink: 0;
+    width: 180px;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .practice-area-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .practice-area-image-title {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-family: 'DM Sans', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #000000;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    padding: 0.5rem;
+  }
+
+  .practice-area-content {
+    flex-grow: 1;
+    background-color: #e8f2f0;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+
+  .practice-area-title {
+    font-family: 'DM Sans', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+
+  .practice-area-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .practice-area-text:last-child {
+    margin-bottom: 0;
+  }
+
+  .consultation-section {
+    background-color: #d4e8e4;
+    border-radius: 8px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    min-height: 180px;
+  }
+
+  .container-practice-areas {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .practice-area-card {
+      flex-direction: column;
+    }
+
+    .practice-area-image {
+      width: 100%;
+      height: 200px;
+    }
+  }
+</style>
+
+<div class="container-practice-areas">
+  <h1 class="practice-areas-header">Practice Areas</h1>
+
+  <!-- Step-Parent Adoption -->
+  <div class="practice-area-card">
+    <div class="practice-area-image">
+      <img src="{% static 'images/step-parent.png' %}" alt="Step-Parent Adoption">
+      <div class="practice-area-image-title">Step-Parent<br>Adoption</div>
+    </div>
+    <div class="practice-area-content">
+      <p class="practice-area-text">
+        DISCLAIMER: THIS IS ALL HARD CODED RIGHT NOW, WILL FIX WHEN WE HAVE A DATABASE SET UP
+      </p>
+      <p class="practice-area-text">
+        In this type of adoption, the step-parent becomes the legal parent of their spouse's minor child. The parent retains their parental rights and the other biological parent's rights are typically terminated unless an agreement is reached.
+      </p>
+      <p class="practice-area-text">
+        If your step-child is approaching 18 soon or is already an adult, you may want to consider filing an adopt adoption petition with the court.
+      </p>
+    </div>
+  </div>
+
+  <!-- Adult Adoption -->
+  <div class="practice-area-card">
+    <div class="practice-area-image">
+      <img src="{% static 'images/adult.png' %}" alt="Adult Adoption">
+      <div class="practice-area-image-title">Adult Adoption</div>
+    </div>
+    <div class="practice-area-content">
+      <p class="practice-area-text">
+        An adult adoption is legal procedure where one adult adopts another [younger] adult, creating a legal parent-child relationship. It can be a way to formalize a preexisting relationship between two individuals or can simply be used for legal benefits, such as inheritance rights or health insurance benefits.
+      </p>
+    </div>
+  </div>
+
+  <!-- Guardianship -->
+  <div class="practice-area-card">
+    <div class="practice-area-image">
+      <img src="{% static 'images/guardianship.png' %}" alt="Guardianship">
+      <div class="practice-area-image-title">Guardianship</div>
+    </div>
+    <div class="practice-area-content">
+      <p class="practice-area-text">
+        The court can appoint an adult to make important life decisions and provide care for a minor, such as with medical care, living arrangements and education when the minor's parents are unable or unwilling to do so.
+      </p>
+      <p class="practice-area-text">
+        Unlike adoption, guardianship does not sever the legal relationship between the minor and their parents; however, guardianship can serve as a temporary solution for children in need, and adoption can be explored at a later time.
+      </p>
+    </div>
+  </div>
+
+  <!-- Guardianship to Adoption -->
+  <div class="practice-area-card">
+    <div class="practice-area-image">
+      <img src="{% static 'images/guardianship_to_adoption.png' %}" alt="Guardianship to Adoption">
+      <div class="practice-area-image-title">Guardianship to<br>Adoption</div>
+    </div>
+    <div class="practice-area-content">
+      <p class="practice-area-text">
+        A process where the legal guardian who has been caring for the child adopts and becomes the legal parent of the child. If you have been the legal guardian of a child for at least one year, you can file for independent adoption in family law court.
+      </p>
+    </div>
+  </div>
+
+  <!-- Independent Adoption -->
+  <div class="practice-area-card">
+    <div class="practice-area-image">
+      <img src="{% static 'images/independent.png' %}" alt="Independent Adoption">
+      <div class="practice-area-image-title">Independent<br>Adoption</div>
+    </div>
+    <div class="practice-area-content">
+      <p class="practice-area-text">
+        There are four types of independent adoption:
+      </p>
+      <p class="practice-area-text">
+        <strong>1. A child will be directly "placed" with the prospective adoptive parent(s)</strong>
+      </p>
+      <p class="practice-area-text">
+        An adoption agency is not involved and instead the birth parent(s) or legal parent(s) selects the adoptive family. This occurs when the birth parent(s) meets with and agrees to place their child with the adoptive parent(s) and signs an Independent Adoption Provider. An Independent Adoption Provider Petition is then filed with the family court. The California Department of Social Services investigates the adoption petition. Prospective adoptive parents receive investigates the adoption petition. Please note that if you are related to the child, you can use the independent adoption path for relative adoptions and will not need to retain the services of an Adoption Service Provider.
+      </p>
+      <p class="practice-area-text">
+        <strong>2. Adoption of a relative</strong>
+      </p>
+      <p class="practice-area-text">
+        You can file an independent adoption petition for a child who is related to you. Relative in this case means that you are related by blood or by a close connection. This can include siblings, aunts, uncles, half relatives, step-relatives, grandparents, as well as many other relatives. You can also be the spouse of a relative, even if you are divorced from that spouse or the spouse is deceased.
+      </p>
+      <p class="practice-area-text">
+        <strong>3. Prospective adoptive parent(s) named in a will</strong>
+      </p>
+      <p class="practice-area-text">
+        You may have been named in the will of a deceased parent or parents as an intended adoptive parent.
+      </p>
+      <p class="practice-area-text">
+        <strong>4. Legal guardian of the child</strong>
+      </p>
+      <p class="practice-area-text">
+        You can file for adoption if you have been the child's legal guardian for more than one year. You must have become the legal guardian through probate or family court.
+      </p>
+    </div>
+  </div>
+
+  <!-- consultation section - space reserved for consultation button (separate task) -->
+  <div class="consultation-section">
+  </div>
+</div>
+
+
+<!-- TODO ADD THE REAL PICTURES INSTEAD OF LINKS TO NONEXISTANT SHIT -->

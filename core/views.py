@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 def home(r): 
     role = r.GET.get("role", "guest")
     return render(r, "home.html", {"role": role})
-def practice_areas(r): return render(r, "practice-areas.html")
+def practice_areas(r): return render(r, "practice_areas.html")
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html")
@@ -49,7 +49,7 @@ def client_contact(r): return render(r, "client/contact.html")
 #@login_required
 def client_payment(r): return render(r, "client/payment.html")
 #@login_required
-def client_practice_areas(r): return render(r, "client/practice-areas.html")
+def client_practice_areas(r): return render(r, "client/practice_areas.html")
 #@login_required
 def client_schedule(r): return render(r, "client/schedule.html")
 #@login_required
