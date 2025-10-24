@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "appointments",
 ]
 
+AUTH_USER_MODEL = "users.User"
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
