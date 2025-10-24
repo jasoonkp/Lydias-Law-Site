@@ -23,7 +23,7 @@ environ.Env.read_env(os.path.join(BASE_DIR,".env"))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g6+b2mt+l^e3p7cu!yxc%tdos4i+c#gh1^=k=d!a=#4+6)23eg'
+#SECRET_KEY = 'django-insecure-g6+b2mt+l^e3p7cu!yxc%tdos4i+c#gh1^=k=d!a=#4+6)23eg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'Lydias_Law_Site.wsgi.application'
 # Uncomment below for MySQL/PostgreSQL in production:
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL", "sqlite:///db.sqlite3"),
+        default=os.getenv("DATABASE_URL"),
         engine="django.db.backends.mysql",
         conn_max_age=600,
     )
