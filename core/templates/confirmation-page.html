@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <!-- Outer container -->
+    <div style="max-width: 900px; width: 100%; text-align: center;">
+
+        <!-- Logo left / text right on desktop, stacked on mobile -->
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mb-4">
+            
+            <!-- Logo -->
+            <div class="mb-3 mb-md-0 me-md-4">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 200px;">
+            </div>
+
+            <!-- Text -->
+            <div class="text-center text-md-start">
+                <h1 class="mb-2">Appointment Requested and Awaiting Approval</h1>
+                <p class="fs-4 mb-0">A confirmation email has been sent to your inbox</p>
+            </div>
+
+        </div>
+
+        <!-- Close Button -->
+        <div class="mt-4">
+            <a href="/" class="btn btn-custom px-4 py-2 rounded-pill">Close</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
