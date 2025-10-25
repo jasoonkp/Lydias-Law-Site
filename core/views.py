@@ -15,6 +15,7 @@ def contact(r): return render(r, "contact.html")
 def payment(r): return render(r, "payment.html")
 def schedule(r): return render(r, "schedule.html")
 def signup(r): return render(r, 'signup.html')
+def confirmation_page(r): return render(r, 'confirmation-page.html')
 def login(r): 
     role = r.GET.get("role", "guest")
     return render(r, "login.html", {"role": role})
