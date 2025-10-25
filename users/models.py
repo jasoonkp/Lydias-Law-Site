@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -48,6 +49,14 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+# Admin Table
+class AdminProfile(models.Model):
+    user = models.OneToOneField( # 1-1 relationship with user table
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, # when user is deleted, all associated AdminProfile rows are deleted as well
+        related_name="admin_profile",
+    )
+    hourly_rate = models.DecimalField(max_digits=8, decimal_places=2)
 
     def __str__(self):
         return f"{self.email} ({self.role})"
