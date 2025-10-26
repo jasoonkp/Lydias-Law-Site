@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "appointments",
+    "sitecontent"
 ]
 
 AUTH_USER_MODEL = "users.User"
