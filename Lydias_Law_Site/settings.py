@@ -121,9 +121,9 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'michaelk1734@gmail.com'  # Noreply email goes here.
-EMAIL_HOST_PASSWORD = 'nctg towy qimk bolo'  # the 16-char App Password for noreply email (requires F2A).
-DEFAULT_FROM_EMAIL = 'Lydia\'s Law <michaelk1734@gmail.com>' # Email must be changed to noreply email.
+EMAIL_HOST_USER = ''  # Noreply email goes here.
+EMAIL_HOST_PASSWORD = ''  # the 16-char App Password for noreply email (requires F2A).
+DEFAULT_FROM_EMAIL = 'Lydia\'s Law <noreply@lydiaemail.com>' # Email must be changed to noreply email.
 
 WSGI_APPLICATION = 'Lydias_Law_Site.wsgi.application'
 
