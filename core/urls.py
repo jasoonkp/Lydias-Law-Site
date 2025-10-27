@@ -1,6 +1,6 @@
 # urls.py maps URLs to views
 
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -14,7 +14,9 @@ urlpatterns = [
     path("schedule/", views.schedule, name="schedule"),
     path("login/", views.login, name="login"),
     path("signup/", views.signup, name="signup"),
-    path("confirmation-page", views.confirmation_page, name="confirmation_page"),
+    path("accounts/", include("allauth.urls")),
+    path('verify/', views.confirmation_page, name='confirmation_page'),
+    path("confirmation-page/", views.confirmation_page, name="confirmation_page"),
 
     # admin panel pages (using 'administrator' to avoid conflict with django "admin" keyword)
     path("administrator/", views.admin_dashboard, name="admin_dashboard"),

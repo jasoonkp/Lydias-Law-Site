@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from allauth.account.models import EmailAddress
 from django.conf import settings
 
 class UserManager(BaseUserManager):
@@ -16,6 +17,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
+        extra_fields.setdefault("is_active", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -48,6 +50,10 @@ class User(AbstractUser):
     REQUIRED_FIELDS=[]
 
     objects = UserManager()
+
+    @property
+    def email_address(self):
+        return EmailAddress.objects.get(user=self, email=self.email)
 
 # Admin Table
 class AdminProfile(models.Model):
