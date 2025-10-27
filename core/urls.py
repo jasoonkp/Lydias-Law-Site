@@ -37,6 +37,7 @@ urlpatterns = [
     path("client/practice-areas/", views.client_practice_areas, name="client_practice_areas"),
     path("client/schedule/", views.client_schedule, name="client_schedule"),
     path("client/transactions/", views.client_transactions, name="client_transactions"),
+    path("client/appointment_request_confirmation/", views.client_appointment_request_confirmation, name="client_appointment_request_confirmation"),
 
     # I have these paths below commented out because when we implement authentication, users will be authenticated with the auth_views method
 
