@@ -1,0 +1,12 @@
+<p>Hello {{ user.get_full_name|default:user.email }},</p>
+
+<p>Thanks for signing up with <strong>Lydia's Law</strong>. Please confirm your email by clicking the button below.</p>
+
+<p>
+    <a href="{{ activate_url }}"
+       style="background-color: #24665f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Confirm Your Email
+    </a>
+</p>
+
+<p>If you didn’t sign up, you can safely ignore this email.</p>

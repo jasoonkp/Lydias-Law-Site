@@ -1,0 +1,9 @@
+Hello {{ user.get_full_name|default:user.email }},
+
+Thank you for signing up with Lydia's Law.
+
+Please confirm your email address by clicking the link below:
+
+{{ activate_url }}
+
+If you didn’t sign up, you can safely ignore this email.

@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     "crispy_forms",
     "crispy_bootstrap5",
     "core",
@@ -47,8 +50,6 @@ INSTALLED_APPS = [
     "appointments",
     "sitecontent"
 ]
-
-AUTH_USER_MODEL = "users.User"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Lydias_Law_Site.urls'
@@ -83,10 +85,45 @@ TEMPLATES = [
 
 TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates"]
 
-
+# Base Login/Logout Redirects (keeping these for safety)
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+# Auth Login/Logout Redirects
+ACCOUNT_SIGNUP_REDIRECT_URL = "client/dashboard"
+ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+ACCOUNT_ADAPTER = "core.adapter.MyAccountAdapter"
+
+# Select Custom User
+AUTH_USER_MODEL = "users.User"
+
+# Email Verification Settings
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_RATE_LIMITS = {
+    "confirm_email": "6/m",  # Adjust as needed, (currently 6 requests per minute, can use s, m, h, d as metrics).
+}
+# Redirects after email confirmation.
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/home"
+# Authenticated users will be sent to this path after confirming.
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/client/dashboard"
+# All these names come from name tag in form in signup.html.
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = [
+    "email*", "password1*", "password2*",        # required fields
+    "first-name", "last-name", "phone-number"  # optional fields
+]
+
+# Email Verification Email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'michaelk1734@gmail.com'  # Noreply email goes here.
+EMAIL_HOST_PASSWORD = 'nctg towy qimk bolo'  # the 16-char App Password for noreply email (requires F2A).
+DEFAULT_FROM_EMAIL = 'Lydia\'s Law <michaelk1734@gmail.com>' # Email must be changed to noreply email.
 
 WSGI_APPLICATION = 'Lydias_Law_Site.wsgi.application'
 
