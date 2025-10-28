@@ -2,12 +2,13 @@
 
 from django.urls import path, include
 from . import views
+from sitecontent.views import about
 
 urlpatterns = [
     # Public pages
     path("", views.home, name="home"),
     path("practice-areas/", views.practice_areas, name="practice_areas"),
-    path("about/", views.about, name="about"),
+    path("about/", about, name="about"),
     path("services/", views.services, name="services"),
     path("contact/", views.contact, name="contact"),
     path("payment/", views.payment, name="payment"),
