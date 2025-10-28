@@ -17,3 +17,132 @@ a.btn-custom:hover {
     color: white !important; /* keep text white */
     text-decoration: none; /* remove underline on hover */
 }
+
+/* HOME PAGE CSS  */
+.hero {
+    height: auto;
+    min-height: 600px;
+    background-size: cover;
+    background-position: center center;
+
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    text-align: center;
+
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+.hero-text {
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+/* Media queries */
+@media (min-width: 768px) {
+    .hero {
+        height: 400px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .hero {
+        height: 500px;
+    }
+}
+
+
+.green-bar {
+    width: 100%;
+    background-color: #e8efed;
+    text-align: center;
+    padding: 12px 0; /* reduced padding */
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin: 0; /* remove forced margin */
+}
+
+
+.button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* space between buttons */
+    justify-content: center; /* center buttons */
+}
+
+.image-btn {
+    position: relative;
+    width: 200px;            /* adjust size */
+    aspect-ratio: 1 / 1;     /* square shape */
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;      /* optional rounded corners */
+    overflow: hidden;
+    text-decoration: none;    /* remove underline */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.image-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.btn-text {
+    position: absolute;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    pointer-events: none;
+}
+
+/* CREATES FIXED VERTICLE SPACE  */
+.spacer {
+    height: 50px; 
+}
+
+/* FAQ ACCORDION */
+
+.accordion-body {
+    font-size: 1rem; 
+    text-align: left;
+    background-color: #f7f9f8;
+    color: black;
+}
+
+/* Optional: keep header background consistent */
+.accordion-button {
+    font-size: 1rem; 
+    font-weight: 500;  
+    background-color: #e8efed;
+    color: #2d7a73; 
+}
+
+.accordion-button:not(.collapsed) {
+    color: #2d7a73; 
+    background-color: #e8efed; 
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+/* To fix gap between nav bar and hero image of HomepageS*/
+.navbar {
+    border-bottom: none !important;
+}
+
+

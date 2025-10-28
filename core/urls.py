@@ -3,10 +3,11 @@
 from django.urls import path, include
 from . import views
 from sitecontent.views import about
+from sitecontent.views import home
 
 urlpatterns = [
     # Public pages
-    path("", views.home, name="home"),
+    path("", home, name="home"),
     path("practice-areas/", views.practice_areas, name="practice_areas"),
     path("about/", about, name="about"),
     path("services/", views.services, name="services"),
