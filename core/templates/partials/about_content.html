@@ -1,0 +1,72 @@
+{% load static %}
+<style>
+    .about-header-card {
+        background-color: #e8f2f0;
+        width: 100%;
+    }
+    .about-header {
+        font-family: serif;
+        text-align: center;
+        padding: 2rem 0 3rem 0;
+        font-size: 2.5rem;
+        font-weight: 400;
+    }
+    .about-container {
+        display: flex;
+        align-items: center;      
+        gap: 3rem;                
+        padding: 2rem;
+        margin: 0 4rem; 
+    }
+    .about-title {
+        font-family: serif;
+        font-weight: bold;
+        
+    }
+    .about-image {
+        display: flex;           
+        align-items: center;     
+    }
+    .about-image img {
+        height: auto;            
+        max-height: 100%;        
+        width: 250px;             
+        display: block;          
+    }
+    .about-bio {
+        flex: 1;                 
+    }
+    @media (max-width: 768px) {
+        .about-container {
+            flex-direction: column;   
+            align-items: center;      
+            text-align: center; 
+            margin: 0 1rem;      
+        }
+    }
+</style>
+
+<!--Banner Heading-->
+<div class="about-header-card">   
+    <h1 class="about-header">About Lydia A. Suprun</h1>
+</div>
+
+<div class="about-container">
+
+    <!--Image-->
+    <div class="about-image">
+        <!--Space reserved for client profile picture-->
+        <!--<img src="{% static 'images/client-picture.png' %}" alt="Lydia A. Suprun">-->
+    </div>
+
+    <!--Bio-->
+    <div class="about-bio">
+        <h2 class="about-title">{{content.nameTitle}}</h2>
+        <p>{{ content.aboutMeDescription|linebreaksbr }}</p>
+
+        <!--LinkedIn Button-->
+        <a class="btn btn-custom px-4 py-2 rounded-pill my-1" href="https://www.linkedin.com/in/lydia-suprun-b68a553b/">LinkedIn</a>
+    </div>
+</div>
+
+
