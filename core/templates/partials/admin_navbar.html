@@ -40,7 +40,14 @@
       </ul>
 
       <div class="d-flex ms-3">
-        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'home' %}">Logout</a>
+        <form method="post" action="{% url 'logout' %}" class="m-0">
+          {% csrf_token %}
+          <button type="submit"
+                  class="btn btn-custom px-4 py-2 rounded-pill"
+                  style="background-color: #2d7a73; border: none; color: white;">
+            Logout
+          </button>
+        </form>
       </div>
     </div>
   </div> 

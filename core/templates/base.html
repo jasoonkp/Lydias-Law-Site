@@ -14,11 +14,18 @@
   </head>
 
   <body class="d-flex flex-column min-vh-100">
-    {% if role == "user" %}
-      {% include "partials/client_navbar.html" %}
+    {% if user.is_authenticated %}
+      {% if user.role == "CLIENT" or user.role == "GUEST" %}
+          {% include "partials/client_navbar.html" %}
+      {% elif user.role == "ADMIN" %}
+          {% include "partials/admin_navbar.html" %}
+      {% else %}
+          {% include "partials/navbar.html" %}
+      {% endif %}
     {% else %}
       {% include "partials/navbar.html" %}
     {% endif %}
+
     
     <main class="container-fluid px-0">
       {% block content %}{% endblock %}

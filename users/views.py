@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login as auth_login, authenticate
+from django.contrib.auth import get_user_model, login as auth_login, authenticate, logout
 from allauth.account.utils import complete_signup
 from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
@@ -114,6 +114,13 @@ def signup(r):
             allauth_settings.EMAIL_VERIFICATION,
             success_url=reverse('client_dashboard')
         )
+
+# Logout view
+@login_required
+def logout_view(r):
+    logout(r) # removes user's session data / token 
+    messages.success(r, "You have been logged out.")
+    return redirect('home')
 
 # Email verification notice view
 def email_verification_notice(r):

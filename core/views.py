@@ -5,11 +5,11 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import logout
 
 # Public views
-def home(r): 
-    role = r.GET.get("role", "guest")
-    return render(r, "home.html", {"role": role})
+def home(request):
+    return render(request, "home.html")
 def practice_areas(r): return render(r, "practice_areas.html")
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
@@ -34,11 +34,6 @@ def admin_clients(r): return render(r, "admin/clients.html")
 def admin_editor(r): return render(r, "admin/editor.html")
 # @login_required
 def admin_history(r): return render(r, "admin/history.html")
-# @login_required
-def logout_view(r):
-    from django.contrib.auth import logout
-    logout(r)
-    return render(r, "logout.html")
 
 # Client Views
 #@login_required

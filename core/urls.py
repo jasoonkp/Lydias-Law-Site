@@ -5,6 +5,7 @@ from . import views
 from sitecontent.views import about
 from sitecontent.views import home
 from sitecontent.views import contact
+from users.views import logout_view as users_logout_view
 
 urlpatterns = [
     # Public pages
@@ -31,7 +32,7 @@ urlpatterns = [
     path("administrator/clients/", views.admin_clients, name="admin_clients"),
     path("administrator/editor/", views.admin_editor, name="admin_editor"),
     path("administrator/history/", views.admin_history, name="admin_history"),
-    path("administrator/logout/", views.logout_view, name="logout"),
+    path("logout/", users_logout_view, name="logout"),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),
