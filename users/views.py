@@ -10,11 +10,12 @@ from allauth.account.models import EmailAddress, EmailConfirmation, get_emailcon
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-# Create your views here.
+# Directs to login page
 def login(r): 
     role = r.GET.get("role", "guest")
     return render(r, "users/login.html", {"role": role})
 
+# Handles login form submission and authenticates user
 @require_http_methods(["GET", "POST"])
 def login_view(request):
     """
@@ -29,7 +30,7 @@ def login_view(request):
     email = (request.POST.get("email") or "").strip().lower()
     password = request.POST.get("password") or ""
 
-    # authenticate() will look up by USERNAME_FIELD (email in your model)
+    # authenticate() will look up by USERNAME_FIELD (email in our model)
     user = authenticate(request, email=email, password=password)
 
     if user is None:
@@ -38,7 +39,7 @@ def login_view(request):
         return render(request, "users/login.html", {"role": request.GET.get("role", "guest")}, status=401)
 
     if not user.is_active:
-        # If users have is_active=False until email is verified
+        # Users have is_active=False until email is verified
         messages.error(request, "Please verify your email to activate your account.")
         return render(request, "users/login.html", {"role": request.GET.get("role", "guest")}, status=403)
 
@@ -52,6 +53,7 @@ def signup_page(r):
     return render(r, "users/signup.html")
 
 # We should start to think about refactoring the views into separated views files and import them into this main views file.
+# Signup view, directs to signup page and handles signup form submission
 def signup(r):
     User = get_user_model()
     if r.method == 'POST':
@@ -113,8 +115,10 @@ def signup(r):
             success_url=reverse('client_dashboard')
         )
 
+# Email verification notice view
 def email_verification_notice(r):
     return render(r, 'users/confirmation-page.html')
 
+# Email confirmation page view
 def confirmation_page(r):
     return render(r, 'users/confirmation-page.html')
