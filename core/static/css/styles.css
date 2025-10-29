@@ -65,7 +65,7 @@ a.btn-custom:hover {
     color: black;
     font-size: 1.3rem;
     font-weight: 500;
-    margin: 0; /* remove forced margin */
+    margin-bottom: 30px; /* remove forced margin */
 }
 
 
@@ -91,7 +91,7 @@ a.btn-custom:hover {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     margin-bottom: 30px;
-    margin-top: 30px;
+    
 }
 
 .image-btn:hover {
@@ -101,7 +101,7 @@ a.btn-custom:hover {
 
 .btn-text {
     position: absolute;
-    color: white;
+    color: black !important;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
