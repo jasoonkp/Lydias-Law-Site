@@ -1,0 +1,64 @@
+{% load static %}
+<style>
+    .contact-header-card {
+        background-color: #e8f2f0;
+        width: 100%;
+    }
+    .contact-header {
+        font-family: serif;
+        text-align: center;
+        padding: 2rem 0 3rem 0;
+        font-size: 2.5rem;
+        font-weight: 400;
+    }
+    .contact-card-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin: 2rem;
+        padding: 2rem;
+    }
+    .contact-card {
+        background-color:#bbc0bf;
+        text-align: center;
+        border-radius: 15px;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0,1);
+    }
+
+    @media (max-width: 650px) {
+        .contact-card {
+            width: 100%;
+        }
+    }
+</style>
+
+<!--Banner Heading-->
+<div class="contact-header-card">
+    <h1 class="contact-header">Contact</h1>
+</div>
+
+<!--Three contact cards-->
+<div class="contact-card-container">
+    <div class="contact-card">
+        <img src="{% static 'images/location.png'%}" alt="Location icon" style="width: 85px; height: 85px; padding: 1rem">
+        <h5>Office Location</h5>
+        <p>{{location.officeLocation}}</p>
+    </div>
+    <div class="contact-card">
+        <img src="{% static 'images/telephone.png'%}" alt="Telephone icon" style="width: 85px; height: 85px; padding: 1rem">
+        <h5>Phone Number</h5>
+        <p>{{lydia.phone_number}}</p>
+    </div>
+    <div class="contact-card">
+        <img src="{% static 'images/email.png'%}" alt="Email icon" style="width: 85px; height: 85px; padding: 1rem">
+        <h5>Email Address</h5>
+        <p>{{lydia.email}}</p>
+    </div>
+</div>

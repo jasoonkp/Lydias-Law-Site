@@ -4,6 +4,7 @@ from django.urls import path, include
 from . import views
 from sitecontent.views import about
 from sitecontent.views import home
+from sitecontent.views import contact
 
 urlpatterns = [
     # Public pages
@@ -11,7 +12,7 @@ urlpatterns = [
     path("practice-areas/", views.practice_areas, name="practice_areas"),
     path("about/", about, name="about"),
     path("services/", views.services, name="services"),
-    path("contact/", views.contact, name="contact"),
+    path("contact/", contact, name="contact"),
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
     path("login/", views.login, name="login"),
@@ -31,9 +32,9 @@ urlpatterns = [
     path("administrator/logout/", views.logout_view, name="logout"),
 
     # client pages 
-    path("client/about/", views.client_about, name="client_about"),
+    path("client/about/", about, {'client': True}, name="client_about"),
     path("client/account/", views.client_account, name="client_account"),
-    path("client/contact/", views.client_contact, name="client_contact"),
+    path("client/contact/", contact, {'client': True}, name="client_contact"),
     path("client/dashboard/", views.client_dashboard, name="client_dashboard"),
     path("client/payment/", views.client_payment, name="client_payment"),
     path("client/practice-areas/", views.client_practice_areas, name="client_practice_areas"),
