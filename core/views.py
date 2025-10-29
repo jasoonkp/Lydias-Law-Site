@@ -128,3 +128,5 @@ def client_transactions(r): return render(r, "client/transactions.html")
 def client_appointment_request_confirmation(r): return render(r, "client/appointment_request_confirmation.html")
 #@login_required
 def client_appointment_denied_confirmation(r): return render(r, "client/appointment_denied_confirmation.html")
+#@login_required
+def client_appointment_approved_confirmation(r): return render(r, "client/appointment_approved_confirmation.html")
