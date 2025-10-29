@@ -11,12 +11,15 @@ from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation, get_emailconfirmation_model
 from django.views.decorators.csrf import csrf_exempt
+from sitecontent.models import WebsiteContent
 
 # Public views
 def home(r): 
     role = r.GET.get("role", "guest")
     return render(r, "home.html", {"role": role})
-def practice_areas(r): return render(r, "practice_areas.html")
+def practice_areas(r):
+    content = WebsiteContent.objects.latest('created_at')
+    return render(r, "practice_areas.html", {"content": content})
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html")
