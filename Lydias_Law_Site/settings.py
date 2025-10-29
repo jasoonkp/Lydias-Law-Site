@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "appointments",
-    "sitecontent"
+    "sitecontent",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -93,10 +93,18 @@ LOGOUT_REDIRECT_URL = "home"
 # Auth Login/Logout Redirects
 ACCOUNT_SIGNUP_REDIRECT_URL = "client/dashboard"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
-ACCOUNT_ADAPTER = "core.adapter.MyAccountAdapter"
+ACCOUNT_ADAPTER = "users.adapter.MyAccountAdapter"
 
 # Select Custom User
 AUTH_USER_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = [
+    # Keep Django’s model backend so authenticate() works with User USERNAME_FIELD=email
+    "django.contrib.auth.backends.ModelBackend",
+
+    # django-allauth for Google login
+    # "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 # Email Verification Settings
 SITE_ID = 1

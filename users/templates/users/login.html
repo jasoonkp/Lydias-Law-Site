@@ -5,17 +5,18 @@
     <div class="card shadow px-5 py-4" style="width: 35rem; background-color: rgb(120, 156, 148, 0.17); border-radius: 1rem; border: none;">
         <h3 class="mb-4" style="color: #333333;">Login</h3>
 
-        <form action="{% url 'client_dashboard' %}">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
             <div class="mb-3">
                 <label for="email" class="form-label mb-0" style="color: #BDBDBD">Email<span style="color: red;">*</span>
 </label>
-                <input type="email" class="form-control" id="email" style="border-radius: 1.5rem;" required> 
+                <input type="email" class="form-control" id="email" name="email" style="border-radius: 1.5rem;" required>  
             </div>
 
             <div class="mb-0">
                 <label for="password" class="form-label mb-0" style="color: #BDBDBD">Password<span style="color: red;">*</span>
 </label>
-                <input type="password" class="form-control" id="password" style="border-radius: 1.5rem;" required>
+                <input type="password" class="form-control" id="password" name="password" style="border-radius: 1.5rem;" required>
             </div>
 
             <p class="text-end small mb-4">
@@ -40,7 +41,7 @@
         </div>
         <div class="text-center small" style="color: #BDBDBD !important;">
             <span style="color: #BDBDBD !important">Don't have an account?</span>
-            <a href="{% url 'signup' %}" class="text-decoration-none" style="color: #115A5C !important">Sign up</a>
+            <a href="{% url 'signuppage' %}" class="text-decoration-none" style="color: #115A5C !important">Sign up</a>
         </div>
 
     </div>

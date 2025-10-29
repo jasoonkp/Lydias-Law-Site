@@ -15,11 +15,13 @@ urlpatterns = [
     path("contact/", contact, name="contact"),
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
-    path("login/", views.login, name="login"),
-    path("signup/", views.signup, name="signup"),
-    path("accounts/", include("allauth.urls")),
-    path('verify/', views.confirmation_page, name='confirmation_page'),
-    path("confirmation-page/", views.confirmation_page, name="confirmation_page"),
+
+    # users pages
+    path("users/", include("users.urls")),
+    # path("login/", users.views.login, name="login"),
+    # path("signup/", views.signup, name="signup"),
+    # path("accounts/", include("allauth.urls")),
+    # path('verify/', views.confirmation_page, name='confirmation_page'),
 
     # admin panel pages (using 'administrator' to avoid conflict with django "admin" keyword)
     path("administrator/", views.admin_dashboard, name="admin_dashboard"),

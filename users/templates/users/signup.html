@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+  <div class="card shadow px-5 py-4" style="width: 35rem; background-color: rgb(120,156,148,0.17); border-radius: 1rem; border: none;">
+    <h3 class="mb-4" style="color: #333333;">Sign up</h3>
+
+    <form method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="first-name" class="form-label mb-0" style="color:#BDBDBD">
+          First Name<span style="color:red;">*</span>
+        </label>
+        <input type="text" class="form-control" name="first-name" id="first-name" style="border-radius:1.5rem;" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="last-name" class="form-label mb-0" style="color:#BDBDBD">
+          Last Name<span style="color:red;">*</span>
+        </label>
+        <input type="text" class="form-control" name="last-name" id="last-name" style="border-radius:1.5rem;" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label mb-0" style="color:#BDBDBD">
+          Email<span style="color:red;">*</span>
+        </label>
+        <input type="email" class="form-control" name="email" id="email" style="border-radius:1.5rem;" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="phone-number" class="form-label mb-0" style="color:#BDBDBD">
+          Phone Number<span style="color:red;">*</span>
+        </label>
+        <input type="tel" class="form-control" name="phone-number" id="phone-number"
+               style="border-radius:1.5rem;" required pattern="[0-9]{10}" title="Must have 10 numbers">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label mb-0" style="color:#BDBDBD">
+          Password<span style="color:red;">*</span>
+        </label>
+        <input type="password" class="form-control" name="password1" id="password"
+               style="border-radius:1.5rem;" required
+               pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[&!*^$]).{8,}$"
+               title="Must include 1 uppercase letter, 1 number, and 1 special character (&, !, *, ^, $).">
+      </div>
+
+      <div class="mb-3">
+        <label for="re-password" class="form-label mb-0" style="color:#BDBDBD">
+          Re-Enter Password<span style="color:red;">*</span>
+        </label>
+        <input type="password" class="form-control" name="password2" id="re-password" style="border-radius:1.5rem;" required>
+      </div>
+
+      <div class="mb-3 small">
+        <p class="mb-0">password must have:</p>
+        <ul>
+          <li>1 uppercase letter</li>
+          <li>1 numerical character</li>
+          <li>1 special character (ie &, !, *, ^, $)</li>
+          <li>8 characters long</li>
+        </ul>
+      </div>
+
+      <div class="d-grid mb-4">
+        <button type="submit" class="btn w-100" style="background-color:#2d7a73; border-radius:1.5rem; color:white !important;">Sign up</button>
+      </div>
+
+      <button type="button" class="btn w-100 mb-4 d-flex align-items-center justify-content-center gap-3"
+              style="background-color:white; color:rgba(0,0,0,0.5); border-radius:2rem;">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+        <span>Sign up with Google</span>
+      </button>
+    </form>
+
+    <div class="text-center small" style="color:#BDBDBD !important;">
+      <span>Already have an account?</span>
+      <a href="{% url 'login' %}" class="text-decoration-none" style="color:#115A5C !important">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
