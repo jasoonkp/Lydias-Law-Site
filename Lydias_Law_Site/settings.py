@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "core",
     "users",
     "appointments",
-    "sitecontent"
+    "sitecontent",
+    "finances"
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
