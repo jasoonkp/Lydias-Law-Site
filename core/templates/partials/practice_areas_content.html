@@ -46,7 +46,6 @@
     font-size: 1.25rem;
     font-weight: 700;
     color: #000000;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
     padding: 0.5rem;
   }
 
@@ -120,15 +119,9 @@
       <div class="practice-area-image-title">Step-Parent<br>Adoption</div>
     </div>
     <div class="practice-area-content">
-      <p class="practice-area-text">
-        DISCLAIMER: THIS IS ALL HARD CODED RIGHT NOW, WILL FIX WHEN WE HAVE A DATABASE SET UP
-      </p>
-      <p class="practice-area-text">
-        In this type of adoption, the step-parent becomes the legal parent of their spouse's minor child. The parent retains their parental rights and the other biological parent's rights are typically terminated unless an agreement is reached.
-      </p>
-      <p class="practice-area-text">
-        If your step-child is approaching 18 soon or is already an adult, you may want to consider filing an adopt adoption petition with the court.
-      </p>
+      <div class="practice-area-text">
+        {{ content.stepParentAdoptionDescription|linebreaks }}
+      </div>
     </div>
   </div>
 
@@ -140,7 +133,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        An adult adoption is legal procedure where one adult adopts another [younger] adult, creating a legal parent-child relationship. It can be a way to formalize a preexisting relationship between two individuals or can simply be used for legal benefits, such as inheritance rights or health insurance benefits.
+        {{ content.adultAdoptionDescription|linebreaks }}
       </p>
     </div>
   </div>
@@ -153,10 +146,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        The court can appoint an adult to make important life decisions and provide care for a minor, such as with medical care, living arrangements and education when the minor's parents are unable or unwilling to do so.
-      </p>
-      <p class="practice-area-text">
-        Unlike adoption, guardianship does not sever the legal relationship between the minor and their parents; however, guardianship can serve as a temporary solution for children in need, and adoption can be explored at a later time.
+        {{ content.guardianshipDescription|linebreaks }}
       </p>
     </div>
   </div>
@@ -169,7 +159,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        A process where the legal guardian who has been caring for the child adopts and becomes the legal parent of the child. If you have been the legal guardian of a child for at least one year, you can file for independent adoption in family law court.
+        {{ content.guardianshipToAdoptionDescription|linebreaks }}
       </p>
     </div>
   </div>
@@ -181,37 +171,14 @@
       <div class="practice-area-image-title">Independent<br>Adoption</div>
     </div>
     <div class="practice-area-content">
-      <p class="practice-area-text">
-        There are four types of independent adoption:
-      </p>
-      <p class="practice-area-text">
-        <strong>1. A child will be directly "placed" with the prospective adoptive parent(s)</strong>
-      </p>
-      <p class="practice-area-text">
-        An adoption agency is not involved and instead the birth parent(s) or legal parent(s) selects the adoptive family. This occurs when the birth parent(s) meets with and agrees to place their child with the adoptive parent(s) and signs an Independent Adoption Provider. An Independent Adoption Provider Petition is then filed with the family court. The California Department of Social Services investigates the adoption petition. Prospective adoptive parents receive investigates the adoption petition. Please note that if you are related to the child, you can use the independent adoption path for relative adoptions and will not need to retain the services of an Adoption Service Provider.
-      </p>
-      <p class="practice-area-text">
-        <strong>2. Adoption of a relative</strong>
-      </p>
-      <p class="practice-area-text">
-        You can file an independent adoption petition for a child who is related to you. Relative in this case means that you are related by blood or by a close connection. This can include siblings, aunts, uncles, half relatives, step-relatives, grandparents, as well as many other relatives. You can also be the spouse of a relative, even if you are divorced from that spouse or the spouse is deceased.
-      </p>
-      <p class="practice-area-text">
-        <strong>3. Prospective adoptive parent(s) named in a will</strong>
-      </p>
-      <p class="practice-area-text">
-        You may have been named in the will of a deceased parent or parents as an intended adoptive parent.
-      </p>
-      <p class="practice-area-text">
-        <strong>4. Legal guardian of the child</strong>
-      </p>
-      <p class="practice-area-text">
-        You can file for adoption if you have been the child's legal guardian for more than one year. You must have become the legal guardian through probate or family court.
-      </p>
+      <div class="practice-area-text">
+        <!-- in order to get the formatting right, i use the |safe tag to read html directly from the db -->
+        <!-- look into ckeditor when we add editor functionality? -->
+        {{ content.independentAdoptionDescription|safe|linebreaks}}
+      </div>
     </div>
   </div>
 
-  <!-- consultation section - space reserved for consultation button (separate task) -->
   <div class="consultation-section">
     <div class="consultation-section-text my-1">Schedule a Consultation Today</div>
     <a class="btn btn-custom px-4 py-2 rounded-pill my-1" href="{% url 'contact' %}">Book Appointment</a>
@@ -219,4 +186,3 @@
 </div>
 
 
-<!-- TODO ADD THE REAL PICTURES INSTEAD OF LINKS TO NONEXISTANT SHIT -->

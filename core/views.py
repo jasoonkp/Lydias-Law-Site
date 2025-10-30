@@ -5,12 +5,25 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import get_user_model, logout
+from allauth.account.utils import complete_signup
+from allauth.account import app_settings as allauth_settings
+from allauth.account.adapter import get_adapter
+from allauth.account.models import EmailAddress, EmailConfirmation, get_emailconfirmation_model
+from django.views.decorators.csrf import csrf_exempt
+from sitecontent.models import WebsiteContent
+
 
 # Public views
-def home(request):
-    return render(request, "home.html")
-def practice_areas(r): return render(r, "practice_areas.html")
+def home(r):
+    role = r.GET.get("role", "guest")
+    return render(r, "home.html", {"role": role})
+  
+# Is this method 
+def practice_areas(r):
+    content = WebsiteContent.objects.latest('created_at')
+    return render(r, "practice_areas.html", {"content": content})
+
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html")
@@ -56,3 +69,5 @@ def client_transactions(r): return render(r, "client/transactions.html")
 def client_appointment_request_confirmation(r): return render(r, "client/appointment_request_confirmation.html")
 #@login_required
 def client_appointment_denied_confirmation(r): return render(r, "client/appointment_denied_confirmation.html")
+#@login_required
+def client_appointment_approved_confirmation(r): return render(r, "client/appointment_approved_confirmation.html")

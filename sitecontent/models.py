@@ -8,6 +8,8 @@ class WebsiteContent(models.Model):
     stepParentAdoptionDescription = models.TextField(blank=True)
     adultAdoptionDescription = models.TextField(blank=True)
     guardianshipDescription = models.TextField(blank=True)
+    guardianshipToAdoptionDescription = models.TextField(blank=True)
+    independentAdoptionDescription = models.TextField(blank=True)
 
     nameTitle = models.CharField(max_length=120, blank=True)
     aboutMeDescription = models.TextField(blank=True) 
