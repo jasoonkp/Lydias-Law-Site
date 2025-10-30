@@ -38,7 +38,19 @@
 
       <!-- Login Button -->
       <div class="d-flex ms-3">
-        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'login' %}">Login</a>
+        {% if user.is_authenticated %}
+        <!-- Logout form: uses POST for security -->
+          <form method="post" action="{% url 'logout' %}" class="m-0">
+            {% csrf_token %}
+            <button type="submit" 
+                    class="btn btn-danger px-4 py-2 rounded-pill"
+                    style="background-color: #2d7a73; border: none;">
+              Logout
+            </button>
+          </form>
+        {% else %}
+        <!-- Login link if not logged in -->
+        <a class="btn btn-custom px-4 py-2 rounded-pill" href="{% url 'login' %}">Login</a> {% endif %}
       </div>
     </div>
   </div>

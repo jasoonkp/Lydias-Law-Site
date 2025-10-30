@@ -5,6 +5,7 @@ from . import views
 from sitecontent.views import about
 from sitecontent.views import home
 from sitecontent.views import contact
+from users.views import logout_view as users_logout_view
 
 urlpatterns = [
     # Public pages
@@ -15,11 +16,13 @@ urlpatterns = [
     path("contact/", contact, name="contact"),
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
-    path("login/", views.login, name="login"),
-    path("signup/", views.signup, name="signup"),
-    path("accounts/", include("allauth.urls")),
-    path('verify/', views.confirmation_page, name='confirmation_page'),
-    path("confirmation-page/", views.confirmation_page, name="confirmation_page"),
+
+    # users pages
+    path("users/", include("users.urls")),
+    # path("login/", users.views.login, name="login"),
+    # path("signup/", views.signup, name="signup"),
+    # path("accounts/", include("allauth.urls")),
+    # path('verify/', views.confirmation_page, name='confirmation_page'),
 
     # admin panel pages (using 'administrator' to avoid conflict with django "admin" keyword)
     path("administrator/", views.admin_dashboard, name="admin_dashboard"),
@@ -29,7 +32,7 @@ urlpatterns = [
     path("administrator/clients/", views.admin_clients, name="admin_clients"),
     path("administrator/editor/", views.admin_editor, name="admin_editor"),
     path("administrator/history/", views.admin_history, name="admin_history"),
-    path("administrator/logout/", views.logout_view, name="logout"),
+    path("logout/", users_logout_view, name="logout"),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),
