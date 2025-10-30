@@ -71,3 +71,23 @@ class Notification(models.Model):
             models.Index(fields=["channel", "status"]),
             models.Index(fields=["type", "sent_at"]),
         ]
+
+class Appointments(models.Model):
+    user_id = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="appointments")
+    start_time = models.DateTimeField()
+    duration = models.TimeField(default=15)
+    comments = models.TextField(blank=True, null=True)
+    approved = models.BooleanField(default=False)
+    calendar_api_id = models.CharField(max_length=255, blank=True, null=True)
+
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        CONFIRMED = "CONFIRMED", "Confirmed"
+        CANCELLED = "CANCELLED", "Cancelled"
+        NO_SHOW = "NO_SHOW", "No-show"
+        COMPLETED = "COMPLETED", "Completed"
+        
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+
+
+    
