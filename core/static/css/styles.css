@@ -1,7 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+/* First font URL */
+/* @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap'); */
+
+/* Second font URL */ 
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 body {
-    font-family: 'DM Sans', sans-serif;
+    /* First font */
+    /* font-family: 'DM Sans', sans-serif; */
+
+    /* Second font */
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    
+    /* Third font */
+        /* font-family: serif;
+        font-weight: 400; */
+
+
 }
 
 a.btn-custom {

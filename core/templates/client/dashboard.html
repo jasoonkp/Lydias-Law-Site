@@ -30,36 +30,42 @@
 
     <!-- List -->
     <div style="padding: 0.75rem 1rem; overflow-y: auto;">
-      {% if upcoming_appts %}
-        <ul class="list-unstyled m-0">
-          {% for appt in upcoming_appts %}
-            <li class="mb-3 p-2 rounded bg-white shadow-sm">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="fw-semibold">
-                    {{ appt.start_time|date:"D, M j, Y" }}
-                  </div>
-                  <div class="text-muted">
-                    {{ appt.start_time|date:"g:i A" }}
-                  </div>
-                </div>
-                <span class="badge bg-primary">
-                  {{ appt.get_status_display }}
-                </span>
+  {% if upcoming_appts %}
+    <ul class="list-unstyled m-0">
+      {% for appt in upcoming_appts %}
+        <li class="mb-3 p-2 shadow-sm" 
+            style="border-radius: 0; background-color: rgba(255, 255, 255, 0.85);">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="fw-semibold">
+                {{ appt.start_time|date:"D, M j, Y" }}
               </div>
+              <div class="text-muted">
+                {{ appt.start_time|date:"g:i A" }}
+              </div>
+              <div class="text-muted small">
+                📍 <em>In Office – In Person</em>
+              </div>
+            </div>
+            <span class="badge bg-primary">
+              {{ appt.get_status_display }}
+            </span>
+          </div>
 
-              {% if appt.comments %}
-                <div class="mt-2 small text-muted">
-                  {{ appt.comments }}
-                </div>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-white-50 m-0">You have no upcoming appointments.</p>
-      {% endif %}
-    </div>
+          {% if appt.comments %}
+            <div class="mt-2 small text-muted">
+              {{ appt.comments }}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-white-50 m-0">You have no upcoming appointments.</p>
+  {% endif %}
+</div>
+
+
   </div>
 
 </div>
