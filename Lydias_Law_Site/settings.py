@@ -89,7 +89,7 @@ TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates", BASE_DIR / "users" / "templates"
 
 # Base Login/Logout Redirects (keeping these for safety)
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "client/dashboard"
 LOGOUT_REDIRECT_URL = "home"
 
 # Auth Login/Logout Redirects
@@ -134,9 +134,9 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Noreply email goes here.
-EMAIL_HOST_PASSWORD = ''  # the 16-char App Password for noreply email (requires F2A).
-DEFAULT_FROM_EMAIL = 'Lydia\'s Law <noreply@lydiaemail.com>' # Email must be changed to noreply email.
+EMAIL_HOST_USER = os.getenv("HOST_EMAIL")  # Noreply email goes here.
+EMAIL_HOST_PASSWORD = os.getenv("HOST_EMAIL_PASSWORD")  # the 16-char App Password for noreply email (requires F2A).
+DEFAULT_FROM_EMAIL = f"Lydia's Law <{EMAIL_HOST_USER}>" # Email must be changed to noreply email.
 
 WSGI_APPLICATION = 'Lydias_Law_Site.wsgi.application'
 
