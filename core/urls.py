@@ -6,6 +6,7 @@ from sitecontent.views import about
 from sitecontent.views import home
 from sitecontent.views import contact
 from users.views import logout_view as users_logout_view
+from users.views import instant_email_confirm_view as email_confirm_view
 
 urlpatterns = [
     # Public pages
@@ -33,6 +34,7 @@ urlpatterns = [
     path("administrator/editor/", views.admin_editor, name="admin_editor"),
     path("administrator/history/", views.admin_history, name="admin_history"),
     path("logout/", users_logout_view, name="logout"),
+    path('accounts/confirm-email/<str:key>/', email_confirm_view, name='account_confirm_email'),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),
