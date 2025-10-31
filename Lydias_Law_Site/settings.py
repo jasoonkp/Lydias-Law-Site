@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates"]
+TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates", BASE_DIR / "users" / "templates"]
 
 # Base Login/Logout Redirects (keeping these for safety)
 LOGIN_URL = "login"
@@ -95,6 +95,7 @@ LOGOUT_REDIRECT_URL = "home"
 # Auth Login/Logout Redirects
 ACCOUNT_SIGNUP_REDIRECT_URL = "client/dashboard"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+ACCOUNT_LOGIN_REDIRECT_URL = '/client/dashboard/'
 ACCOUNT_ADAPTER = "users.adapter.MyAccountAdapter"
 
 # Select Custom User
@@ -110,6 +111,8 @@ AUTHENTICATION_BACKENDS = [
 
 # Email Verification Settings
 SITE_ID = 1
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = False
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_RATE_LIMITS = {

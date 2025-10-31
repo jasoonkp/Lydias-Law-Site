@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -9,6 +10,7 @@ from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation, get_emailconfirmation_model
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.http import Http404
 
 # Directs to login page
 def login(r): 
@@ -47,8 +49,6 @@ def login_view(request):
     auth_login(request, user)
     return redirect("client_dashboard")
 
-
-
 def signup_page(r):
     return render(r, "users/signup.html")
 
@@ -84,7 +84,8 @@ def signup(r):
             password=password1,
             first_name=first_name,
             last_name=last_name,
-            phone_number=phone_number
+            phone_number=phone_number,
+            role=User.Role.CLIENT # Change new user to client role.
         )
 
         # Create Email Address Object.
@@ -129,3 +130,34 @@ def email_verification_notice(r):
 # Email confirmation page view
 def confirmation_page(r):
     return render(r, 'users/confirmation-page.html')
+
+# Client dashboard view
+@login_required
+def client_dashboard(r):
+    # Get logged in user
+    user = r.user
+    print(user.first_name)
+    # Setup context dictionary for user information
+    context = {
+        'user' : user,
+    }
+    # Send off dictionary to dashboard.html to be used
+    return render(r, 'client/dashboard.html', context=context)
+
+# Email confirmation redirection view
+def instant_email_confirm_view(r, key):
+    confirmation = EmailConfirmationHMAC.from_key(key)
+    if not confirmation:
+        try:
+            confirmation = EmailConfirmation.objects.get(key=key.lower())
+        except EmailConfirmation.DoesNotExist:
+            raise Http404("Invalid confirmation key.")
+
+    user = confirmation.email_address.user
+    confirmation.confirm(r)
+
+    auth_login(r, user)
+
+    # Upon signing up, the user was not logging into the account that they had just created and authenticated.
+    # This function fixes this issue by redirecting the user here to log in before going to the dashboard.
+    return redirect(reverse('client_dashboard'))

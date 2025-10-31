@@ -1,14 +1,32 @@
 {% extends 'client/base_client.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="h3 mb-4">Dashboard</h1>
-    <div class="card">
-      <div class="card-body">
-        <p class="text-muted">Dashboard coming soon...</p>
-      </div>
-    </div>
+<!-- Welcome Banner -->
+<div class="p-3 mb-3 rounded" style="background-color: #e8f2f0;">
+  <h1 class="text-center fw-normal" style="font-family: serif; padding: 1rem 0 0 1rem; font-size: 3rem;">
+    Welcome to your Dashboard {{ user.first_name }}!
+  </h1>
+</div>
+
+<div class="position-relative mx-auto" style="width: 60%; height: 45rem;">
+
+  <!-- Calendar API -->
+  <div class="rounded shadow"
+    style="background-color: #C3D5D6; position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 40rem; height: 35rem; display: flex;">
+    Calendar API coming soon...
   </div>
+
+  <!-- Retainer Balance -->
+  <div class="rounded-pill shadow text-center"
+    style="position: absolute; left: 20%; top: 2%; transform: translateX(-50%); width: 20rem; height: 5rem; background-color: #89b4b8; display: flex; align-items: center; justify-content: center;">
+    <span class="fw-bold text-white" style="font-size: 1.5rem;">Amount Due: {{ user.retainer_balance }}</span>
+  </div>
+
+  <!-- Appointments -->
+  <div class="rounded shadow"
+    style="background-color: #115a5c98; position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 20rem; height: 40rem; display: flex;">
+    Upcoming Appointments coming soon...
+  </div>
+
 </div>
 {% endblock %}

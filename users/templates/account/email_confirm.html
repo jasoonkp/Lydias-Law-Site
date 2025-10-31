@@ -8,7 +8,7 @@
     <form method="post">
         {% csrf_token %}
         
-    <input type="hidden" name="next" value="{% url 'home' %}">
+    <input type="hidden" name="next" value="{% url 'client_dashboard' %}">
     <button type="submit" class="btn btn-primary btn-lg mt-3" style="background-color: #24665f; border-color: #24665f; color: #ffffff;">Confirm Email</button>
     </form>
 </div>
