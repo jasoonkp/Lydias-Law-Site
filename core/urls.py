@@ -7,6 +7,8 @@ from sitecontent.views import home
 from sitecontent.views import contact
 from users.views import logout_view as users_logout_view
 from users.views import instant_email_confirm_view as email_confirm_view
+from users.views import client_dashboard as users_client_dashboard
+from users.views import admin_dashboard as users_admin_dashboard
 
 urlpatterns = [
     # Public pages
@@ -26,8 +28,8 @@ urlpatterns = [
     # path('verify/', views.confirmation_page, name='confirmation_page'),
 
     # admin panel pages (using 'administrator' to avoid conflict with django "admin" keyword)
-    path("administrator/", views.admin_dashboard, name="admin_dashboard"),
-    path("administrator/dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    path("administrator/", users_admin_dashboard, name="admin_dashboard"),
+    path("administrator/dashboard/", users_admin_dashboard, name="admin_dashboard"),
     path("administrator/schedule/", views.admin_schedule, name="admin_schedule"),
     path("administrator/transactions/", views.admin_transactions, name="admin_transactions"),
     path("administrator/clients/", views.admin_clients, name="admin_clients"),
@@ -40,7 +42,7 @@ urlpatterns = [
     path("client/about/", about, {'client': True}, name="client_about"),
     path("client/account/", views.client_account, name="client_account"),
     path("client/contact/", contact, {'client': True}, name="client_contact"),
-    path("client/dashboard/", views.client_dashboard, name="client_dashboard"),
+    path("client/dashboard/", users_client_dashboard, name="client_dashboard"),
     path("client/payment/", views.client_payment, name="client_payment"),
     path("client/practice-areas/", views.client_practice_areas, name="client_practice_areas"),
     path("client/schedule/", views.client_schedule, name="client_schedule"),

@@ -1,6 +1,7 @@
 {% extends 'client/base_client.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
+
 <!-- Welcome Banner -->
 <div class="p-3 mb-3 rounded" style="background-color: #e8f2f0;">
   <h1 class="text-center fw-normal" style="font-family: serif; padding: 1rem 0 0 1rem; font-size: 3rem;">
@@ -14,18 +15,51 @@
   <div class="rounded shadow"
     style="background-color: #C3D5D6; position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 40rem; height: 35rem; display: flex;">
     Calendar API coming soon...
+
   </div>
 
-  <!-- Retainer Balance -->
-  <div class="rounded-pill shadow text-center"
-    style="position: absolute; left: 20%; top: 2%; transform: translateX(-50%); width: 20rem; height: 5rem; background-color: #89b4b8; display: flex; align-items: center; justify-content: center;">
-    <span class="fw-bold text-white" style="font-size: 1.5rem;">Amount Due: {{ user.retainer_balance }}</span>
-  </div>
-
-  <!-- Appointments -->
+  <!-- Upcoming Appointments -->
   <div class="rounded shadow"
-    style="background-color: #115a5c98; position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 20rem; height: 40rem; display: flex;">
-    Upcoming Appointments coming soon...
+       style="background-color: #115a5c98; position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 20rem; height: 40rem; display: flex; flex-direction: column; overflow: hidden;">
+
+    <!-- Header -->
+    <div style="padding: 0.75rem 1rem; background: rgba(0,0,0,0.08);">
+      <h5 class="m-0 text-white">Upcoming Appointments</h5>
+      <small class="text-light">Next 3</small>
+    </div>
+
+    <!-- List -->
+    <div style="padding: 0.75rem 1rem; overflow-y: auto;">
+      {% if upcoming_appts %}
+        <ul class="list-unstyled m-0">
+          {% for appt in upcoming_appts %}
+            <li class="mb-3 p-2 rounded bg-white shadow-sm">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fw-semibold">
+                    {{ appt.start_time|date:"D, M j, Y" }}
+                  </div>
+                  <div class="text-muted">
+                    {{ appt.start_time|date:"g:i A" }}
+                  </div>
+                </div>
+                <span class="badge bg-primary">
+                  {{ appt.get_status_display }}
+                </span>
+              </div>
+
+              {% if appt.comments %}
+                <div class="mt-2 small text-muted">
+                  {{ appt.comments }}
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-white-50 m-0">You have no upcoming appointments.</p>
+      {% endif %}
+    </div>
   </div>
 
 </div>

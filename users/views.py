@@ -11,6 +11,14 @@ from allauth.account.models import EmailAddress, EmailConfirmation, get_emailcon
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import Http404
+from finances.models import Invoice
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from decimal import ROUND_HALF_UP, Decimal
+from appointments.models import Appointments
+from django.utils import timezone
+from django.core.exceptions import PermissionDenied
+
 
 # Directs to login page
 def login(r): 
@@ -47,6 +55,8 @@ def login_view(request):
 
     # Success: log them in and redirect
     auth_login(request, user)
+    if user.is_staff == 1:
+        return redirect("admin_dashboard")
     return redirect("client_dashboard")
 
 def signup_page(r):
@@ -115,7 +125,7 @@ def signup(r):
             allauth_settings.EMAIL_VERIFICATION,
             success_url=reverse('client_dashboard')
         )
-
+    
 # Logout view
 @login_required
 def logout_view(r):
@@ -131,18 +141,85 @@ def email_verification_notice(r):
 def confirmation_page(r):
     return render(r, 'users/confirmation-page.html')
 
+# Caclulate user balance helper function
+def get_user_balance_dollars(user_id):
+    """
+    Calculates total unpaid invoice amount for the given user.
+    Converts from cents to dollars and rounds to 2 decimal places.
+    """
+    # get all unpaid invoices for this user
+    total_cents = Invoice.objects.filter(user_id=user_id, paid=False).aggregate(
+        total=Coalesce(Sum("amount"), 0)
+    )["total"]
+
+    # convert to dollars and round to 2 decimal places
+    balance_dollars = (Decimal(total_cents) / Decimal("100")).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    return balance_dollars
+
+# Get next three appointments helper function
+def get_next_three_appointments(user_id):
+    """
+    Return the next 3 upcoming (non-cancelled) appointments for this user,
+    ordered soonest-first.
+    """
+    now = timezone.now()
+    qs = (
+        Appointments.objects
+        .filter(user_id=user_id, start_time__gte=now)
+        .exclude(status=Appointments.Status.CANCELLED)
+        .order_by("start_time")
+    )
+    return list(qs[:3])
+
+# Get next three appointments admin helper function
+def admin_get_next_three_appointments(user=None):
+    """
+    Return the next 3 upcoming (non-cancelled) appointments.
+    If a user is provided and is not an admin, only that user's
+    appointments are returned. Admins see all upcoming appointments.
+    """
+    now = timezone.now()
+
+    qs = Appointments.objects.filter(
+        start_time__gte=now
+    ).exclude(
+        status=Appointments.Status.CANCELLED
+    ).order_by("start_time")
+
+    # If a user is passed and they’re not staff/superuser,
+    # limit to their own appointments.
+    if user and not (user.is_staff or user.is_superuser):
+        qs = qs.filter(user_id=user.id)
+
+    return list(qs[:5])
+
+
 # Client dashboard view
 @login_required
-def client_dashboard(r):
-    # Get logged in user
-    user = r.user
-    print(user.first_name)
-    # Setup context dictionary for user information
-    context = {
-        'user' : user,
-    }
-    # Send off dictionary to dashboard.html to be used
-    return render(r, 'client/dashboard.html', context=context)
+def client_dashboard(request):
+    user = request.user
+    balance_dollars = get_user_balance_dollars(user.id)
+    upcoming_appts = get_next_three_appointments(user.id)   
+    return render(request, "client/dashboard.html", {
+        "user": user,
+        "balance_dollars": balance_dollars,
+        "upcoming_appts": upcoming_appts,
+    })
+
+# Helper: only allow staff/admin users
+def is_admin_user(user):
+    if not user.is_authenticated or not user.is_staff:
+        raise PermissionDenied
+    return user.is_authenticated and user.is_staff
+
+# Admin dashboard view
+@login_required
+def admin_dashboard(r): 
+    upcoming_appts = admin_get_next_three_appointments(r.user)
+    return render(r, "admin/dashboard.html", {"upcoming_appts": upcoming_appts})
+
 
 # Email confirmation redirection view
 def instant_email_confirm_view(r, key):

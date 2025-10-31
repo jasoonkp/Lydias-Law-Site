@@ -36,7 +36,7 @@ def login(r):
 
 # admin views (login temporarily disabled for testing)
 # @login_required
-def admin_dashboard(r): return render(r, "admin/dashboard.html")
+# def admin_dashboard(r): return render(r, "admin/dashboard.html")
 # @login_required
 def admin_schedule(r): return render(r, "admin/schedule.html")
 # @login_required
@@ -53,8 +53,6 @@ def admin_history(r): return render(r, "admin/history.html")
 def client_about(r): return render(r, "client/about.html")
 #@login_required
 def client_account(r): return render(r, "client/account.html")
-#@login_required
-def client_dashboard(r): return render(r, "client/dashboard.html")
 #@login_required
 def client_contact(r): return render(r, "client/contact.html")
 #@login_required

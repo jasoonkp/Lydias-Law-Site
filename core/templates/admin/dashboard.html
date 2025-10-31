@@ -2,140 +2,67 @@
 
 {% block title %}Dashboard - Admin{% endblock %}
 
-{% block extra_css %}
-<style>
-  body {
-    background-color: #e8ebe9;
-  }
-  .dashboard-title {
-    font-family: serif;
-    font-size: 2.5rem;
-    font-weight: 400;
-    text-align: center;
-    margin: 2rem 0;
-    color: #2d3748;
-  }
-  .calendar-card {
-    background-color: #a8c5be;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-  .appointments-card {
-    background-color: #a8c5be;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    position: relative;
-  }
-  .appointments-header {
-    background-color: #5a7a73;
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    font-family: serif;
-    font-size: 1.25rem;
-  }
-  .appointment-item {
-    background-color: #8ba9a3;
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    border-radius: 0.5rem;
-    border-left: 4px solid #2d7a73;
-  }
-  .appointment-title {
-    font-family: serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-  .appointment-detail {
-    font-size: 0.9rem;
-    color: #2d3748;
-    margin: 0.25rem 0;
-  }
-  .approve-btn {
-    background-color: #a8c5be;
-    border: none;
-    border-radius: 2rem;
-    padding: 0.75rem 2rem;
-    font-weight: 500;
-    color: #2d3748;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-top: 1rem;
-  }
-  .approve-btn:hover {
-    background-color: #95b3ac;
-  }
-  .calendar-placeholder {
-    background-color: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .calendar-month {
-    font-weight: 600;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-  }
-</style>
-{% endblock %}
+{% block extra_css %}{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h1 class="dashboard-title">Welcome to your Dashboard</h1>
+<!-- Welcome Banner -->
+<div class="p-3 mb-3 rounded" style="background-color: #e8f2f0;">
+  <h1 class="text-center fw-normal" style="font-family: serif; padding: 1rem 0 0 1rem; font-size: 3rem;">
+    Welcome to your Admin Dashboard {{ user.first_name }}!
+  </h1>
+</div>
 
-  <div class="row g-4">
-    <!-- Calendar Section -->
-    <div class="col-lg-6">
-      <div class="calendar-card">
-        <div class="calendar-placeholder">
-          <div class="calendar-month">October 2025</div>
-          <div class="text-center text-muted">
-            <p>Calendar placeholder</p>
-            <p class="small">Interactive calendar will be implemented here</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center">
-        <button class="approve-btn">Approve Pending Appointments</button>
-      </div>
+<div class="position-relative mx-auto" style="width: 60%; height: 45rem;">
+
+  <!-- Calendar API -->
+  <div class="rounded shadow"
+    style="background-color: #C3D5D6; position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 40rem; height: 35rem; display: flex;">
+    Calendar API coming soon...
+
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div class="rounded shadow"
+       style="background-color: #115a5c98; position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 20rem; height: 40rem; display: flex; flex-direction: column; overflow: hidden;">
+
+    <!-- Header -->
+    <div style="padding: 0.75rem 1rem; background: rgba(0,0,0,0.08);">
+      <h5 class="m-0 text-white">Upcoming Appointments</h5>
     </div>
 
-    <!-- Upcoming Appointments Section -->
-    <div class="col-lg-6">
-      <div class="appointments-card">
-        <div class="appointments-header">
-          Upcoming Appointments
-        </div>
+    <!-- List -->
+    <div style="padding: 0.75rem 1rem; overflow-y: auto;">
+      {% if upcoming_appts %}
+        <ul class="list-unstyled m-0">
+          {% for appt in upcoming_appts %}
+            <li class="mb-3 p-2 rounded bg-white shadow-sm">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fw-semibold">
+                    {{ appt.start_time|date:"D, M j, Y" }}
+                  </div>
+                  <div class="text-muted">
+                    {{ appt.start_time|date:"g:i A" }}
+                  </div>
+                </div>
+                <span class="badge bg-primary">
+                  {{ appt.get_status_display }}
+                </span>
+              </div>
 
-        <div class="appointment-item">
-          <div class="appointment-title">Appointment 1</div>
-          <div class="appointment-detail">Date: dd/mm/yyyy</div>
-          <div class="appointment-detail">Time: hh:mm</div>
-          <div class="appointment-detail">Location: address/zoom-link</div>
-        </div>
-
-        <div class="appointment-item">
-          <div class="appointment-title">Appointment 2</div>
-          <div class="appointment-detail">Date: dd/mm/yyyy</div>
-          <div class="appointment-detail">Time: hh:mm</div>
-          <div class="appointment-detail">Location: address/zoom-link</div>
-        </div>
-
-        <div class="appointment-item">
-          <div class="appointment-title">Appointment 3</div>
-          <div class="appointment-detail">Date: dd/mm/yyyy</div>
-          <div class="appointment-detail">Time: hh:mm</div>
-          <div class="appointment-detail">Location: address/zoom-link</div>
-        </div>
-      </div>
+              {% if appt.comments %}
+                <div class="mt-2 small text-muted">
+                  {{ appt.comments }}
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-white-50 m-0">You have no upcoming appointments.</p>
+      {% endif %}
     </div>
   </div>
+
 </div>
 {% endblock %}
