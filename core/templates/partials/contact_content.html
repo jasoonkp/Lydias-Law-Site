@@ -37,6 +37,217 @@
             width: 100%;
         }
     }
+
+    /* consultation section */
+    .schedule-section {
+        background-color: #ffffff;
+        padding: 3rem 2rem;
+        margin-top: 2rem;
+    }
+
+    .schedule-heading {
+        font-family: serif;
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 400;
+        margin-bottom: 3rem;
+    }
+
+    .schedule-container {
+        background-color: #a8bfbc;
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .schedule-content {
+        display: flex;
+        gap: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .calendar-placeholder {
+        flex: 1;
+        min-width: 350px;
+        background-color: #8ba8a5;
+        border-radius: 15px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 550px;
+    }
+
+    .calendar-placeholder-text {
+        color: #fff;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .contact-form-container {
+        flex: 1;
+        min-width: 350px;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-size: 0.85rem;
+        color: #333;
+        font-weight: 400;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        background-color: white;
+    }
+
+    .form-control-custom:focus {
+        outline: 2px solid #2d7a73;
+    }
+
+    textarea.form-control-custom {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .appointment-type-group {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .appointment-type-btn {
+        padding: 0.5rem 1.5rem;
+        background-color: #f0f0f0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+
+    .appointment-type-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .appointment-type-btn.active {
+        background-color: #2d7a73;
+        color: white;
+        border-color: #2d7a73;
+    }
+
+    .time-slots {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+    }
+
+    .time-slot-btn {
+        padding: 0.5rem 1.2rem;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+    }
+
+    .time-slot-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+    .time-slot-btn.active {
+        background-color: #2d7a73;
+        color: white;
+        border-color: #2d7a73;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        font-size: 0.85rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background-color: #2d7a73;
+        color: white;
+        padding: 0.9rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 1.5rem;
+    }
+
+    .submit-btn:hover {
+        background-color: #24665f;
+    }
+
+    /* Map Section */
+    .map-section {
+        background-color: #d9e8f5;
+        padding: 3rem 2rem;
+        margin-top: 2rem;
+    }
+
+    .map-placeholder {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .map-placeholder-content {
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .google-maps-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .schedule-content {
+            flex-direction: column;
+        }
+
+        .schedule-container {
+            padding: 1rem;
+        }
+
+        .calendar-placeholder {
+            min-height: 300px;
+        }
+    }
 </style>
 
 <!--Banner Heading-->
@@ -60,5 +271,75 @@
         <img src="{% static 'images/email.png'%}" alt="Email icon" style="width: 85px; height: 85px; padding: 1rem">
         <h5>Email Address</h5>
         <p>{{lydia.email}}</p>
+    </div>
+</div>
+
+<!-- schedule a consult section -->
+<div class="schedule-section">
+    <h2 class="schedule-heading">Schedule a Consultation</h2>
+
+    <div class="schedule-container">
+        <div class="schedule-content">
+            <!-- calendar placeholder -->
+            <!-- REPLACE THIS WITH CALENDLY -->
+            <div class="calendar-placeholder">
+                <div class="calendar-placeholder-text">
+                    <p><strong>Calendar Widget Area</strong></p>
+                    <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.9;">Calendly calendar integration will be embedded here</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">This placeholder shows where the interactive calendar will appear</p>
+                </div>
+            </div>
+
+            <!-- contact form -->
+            <!-- may be taken care of by calendly? -->
+            <div class="contact-form-container">
+                <form method="post" action="{% url 'contact' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" name="first_name" class="form-control-custom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" name="last_name" class="form-control-custom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" name="email" class="form-control-custom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number *</label>
+                        <input type="tel" name="phone_number" class="form-control-custom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Comments</label>
+                        <textarea name="comments" class="form-control-custom"></textarea>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="text_reminder" id="text_reminder">
+                        <label for="text_reminder">Yes, I want to receive text reminder</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- map section -->
+<div class="map-section">
+    <div class="map-placeholder">
+        <div class="map-placeholder-content">
+            <img src="https://cdn-icons-png.flaticon.com/512/281/281769.png" alt="Google Maps" class="google-maps-icon">
+            <p style="color: #666; font-size: 1.1rem;">Google Maps Embed</p>
+            <p style="color: #999; font-size: 0.9rem;">{{location.officeLocation}}</p>
+        </div>
     </div>
 </div>
