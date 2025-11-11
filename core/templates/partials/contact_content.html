@@ -333,13 +333,16 @@
     </div>
 </div>
 
-<!-- map section -->
-<div class="map-section">
-    <div class="map-placeholder">
-        <div class="map-placeholder-content">
-            <img src="https://cdn-icons-png.flaticon.com/512/281/281769.png" alt="Google Maps" class="google-maps-icon">
-            <p style="color: #666; font-size: 1.1rem;">Google Maps Embed</p>
-            <p style="color: #999; font-size: 0.9rem;">{{location.officeLocation}}</p>
-        </div>
-    </div>
-</div>
+<!--Google Map-->
+  <div class="d-flex justify-content-center my-4">
+    <iframe
+        width="600"
+        height="450"
+        style="border:0"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed/v1/place?key={{ GOOGLE_MAPS_API_KEY }}&q=601+University+Ave+Sacramento+CA">
+    </iframe>
+  </div>
+</section>
