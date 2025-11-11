@@ -20,9 +20,7 @@
     {% include "partials/admin_navbar.html" %}
 
     <main class="admin-content">
-      <div class="container-fluid py-4">
-        {% block content %}{% endblock %}
-      </div>
+      {% block content %}{% endblock %}
     </main>
 
     {% include "partials/admin_footer.html" %}
