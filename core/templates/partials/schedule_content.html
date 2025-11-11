@@ -1,0 +1,267 @@
+{% load static %}
+
+<style>
+    
+/* Page header */
+.schedule-page-header-card {
+    background-color: #e8f2f0;
+    width: 100%;
+
+}
+.schedule-page-header {
+    font-family: san-serif;
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+/* Scheduling section */
+.schedule-section {
+    padding: 3rem 2rem; /* desktop padding around green container */
+    margin-top: 2rem;
+}
+
+/* Green container */
+.schedule-container {
+    background-color: #a8bfbc;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Flex layout for widget + form */
+.schedule-content {
+    display: flex;
+    gap: 2rem;
+    align-items: center;       /* vertically center on desktop */
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* connect in columns so they're side by side*/
+.schedule-content > .column {
+    flex: 1 1 360px;
+    min-width: 300px;
+    max-width: 100%;
+}
+
+/* To get rid the extra padding on green container*/
+.schedule-section, 
+.schedule-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Calendly wrapper */
+.calendly-wrapper {
+    padding: 1rem;
+    border-radius: 16px;
+    background: transparent;
+}
+
+/* Calendly widget */
+.calendly-inline-widget {
+    width: 100% !important;
+    height: 920px;    /* for desktop  */
+    min-height: 480px;
+    border-radius: 12px;
+    border: 0;
+    
+}
+.calendly-inline-widget iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: 0 !important;
+    display: block;
+}
+
+/* Contact form */
+.form-container {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    background: transparent;
+    margin: 0;
+}
+
+/* Form fields */
+.form-group { 
+    margin-bottom: 0.8rem; 
+}
+
+.form-label { 
+    display: block; 
+    margin-bottom: 0.3rem; 
+    font-size: 0.85rem; 
+    color: #333; 
+    font-weight: 400; 
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: white;
+    box-shadow: none;
+    max-width: 100%;
+}
+
+.form-control-custom:focus { 
+    outline: 2px solid #2d7a73; 
+}
+
+textarea.form-control-custom { 
+    resize: vertical; 
+    min-height: 80px; 
+}
+
+/* Checkbox & submit button */
+.checkbox-group {
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem; 
+    margin: 1rem 0; 
+    font-size: 
+    0.85rem; 
+}
+
+.checkbox-group input[type="checkbox"] { 
+    width: 16px; 
+    height: 16px; 
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #2d7a73;
+    color: white;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1.5rem;
+}
+.submit-btn:hover { background-color: #24665f; }
+
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .schedule-content {
+        flex-direction: column; /* stack */
+        gap: 1 rem;
+    }
+
+    .schedule-content > .column {
+        min-width: 0 !important;   /* allows iframe shrinking and so you can see the full widget*/
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .schedule-section {
+        padding: 0.5rem 0.25rem; 
+        margin-top: 1rem;
+    }
+
+    .schedule-container {
+        padding: 1rem 0.5rem !important; /* top/bottom 1rem, left/right 0.5rem */
+    }
+
+    /* Remove inner padding from widget & form 
+    so user has more room to select and view  */
+    .calendly-wrapper,
+    .form-container {
+        padding: 0;
+        margin: 0;
+    }
+
+    /*  Calendly widget height for mobile 
+    got rid of any gaps/padding in between in mobile view */
+    .calendly-inline-widget {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 600px !important; 
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* SAVE - ensure iframe fills without adding extra gap in mobile view*/
+  .calendly-inline-widget iframe {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 670px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+}
+</style>
+
+<!-- Banner Heading -->
+<div class="schedule-page-header-card">
+    <h1 class="schedule-page-header">Schedule Appointment</h1>
+</div>
+
+<!-- Schedule a consult section -->
+<div class="schedule-section">
+    <div class="schedule-container">
+        <div class="schedule-content">
+            <!-- Calendly column -->
+            <div class="column calendly-column">
+                <div class="calendly-wrapper">
+                    <div class="calendly-inline-widget" data-url="https://calendly.com/attorneylydia/30min?primary_color=2d7a73"></div>
+                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+                </div>
+            </div>
+
+            <!-- Contact form column -->
+            <div class="column form-column">
+                <div class="form-container">
+                    <form method="post" action="{% url 'contact' %}">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" name="first_name" class="form-control-custom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" name="last_name" class="form-control-custom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" name="email" class="form-control-custom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Phone Number *</label>
+                            <input type="tel" name="phone_number" class="form-control-custom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Comments</label>
+                            <textarea name="comments" class="form-control-custom"></textarea>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="text_reminder" id="text_reminder">
+                            <label for="text_reminder">Yes, I want to receive text reminder</label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div> <!-- .schedule-content END -->
+    </div> <!-- .schedule-container END -->
+</div> <!-- .schedule-section END -->
