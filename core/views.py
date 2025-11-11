@@ -12,12 +12,13 @@ from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation, get_emailconfirmation_model
 from django.views.decorators.csrf import csrf_exempt
 from sitecontent.models import WebsiteContent
+from django.conf import settings
 
 
 # Public views
 def home(r):
     role = r.GET.get("role", "guest")
-    return render(r, "home.html", {"role": role})
+    return render(r, "home.html", {"role": role, "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY})
   
 # Is this method 
 def practice_areas(r):
