@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page-specific styles (move to your main CSS once happy) -->
+<style>
+  :root{
+    --card-bg: #e8f2f0;
+    --accent-bg: #d4e8e4;
+    --text-dark: #1a1a1a;
+    --text: #333;
+  }
+  .policy-container{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem 1rem;
+  }
+  .policy-header{
+    text-align: center;
+    padding: 2rem 0 1.5rem 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 400;
+  }
+  .policy-toc{
+    background: var(--accent-bg);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .policy-toc ul{ margin: 0; padding-left: 1.25rem; }
+  .policy-section{
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .policy-title{
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 .75rem 0;
+  }
+  .policy-text{
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--text);
+    margin: 0;
+  }
+  .policy-text + .policy-text{ margin-top: .85rem; }
+  .policy-list{ margin: .5rem 0 0 1.1rem; }
+  .policy-cta{
+    background: var(--accent-bg);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 768px){
+    .policy-header{ font-size: 2rem; }
+  }
+</style>
+
+<div class="policy-container">
+
+  <h1 class="policy-header">Privacy Policy</h1>
+
+  <!-- Table of contents -->
+  <nav class="policy-toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#overview">Overview & Contact</a></li>
+      <li><a href="#data-we-collect">Data We Collect</a></li>
+      <li><a href="#sources">Sources of Personal Information</a></li>
+      <li><a href="#uses">How We Use Personal Information</a></li>
+      <li><a href="#sharing">Sharing & Disclosures</a></li>
+      <li><a href="#payments">Payments</a></li>
+      <li><a href="#calendar-integrations">Calendar Integrations</a></li>
+      <li><a href="#online-tracking">Cookies & Online Tracking</a></li>
+      <li><a href="#children">Children’s Privacy</a></li>
+      <li><a href="#your-rights">Your Choices & Rights</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#retention">Retention & Location</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+    </ul>
+  </nav>
+
+  <section id="overview" class="policy-section">
+    <h2 class="policy-title">Overview & Contact</h2>
+    <p class="policy-text">
+      This Policy explains how we collect, use, and share information when you visit our website,
+      request an appointment, or make a payment. For questions or privacy requests, email
+      attorneylydia@gmail.com.
+    </p>
+  </section>
+
+  <section id="data-we-collect" class="policy-section">
+    <h2 class="policy-title">Data We Collect</h2>
+    <p class="policy-text">We collect:</p>
+    <ul class="policy-list">
+      <li class="policy-text">Identifiers &amp; contact details (name, email, phone).</li>
+      <li class="policy-text">Appointment details (preferred times, notes—please avoid sensitive/confidential info).</li>
+      <li class="policy-text">Payment information (processed by our payment processor; we receive limited transaction metadata).</li>
+    </ul>
+  </section>
+
+  <section id="sources" class="policy-section">
+    <h2 class="policy-title">Sources of Personal Information</h2>
+    <p class="policy-text">Directly from you (forms/booking), automatically via our site (logs/cookies), and from service providers (e.g., payments).</p>
+  </section>
+
+  <section id="uses" class="policy-section">
+    <h2 class="policy-title">How We Use Personal Information</h2>
+    <ul class="policy-list">
+      <li class="policy-text">Schedule and manage appointments; communicate with you.</li>
+      <li class="policy-text">Process payments and maintain records.</li>
+      <li class="policy-text">Operate, secure, and improve the website and services.</li>
+      <li class="policy-text">Comply with legal and ethical obligations.</li>
+    </ul>
+  </section>
+
+  <section id="sharing" class="policy-section">
+    <h2 class="policy-title">Sharing & Disclosures</h2>
+    <p class="policy-text">
+      We share information with service providers that help us operate the site and services
+      (hosting, payments, scheduling/calendar, email/SMS, analytics). We do not sell personal information.
+      If we later implement advertising technologies that constitute “sharing,” we will add an opt-out mechanism.
+    </p>
+  </section>
+
+  <section id="payments" class="policy-section">
+    <h2 class="policy-title">Payments</h2>
+    <p class="policy-text">
+      Payments are processed by <strong>Stripe</strong>. We do not store full card numbers on our systems.
+      Stripe uses industry-standard security (PCI DSS Level 1).
+    </p>
+  </section>
+
+  <section id="calendar-integrations" class="policy-section">
+    <h2 class="policy-title">Calendar Integrations</h2>
+    <p class="policy-text">
+      If you connect a calendar to schedule/manage appointments, use of information received from Google APIs will adhere to the
+      <em>Google API Services User Data Policy</em>, including the <em>Limited Use</em> requirements. We request the minimum necessary scopes.
+    </p>
+  </section>
+
+  <section id="online-tracking" class="policy-section">
+    <h2 class="policy-title">Cookies & Online Tracking</h2>
+    <p class="policy-text">
+      We use cookies and similar technologies for essential site functionality and to understand site usage.
+      Browser “Do Not Track” signals may not be recognized by all parts of the site. If we implement advertising/remarketing technologies,
+      we will update this section and honor Global Privacy Control (GPC) where required.
+    </p>
+  </section>
+
+  <section id="children" class="policy-section">
+    <h2 class="policy-title">Children’s Privacy</h2>
+    <p class="policy-text">Our site is not directed to children, and we do not knowingly collect personal information from children under 13.</p>
+  </section>
+
+  <section id="your-rights" class="policy-section">
+    <h2 class="policy-title">Your Choices & Rights</h2>
+    <p class="policy-text">You may request access, correction, or deletion of certain personal information by emailing us. We will verify and respond as required by law.</p>
+  </section>
+
+  <section id="security" class="policy-section">
+    <h2 class="policy-title">Security</h2>
+    <p class="policy-text">We employ administrative, technical, and physical safeguards appropriate to our practice. No method of transmission or storage is 100% secure.</p>
+  </section>
+
+  <section id="retention" class="policy-section">
+    <h2 class="policy-title">Retention & Location</h2>
+    <p class="policy-text">We retain information as necessary for the purposes above and as required by law and professional obligations. Data is processed in the United States.</p>
+  </section>
+
+  <section id="changes" class="policy-section">
+    <h2 class="policy-title">Changes to This Policy</h2>
+    <p class="policy-text">We may update this Policy from time to time. We will post the updated version with a new “Last updated” date.</p>
+  </section>
+
+  <!-- Optional CTA, matching your style -->
+  <div class="policy-cta">
+    <div class="consultation-section-text my-1">Have questions about your data?</div>
+    <a class="btn btn-custom px-4 py-2 rounded-pill my-1" href="{% url 'contact' %}">Contact Us</a>
+  </div>
+
+</div>
+
+{% endblock %}
