@@ -18,7 +18,7 @@ from users.views import admin_dashboard as users_admin_dashboard
 
 urlpatterns = [
     # Public pages
-    path("", views.home, name="home"),
+    path("", home, name="home"),
     path("practice-areas/", views.practice_areas, name="practice_areas"),
     path("about/", about, name="about"),
     path("services/", views.services, name="services"),
