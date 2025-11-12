@@ -5,68 +5,90 @@
 <!-- Welcome Banner -->
 <div class="p-3 mb-3 rounded" style="background-color: #e8f2f0;">
   <h1 class="text-center fw-normal" style="font-family: serif; padding: 1rem 0 0 1rem; font-size: 3rem;">
-    Welcome to your Dashboard {{ user.first_name }}!
+    Welcome to your Dashboard, {{ user.first_name }}!
   </h1>
 </div>
 
-<div class="position-relative mx-auto" style="width: 60%; height: 45rem;">
-
-  <!-- Calendar API -->
-  <div class="rounded shadow"
-    style="background-color: #C3D5D6; position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 40rem; height: 35rem; display: flex;">
-    Calendar API coming soon...
-
+<!-- Dashboard Content -->
+<div class="container-fluid row g-4 flex-column align-items-center w-100 d-flex">
+<!-- Amount Due -->
+  <div class="rounded-pill shadow text-center mb-3 p-4 align-items-center" style="background-color: #C3D5D6; min-width: fit-content; width: 25rem; border-radius: 20px;">    
+      {% if balance_dollars > 0 %}
+            <h3>Amount Due: <strong>${{ balance_dollars }}</strong></h3>
+          {% else %}
+            <h3> Amount Due: <strong>$0.00</strong></h3>
+      {% endif %}                     
   </div>
 
-  <!-- Upcoming Appointments -->
-  <div class="rounded shadow"
-       style="background-color: #115a5c98; position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 20rem; height: 40rem; display: flex; flex-direction: column; overflow: hidden;">
+  <!--Apt container -->
+  <div class="w-100" style="width: 100%; min-height: 100vh; padding: 0.2rem 0.1rem 2rem 1.1rem;"> 
 
-    <!-- Header -->
-    <div style="padding: 0.75rem 1rem; background: rgba(0,0,0,0.08);">
-      <h5 class="m-0 text-white">Upcoming Appointments</h5>
-      <small class="text-light">Next 3</small>
+  <!-- Calendar + Upcoming Appointments-->
+  <div class="row d-flex justify-content-center align-items-start flex-wrap gap-5">
+
+    <!-- Calendar API -->
+    <div class="rounded shadow p-3 col-md-1 justify-content-center"
+         style="background-color: #C3D5D6; display: flex; justify-content: center; align-items: center; width: 40rem;">
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget w-100" data-url="https://calendly.com/attorneylydia/30min?primary_color=2d7a73" data-resize="true"></div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
 
-    <!-- List -->
-    <div style="padding: 0.75rem 1rem; overflow-y: auto;">
-  {% if upcoming_appts %}
-    <ul class="list-unstyled m-0">
-      {% for appt in upcoming_appts %}
-        <li class="mb-3 p-2 shadow-sm" 
-            style="border-radius: 0; background-color: rgba(255, 255, 255, 0.85);">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <div class="fw-semibold">
-                {{ appt.start_time|date:"D, M j, Y" }}
+    <!-- Upcoming Appointments -->
+    <div class="col-md-1 rounded shadow "
+        style="background-color: #115a5c98; width: 20rem; min-height: fit-content; padding-bottom: 1rem;">
+
+      <!-- Header -->
+      <div style="padding: 1rem 1rem ;">
+        <h5 class="m-0 text-black text-center"><strong>Upcoming Appointments</strong></h5>
+      </div>
+
+      <!-- List -->      
+      <div style="padding: 1rem 0.75rem; overflow-y: auto; background-color: #C3D5D6; border-radius: 5px;">
+      {% if upcoming_appts %}
+      <ul class="list-unstyled m-0">
+        {% for appt in upcoming_appts %}
+          <li class="mb-3 p-2 shadow-sm" 
+              style="border-radius: 10px; background-color: rgba(255, 255, 255, 0.85);">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold" style="color: black;">
+                  {{ appt.start_time|date:"D, M j, Y" }}
+                </div>
+                <div class="text-muted">
+                  {{ appt.start_time|date:"g:i A" }}
+                </div>
+                <div class="text-muted small">
+                  📍 <em>In Office – In Person</em>
+                </div>
               </div>
-              <div class="text-muted">
-                {{ appt.start_time|date:"g:i A" }}
-              </div>
-              <div class="text-muted small">
-                📍 <em>In Office – In Person</em>
-              </div>
+              <!-- Appt status badge -->
+              {% if appt.status == 'CONFIRMED' %}
+                <span class="badge" style="background-color: #1a7e75; color: #fff;">{{ appt.get_status_display }}</span>
+              {% elif appt.status == 'PENDING' %}
+                <span class="badge" style="background-color: #257e94; color: #fff;">{{ appt.get_status_display }}</span>
+              {% elif appt.status == 'CANCELLED' %}
+                <span class="badge bg-danger">{{ appt.get_status_display }}</span>
+              {% else %}
+                <span class="badge bg-secondary">{{ appt.get_status_display }}</span>
+              {% endif %}
             </div>
-            <span class="badge bg-primary">
-              {{ appt.get_status_display }}
-            </span>
-          </div>
-
-          {% if appt.comments %}
-            <div class="mt-2 small text-muted">
-              {{ appt.comments }}
-            </div>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="text-white-50 m-0">You have no upcoming appointments.</p>
-  {% endif %}
-</div>
-
-
+            <!--Appt Comments-->
+            {% if appt.comments %}
+              <div class="mt-2 small text-muted">
+                {{ appt.comments }}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p class="text-white-50 m-0">You have no upcoming appointments.</p>
+      {% endif %}
+      </div>
+    </div>
   </div>
-
+</div>
 </div>
 {% endblock %}
