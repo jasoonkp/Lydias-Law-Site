@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import WebsiteContent
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseServerError
+from django.conf import settings
 
 # Create your views here.
 
@@ -18,8 +19,14 @@ def home(request):
                 frontPageDescription="No description available."
             )
 
+        role = request.GET.get("role", "guest") # Check URLs in core.
+
         # Render the normal about page
-        return render(request, 'home.html', {'content': content})
+        return render(request, 'home.html', {
+            'content': content,
+            "role": role,
+            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY
+        })
 
     except Exception as e:
         # Log the error
@@ -100,7 +107,8 @@ def contact(request, client=False):
         # Render contact page
         return render(request, page, {
             'location': location,
-            'lydia': lydia
+            'lydia': lydia,
+            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY
         })
     
     except Exception as e:

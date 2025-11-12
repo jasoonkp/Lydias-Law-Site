@@ -249,6 +249,7 @@
         }
     }
 </style>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 
 <!--Banner Heading-->
 <div class="contact-header-card">
@@ -281,13 +282,15 @@
     <div class="schedule-container">
         <div class="schedule-content">
             <!-- calendar placeholder -->
-            <!-- REPLACE THIS WITH CALENDLY -->
-            <div class="calendar-placeholder">
-                <div class="calendar-placeholder-text">
-                    <p><strong>Calendar Widget Area</strong></p>
-                    <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.9;">Calendly calendar integration will be embedded here</p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">This placeholder shows where the interactive calendar will appear</p>
-                </div>
+            <div class="calendar-placeholder" style="min-height: 100vh;">
+                <script type="text/javascript">
+                    Calendly.initInlineWidget({
+                        "url": 'https://calendly.com/attorneylydia/30min?primary_color=2d7a73',
+                        "parentElement": document.getElementById('calendar-placeholder'),
+                        "prefill": {},
+                        "utm": {}
+                    });
+                </script>
             </div>
 
             <!-- contact form -->

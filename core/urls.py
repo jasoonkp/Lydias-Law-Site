@@ -10,13 +10,19 @@ from users.views import instant_email_confirm_view as email_confirm_view
 from users.views import client_dashboard as users_client_dashboard
 from users.views import admin_dashboard as users_admin_dashboard
 
+''' IMPORTANT FOR ALL WHO READ '''
+# There seems to be a potential conflicts with different views that have been made for the same pages.
+# For example there was a contact view in the sitecontent app but also one here in the core app.
+# We should take time to separate views and organize/clean them up at some point.
+''' IMPORTANT FOR ALL WHO READ '''
+
 urlpatterns = [
     # Public pages
     path("", views.home, name="home"),
     path("practice-areas/", views.practice_areas, name="practice_areas"),
     path("about/", about, name="about"),
     path("services/", views.services, name="services"),
-    path("contact/", views.contact, name="contact"),
+    path("contact/", contact, name="contact"),
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
     path("privacy/", views.privacy, name="privacy"),
