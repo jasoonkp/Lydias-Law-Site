@@ -19,7 +19,6 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
-    path("privacy/", views.privacy, name="privacy"),
 
     # users pages
     path("users/", include("users.urls")),

@@ -30,7 +30,6 @@ def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html", {"GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY})
 def payment(r): return render(r, "payment.html")
 def schedule(r): return render(r, "schedule.html")
-def privacy(r): return render(r, "privacy.html")
 
 def login(r): 
     role = r.GET.get("role", "guest")
