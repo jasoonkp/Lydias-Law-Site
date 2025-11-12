@@ -2,6 +2,10 @@
 from django.conf import settings
 from django.db import models
 
+import random, string # to generate confirmation numbers
+from datetime import timedelta
+
+# Notifications model
 
 class Notification(models.Model):
     # Let Django create the primary key `id` automatically.
@@ -72,10 +76,13 @@ class Notification(models.Model):
             models.Index(fields=["type", "sent_at"]),
         ]
 
+
+# ------- Appointments model ------
+# Stores appointments only
 class Appointments(models.Model):
     user_id = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="appointments")
     start_time = models.DateTimeField()
-    duration = models.TimeField(default=15)
+    duration = models.DurationField(default=timedelta(minutes=15))
     comments = models.TextField(blank=True, null=True)
     approved = models.BooleanField(default=False)
     calendar_api_id = models.CharField(max_length=255, blank=True, null=True)
@@ -88,6 +95,57 @@ class Appointments(models.Model):
         COMPLETED = "COMPLETED", "Completed"
         
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+
+
+    # Creating confirmation numbers function
+    def create_confirmation_number():
+        confirmation_number = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        return(confirmation_number.upper())
+
+    # Calendly Appointment extensions:
+    calendly_event_uri = models.URLField(unique=True, null=True, blank=True,)
+    calendly_event_name = models.CharField(max_length=255, null=True, blank=True)
+    calendly_event_status = models.CharField(max_length=50, null=True, blank=True)
+    calendly_created_at = models.DateTimeField(null=True, blank=True)
+    calendly_updated_at = models.DateTimeField(null=True, blank=True)
+    calendly_location_type = models.CharField(max_length=100, null=True, blank=True)
+    calendly_join_url = models.URLField(null=True, blank=True)
+    calendly_organization_uri = models.URLField(null=True, blank=True)
+    calendly_host_email = models.EmailField(null=True, blank=True)
+    confirmation_number = models.CharField(max_length=8, unique=True, null=True, blank=True, default=create_confirmation_number)
+    
+
+    # To-string method that converts it to smt like "Appointment: (Nov 11, 2025 - 9:00 PM) - CONFIRMED"
+    # If you want to change formatting, use this: 
+    # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+    def __str__(self):
+        format_date_time = self.start_time.strftime('%b %d, %Y - %I:%M %p')
+        return f"Appointment: ({format_date_time}) - {self.status}"
+
+    # Ordered by newest first
+    class Meta:
+        ordering = ["-start_time"]
+
+
+# ------- Invitee model ---------
+# Stores the people attending appointment
+class Invitee(models.Model):
+    appointment = models.ForeignKey(
+        Appointments, on_delete=models.CASCADE, related_name='invitees'
+    )
+    calendly_invitee_uri = models.URLField(unique=True, null=True, blank=True)
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15, blank=True, null=True)  # US numbers only
+    status = models.CharField(max_length=50, default="active")
+    canceled = models.BooleanField(default=False)
+    cancellation_reason = models.TextField(null=True, blank=True)
+    reschedule_url = models.URLField(null=True, blank=True)
+    calendly_created_at = models.DateTimeField(null=True, blank=True) # added again in case of Calendly event change (reschedule)
+    calendly_updated_at = models.DateTimeField(null=True, blank=True) # added again in case of Calendly event change
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
 
 
     
