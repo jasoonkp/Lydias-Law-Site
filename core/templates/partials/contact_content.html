@@ -56,7 +56,7 @@
     .schedule-container {
         background-color: #a8bfbc;
         border-radius: 20px;
-        padding: 3rem 2rem;
+        padding: 3rem 3rem;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -72,7 +72,6 @@
         min-width: 350px;
         background-color: #8ba8a5;
         border-radius: 15px;
-        padding: 2rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -249,6 +248,7 @@
         }
     }
 </style>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 
 <!--Banner Heading-->
 <div class="contact-header-card">
@@ -281,53 +281,15 @@
     <div class="schedule-container">
         <div class="schedule-content">
             <!-- calendar placeholder -->
-            <!-- REPLACE THIS WITH CALENDLY -->
-            <div class="calendar-placeholder">
-                <div class="calendar-placeholder-text">
-                    <p><strong>Calendar Widget Area</strong></p>
-                    <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.9;">Calendly calendar integration will be embedded here</p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">This placeholder shows where the interactive calendar will appear</p>
-                </div>
-            </div>
-
-            <!-- contact form -->
-            <!-- may be taken care of by calendly? -->
-            <div class="contact-form-container">
-                <form method="post" action="{% url 'contact' %}">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label class="form-label">First Name *</label>
-                        <input type="text" name="first_name" class="form-control-custom" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Last Name *</label>
-                        <input type="text" name="last_name" class="form-control-custom" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email *</label>
-                        <input type="email" name="email" class="form-control-custom" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Phone Number *</label>
-                        <input type="tel" name="phone_number" class="form-control-custom" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Comments</label>
-                        <textarea name="comments" class="form-control-custom"></textarea>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" name="text_reminder" id="text_reminder">
-                        <label for="text_reminder">Yes, I want to receive text reminder</label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Submit</button>
-                </form>
+            <div class="calendar-placeholder" style="min-height: 100vh;">
+                <script type="text/javascript">
+                    Calendly.initInlineWidget({
+                        "url": 'https://calendly.com/attorneylydia/30min?primary_color=2d7a73',
+                        "parentElement": document.getElementById('calendar-placeholder'),
+                        "prefill": {},
+                        "utm": {}
+                    });
+                </script>
             </div>
         </div>
     </div>

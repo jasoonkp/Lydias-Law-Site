@@ -14,7 +14,10 @@ from django.views.decorators.csrf import csrf_exempt
 from sitecontent.models import WebsiteContent
 from django.conf import settings
 
-
+''' Are these needed anymore if site content is covering them?
+    Home, About, and Contact are all being handled by site content views,
+    making some of these and potentially more in the future obsolete.
+'''
 # Public views
 def home(r):
     role = r.GET.get("role", "guest")
