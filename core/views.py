@@ -34,6 +34,7 @@ def contact(r): return render(r, "contact.html", {"GOOGLE_MAPS_API_KEY": setting
 def payment(r): return render(r, "payment.html")
 def schedule(r): return render(r, "schedule.html")
 def privacy(r): return render(r, "privacy.html")
+def appointment_confirmation(r): return render (r, "appointment_confirmation.html")
 
 def login(r): 
     role = r.GET.get("role", "guest")
@@ -41,7 +42,7 @@ def login(r):
 
 # admin views (login temporarily disabled for testing)
 # @login_required
-# def admin_dashboard(r): return render(r, "admin/dashboard.html")
+#def admin_dashboard(r): return render(r, "admin/dashboard.html")
 # @login_required
 def admin_schedule(r): return render(r, "admin/schedule.html")
 # @login_required
@@ -52,6 +53,8 @@ def admin_clients(r): return render(r, "admin/clients.html")
 def admin_editor(r): return render(r, "admin/editor.html")
 # @login_required
 def admin_history(r): return render(r, "admin/history.html")
+# @login_required
+def admin_appointment_confirmation(r): return render(r, "admin/appointment_confirmation.html")
 
 # Client Views
 #@login_required
@@ -73,4 +76,4 @@ def client_appointment_request_confirmation(r): return render(r, "client/appoint
 #@login_required
 def client_appointment_denied_confirmation(r): return render(r, "client/appointment_denied_confirmation.html")
 #@login_required
-def client_appointment_approved_confirmation(r): return render(r, "client/appointment_approved_confirmation.html")
+def client_appointment_confirmation(r): return render(r, "client/appointment_confirmation.html")
