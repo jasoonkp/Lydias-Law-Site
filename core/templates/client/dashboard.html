@@ -35,6 +35,16 @@
       <!-- Calendly inline widget end -->
     </div>
 
+    <!-- Redirect users to a confirmation page -->
+    <!-- Listens for an event sent by Calendly to indicate an appointment was scheduled-->
+    <script>
+      window.addEventListener("message", function(e){
+        if (e.data.event && e.data.event === "calendly.event_scheduled"){
+          window.location.href = "{% url 'client_appointment_confirmation' %}"
+        }
+      })
+    </script>
+
     <!-- Upcoming Appointments -->
     <div class="col-md-1 rounded shadow "
         style="background-color: #115a5c98; width: 20rem; min-height: fit-content; padding-bottom: 1rem;">

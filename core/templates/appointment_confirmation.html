@@ -1,10 +1,9 @@
-{% extends "client/base_client.html" %}
-{% block title %}Appointment Has Been Approved {% endblock %} <!-- Tab title -->
+{% extends "base.html" %}
+{% block title %}Appointment Confirmation {% endblock %} <!-- Tab title -->
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-{% block content %}   
-
+{% block content %}
+{% load static %}
     <main class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
 
         <!-- Outside container -->
@@ -26,12 +25,11 @@
 
                     </div>
                         
-                    <!-- Container for Close Button -->
+                    <!-- Container for Close Button (leads to home page)-->
                     <div>
-                        <a href="/client/dashboard" class="btn btn-custom px-4 py-2 rounded-pill">Close</a>
+                        <a href="/" class="btn btn-custom px-4 py-2 rounded-pill">Close</a>
                     </div>
 
          </div> <!-- close outer container-->       
     </main> <!-- close main -->
-    
 {% endblock %}

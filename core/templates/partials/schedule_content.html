@@ -83,5 +83,16 @@
 
                 </div>
             </div>
+
+            <!-- Redirect users to a confirmation page -->
+            <!-- Listens for an event sent by Calendly to indicate an appointment was scheduled-->
+            <script>
+                window.addEventListener("message", function(e){
+                    if (e.data.event && e.data.event === "calendly.event_scheduled"){
+                        window.location.href = "{% url 'admin_appointment_confirmation' %}"
+                    }
+                })
+            </script>
+
         </div><!-- .schedule-section END -->
 </div> <!-- .schedule-container END -->

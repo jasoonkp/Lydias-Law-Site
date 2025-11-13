@@ -26,6 +26,7 @@ urlpatterns = [
     path("payment/", views.payment, name="payment"),
     path("schedule/", views.schedule, name="schedule"),
     path("privacy/", views.privacy, name="privacy"),
+    path("appointment_confirmation/", views.appointment_confirmation, name="appointment_confirmation"),
 
     # users pages
     path("users/", include("users.urls")),
@@ -44,6 +45,7 @@ urlpatterns = [
     path("administrator/history/", views.admin_history, name="admin_history"),
     path("logout/", users_logout_view, name="logout"),
     path('accounts/confirm-email/<str:key>/', email_confirm_view, name='account_confirm_email'),
+    path("administrator/appointment_confirmation/", views.admin_appointment_confirmation, name="admin_appointment_confirmation"),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),
@@ -54,9 +56,7 @@ urlpatterns = [
     path("client/practice-areas/", views.client_practice_areas, name="client_practice_areas"),
     path("client/schedule/", views.client_schedule, name="client_schedule"),
     path("client/transactions/", views.client_transactions, name="client_transactions"),
-    path("client/appointment_request_confirmation/", views.client_appointment_request_confirmation, name="client_appointment_request_confirmation"),
-    path("client/appointment_denied_confirmation/", views.client_appointment_denied_confirmation, name="client_appointment_denied_confirmation"),
-    path("client/appointment_approved_confirmation/", views.client_appointment_approved_confirmation, name="client_appointment_approved_confirmation"),
+    path("client/appointment_confirmation/", views.client_appointment_confirmation, name="client_appointment_confirmation"),
 
     # I have these paths below commented out because when we implement authentication, users will be authenticated with the auth_views method
 

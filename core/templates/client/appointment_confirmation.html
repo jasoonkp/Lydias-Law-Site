@@ -1,10 +1,8 @@
 {% extends "client/base_client.html" %}
-{% block title %}Appointment Requested and Awaiting Approval {% endblock %} <!-- Tab title -->
+{% block title %}Appointment Confirmation {% endblock %} <!-- Tab title -->
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
-{% block content %}   
-
+{% block content %}
+{% load static %}
     <main class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
 
         <!-- Outside container -->
@@ -20,7 +18,7 @@
 
                         <!-- Container for Text-->
                         <div class="text-center text-md-start">
-                            <h1 class="mb-2">Appointment Requested<br>and Awaiting Approval</h1>
+                            <h1 class="mb-2">Appointment Confirmed</h1>
                             <p class="fs-4 mb-0">Updated details are found in the dashboard</p>                            
                         </div>
 
@@ -33,5 +31,4 @@
 
          </div> <!-- close outer container-->       
     </main> <!-- close main -->
-    
 {% endblock %}
