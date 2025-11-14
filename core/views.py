@@ -66,11 +66,16 @@ def client_contact(r): return render(r, "client/contact.html")
 #@login_required
 def client_payment(r): return render(r, "client/payment.html")
 #@login_required
-def client_practice_areas(r): return render(r, "client/practice_areas.html")
+def client_practice_areas(r):
+    content = WebsiteContent.objects.latest('created_at')
+    return render(r, "client/practice_areas.html", {"content": content})
 #@login_required
 def client_schedule(r): return render(r, "client/schedule.html")
 #@login_required
 def client_transactions(r): return render(r, "client/transactions.html")
+#@login_required
+def client_privacy(r):
+    return render(r, "client/privacy.html")
 #@login_required
 def client_appointment_request_confirmation(r): return render(r, "client/appointment_request_confirmation.html")
 #@login_required
