@@ -30,7 +30,12 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}" 
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'privacy' %}bg-white{% else %}text-white{% endif %}"
+            href="{% url 'privacy' %}">Privacy Policy
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.url_name == 'payment' %}bg-white{% else %}text-white{% endif %}"
             href="{% url 'payment' %}">Payment
           </a>
         </li>
