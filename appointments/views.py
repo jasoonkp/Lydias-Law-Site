@@ -97,6 +97,7 @@ def calendly_webhook(request):
         appt.save()
 
     # ---- Create Invitee record ----
+
     Invitee.objects.get_or_create(
         calendly_invitee_uri=invitee_uri,
         defaults={
@@ -110,6 +111,7 @@ def calendly_webhook(request):
             "reschedule_url": data.get("reschedule_url"),
             "calendly_created_at": parse_datetime(data.get("created_at")) if data.get("created_at") else None,
             "calendly_updated_at": parse_datetime(data.get("updated_at")) if data.get("updated_at") else None,
+
         },
     )
 
