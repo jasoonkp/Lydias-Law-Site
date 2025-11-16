@@ -34,6 +34,18 @@ CALENDLY_CLIENT_ID = env("CALENDLY_CLIENT_ID")
 CALENDLY_CLIENT_PASSWORD = env("CALENDLY_CLIENT_PASSWORD")
 CALENDLY_WEBHOOK_KEY = env("CALENDLY_WEBHOOK_KEY")
 
+# Uncomment below if using ngrok to test webhook
+
+# if DEBUG:
+#     CSRF_TRUSTED_ORIGINS = [
+#         "https://*.ngrok-free.dev",
+#     ]
+# else:
+#     CSRF_TRUSTED_ORIGINS = [
+#         # your production domains go here
+#         "https://your-production-domain.com",
+#     ]
+
 
 # Application definition
 
