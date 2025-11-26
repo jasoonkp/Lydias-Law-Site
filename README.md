@@ -46,8 +46,8 @@ cp .env.example .env
 copy .env.example .env
 ```
 #### Configure the .env File
-##### Open the newly created .env file and fill in all the required environment variables (e.g., DATABASE_URL, SECRET_KEY, email settings, API keys, etc)
-⚠️ ##### The application will not run properly without valid environment variables
+###### Open the newly created .env file and fill in all the required environment variables (e.g., DATABASE_URL, SECRET_KEY, email settings, API keys, etc)
+###### ⚠️The application will not run properly without valid environment variables⚠️ 
 
 ### 4. Running the Django Server ▶️
 #### Start the development Server once environment variables and dependencies are configured
