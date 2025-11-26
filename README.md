@@ -10,14 +10,14 @@
 - Alex Giovannini
 - Nayeli Flores Valdez
 
-## Getting Started
+##🚀 Getting Started
 
-### Prerequisites 
+### 🛠️ Prerequisites 
 - Python 3.8 or higher installed
 - A configured database (or access credentials ready)
 - Google, Calendly, and Stripe API keys prepared for your .env file
 
-## Configuration
+## ⚙️ Configuration
 
 ### 1. Create and activate virtual environment
 
@@ -36,8 +36,7 @@ PS> .venv\Scripts\activate
 ```
 $ pip install -r requirements.txt
 ```
-### 3. Setting Up .env File
-#### 🔐 Copy the example .env file 
+### 3.🔐 Setting Up .env File
 #### MacOS / Linux
 ```
 cp .env.example .env
@@ -48,9 +47,9 @@ copy .env.example .env
 ```
 #### Configure the .env File
 ##### Open the newly created .env file and fill in all the required environment variables (e.g., DATABASE_URL, SECRET_KEY, email settings, API keys, etc)
-######⚠️ The application will not run properly without valid environment variables
+⚠️ The application will not run properly without valid environment variables
 
-### 4. Running the Django Server
+### 4. ▶️ Running the Django Server
 #### Start the development Server once environment variables and dependencies are configured
 ```
 python manage.py runserver
