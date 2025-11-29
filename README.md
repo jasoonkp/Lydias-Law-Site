@@ -45,6 +45,32 @@ copy .env.example .env
 python manage.py runserver
 ```
 
+## Features
+
+### 1. Overview
+Lydia's Law Site gives clients information about Lydia A. Suprun and her practice areas as an adoption lawyer. Clients can schedule appointments with her and make payments through the site. Aditionally, admin has control of what information the site contains and is able to manage appointments and payments.
+
+### 2. Appointment Scheduling
+- Clients can schedule appointments through the Contact Page or through their dashboard once they log in 
+- Admin can schedule appointments for clients through their dashboard once they log in
+- Clients will automatically recieve an email confirmation and reminder with appointment information
+
+### 3. Payment
+- Clients without an account are able to make payments through the payment page after recieving an invoice number
+- Clients with an account can automatically see how much they owe and make payments after they log in
+
+### 4. Client Dashboard
+Through their dashboards, clients can:
+- Schedule, cancel, and view upcoming appointments
+- Make payments and view past transactions
+
+### 5. Admin Dashboard
+Through their dashboard, admin can:
+- Schedule, cancel, and view upcoming and past appointments
+- View complete and uncomplete transaction
+- View client list
+- Make edits to the content of the site
+
 ## 🧱 Architecture Overview
 
 ### Project Application (`Lydias_Law_Site`)
