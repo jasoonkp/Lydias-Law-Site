@@ -85,6 +85,15 @@ python manage.py runserver
   - User profiles
   - Admin profiles
 
+## 🧑‍💻 Tech Stack Overview
+### Frontend:
+    - Mark-up/Styling: HTML/CSS
+    - Framework: Bootstrap
+### Backend:
+    - Programming Language: Python
+    - Framework: Django
+    - Database: MySQL
+
 ## Authors
 - Hunter Powell
 - Michael Kenny
