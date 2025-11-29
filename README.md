@@ -1,15 +1,5 @@
 # Lydias-Law-Site
 
-## Authors
-- Hunter Powell
-- Michael Kenny
-- Jason Prakash
-- Moises Robledo
-- Maria Adil
-- Regina Gil
-- Alex Giovannini
-- Nayeli Flores Valdez
-
 ## Getting Started 🚀
 
 ### 🛠️ Prerequisites 
@@ -54,3 +44,53 @@ copy .env.example .env
 ```
 python manage.py runserver
 ```
+
+## 🧱 Architecture Overview
+
+### Project Application (`Lydias_Law_Site`)
+- Stores the main project configuration, including:
+  - Global Django settings
+  - Root URL routing
+  - WSGI/ASGI setup
+
+### Core Application (`core`)
+- Contains most of the website’s foundational functionality, including:
+  - All primary HTML templates
+  - Main URL paths
+  - Core view logic used across the site
+
+### Additional Applications
+
+#### 📅 Appointments (`appointments`)
+- Handles all Calendly-related operations, including sending and receiving API data.
+- Includes database models for:
+  - Appointments
+  - Invitees
+  - Notifications
+
+#### 💰 Finances (`finances`)
+- Contains models for payments and invoices.
+- Will integrate with Stripe for financial transactions and tracking.
+
+#### 📝 Site Content (`sitecontent`)
+- Powers the Home, About, and Contact pages.
+- Contains models for storing dynamic site content.
+
+#### 👤 Users (`users`)
+- Manages all authentication and account processes, including:
+  - Login and signup
+  - Email verification
+  - Secure user session handling
+- Includes models for:
+  - User profiles
+  - Admin profiles
+
+## Authors
+- Hunter Powell
+- Michael Kenny
+- Jason Prakash
+- Moises Robledo
+- Maria Adil
+- Regina Gil
+- Alex Giovannini
+- Nayeli Flores Valdez
