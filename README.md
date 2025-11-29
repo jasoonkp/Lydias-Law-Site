@@ -114,11 +114,11 @@ Through their dashboard, admin can:
 ## 🧑‍💻 Tech Stack Overview
 ### Frontend:
 - Mark-up/Styling: HTML/CSS
-- Framework: Bootstrap
+- Framework: [Bootstrap](https://getbootstrap.com/)
 ### Backend:
-- Programming Language: Python
-- Framework: Django
-- Database: MySQL
+- Programming Language: [Python](https://www.python.org/)
+- Framework: [Django](https://www.djangoproject.com/)
+- Database: [MySQL](https://www.mysql.com/)
 
 ## Authors
 - Hunter Powell
