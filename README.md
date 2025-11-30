@@ -1,3 +1,18 @@
+```
+⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀    ______   __                  __  __         ______                       __             __
+⠀⠀⠀⠀⡠⣴⣮⣷⣶⡶⣾⣽⣶⢤⡀⠀⠀⠀   /      \ |  \                |  \|  \       /      \                     |  \           |  \
+⠀⠀⢠⣾⣿⢧⣾⣿⣿⣧⣿⣿⣿⣷⡱⡄⠀⠀  |  $$$$$$\| $$____    ______  | $$| $$      |  $$$$$$\  _______   ______   \$$  ______  _| $$_
+⠀⣠⣿⣿⣯⣿⣿⣿⣿⡿⣼⣻⠿⠟⠛⠻⢦⡀  | $$___\$$| $$    \  /      \ | $$| $$      | $$___\$$ /       \ /      \ |  \ /      \|   $$ \
+⡼⠁⢿⣟⣎⣿⣿⠿⠟⠃⠉⠀⠀⠀⠀⠀⠀⣷   \$$    \ | $$$$$$$\|  $$$$$$\| $$| $$       \$$    \ |  $$$$$$$|  $$$$$$\| $$|  $$$$$$\$$$$$$
+⢳⡀⠀⠀⠀⠀⠀⠀⠀⣀⡠⡤⢲⣾⡏⢱⡠⠃   _\$$$$$$\| $$  | $$| $$    $$| $$| $$       _\$$$$$$\| $$      | $$   \$$| $$| $$  | $$ | $$ __
+⠀⠉⠲⡲⠒⠒⡖⠚⠿⢿⠃⠡⡀⠉⢁⠞⠀⠀  |  \__| $$| $$  | $$| $$$$$$$$| $$| $$      |  \__| $$| $$_____ | $$      | $$| $$__/ $$ | $$|  \
+⠀⠀⠀⠘⠳⢄⣘⢤⣀⠈⢂⣤⠴⠚⠁⠀⠀⠀   \$$    $$| $$  | $$ \$$     \| $$| $$       \$$    $$ \$$     \| $$      | $$| $$    $$  \$$  $$
+⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀    \$$$$$$  \$$   \$$  \$$$$$$$ \$$ \$$        \$$$$$$   \$$$$$$$ \$$       \$$| $$$$$$$    \$$$$
+                                                                                                  | $$
+                                                                                                  | $$
+                                                                                                   \$$
+```
+
 # Lydias-Law-Site
 
 ## Getting Started 🚀
@@ -120,12 +135,13 @@ Through their dashboard, admin can:
 - Framework: [Django](https://www.djangoproject.com/)
 - Database: [MySQL](https://www.mysql.com/)
 
-## Authors
-- Hunter Powell
-- Michael Kenny
-- Jason Prakash
-- Moises Robledo
-- Maria Adil
-- Regina Gil
-- Alex Giovannini
-- Nayeli Flores Valdez
+## Contributors
+
+- [Hunter Powell](https://github.com/hunterpowell)
+- [Michael Kenny](https://github.com/mlkenny)
+- [Jason Prakash](https://github.com/jasoonkp)
+- [Moises Robledo](https://github.com/moises9973)
+- [Maria Adil](https://github.com/MADIL99)
+- [Regina Gil](https://github.com/reggiee76)
+- [Alex Giovannini](https://github.com/ARGiovannini)
+- [Nayeli Flores Valdez](https://github.com/nayelifv)
