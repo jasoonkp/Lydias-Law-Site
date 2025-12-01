@@ -152,8 +152,14 @@ Through their dashboard, admin can:
   - Payment processing is handled through a secure thrid party provider, so no credit card information is stored on the site
   - Input validation and access controls help prevent unauthorized access
 
-## Contributors
+## Deployment (next semester)
+ ... 
+## Testing (next semester)
+ ...
+## Developer Instructions (next semester)
+ ...
 
+## Contributors 🐢
 - [Hunter Powell](https://github.com/hunterpowell)
 - [Michael Kenny](https://github.com/mlkenny)
 - [Jason Prakash](https://github.com/jasoonkp)
