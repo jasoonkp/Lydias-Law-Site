@@ -90,7 +90,7 @@ Through their dashboard, admin can:
 ## 🧱 Architecture Overview
 
 <p align="center">
-  <img src="assets/erd.png" alt="Entity Relationship Diagram" width="600"/>
+  <img src="assets/ERD.png" alt="Entity Relationship Diagram" width="600"/>
 </p>
 
 ### Project Application (`Lydias_Law_Site`)
@@ -139,6 +139,12 @@ Through their dashboard, admin can:
 - Programming Language: [Python](https://www.python.org/)
 - Framework: [Django](https://www.djangoproject.com/)
 - Database: [MySQL](https://www.mysql.com/)
+
+## Roadmap for Success🏆
+<p align="center">
+  <img src="assets/JIRA_Timeline.png" alt="Roadmap of Jira Timeline from Sprints" width="600"/>
+</p>
+
 
 ## 🔒 Security and Privacy
 - Beacuse the site handles user accounts, appoinments, and payments, it includes basic security measures to protect client data:
