@@ -10,6 +10,12 @@
 
 # Lydias-Law-Site
 
+## 🧭 Project Overview
+
+Lydia’s Law Site is a full-stack web application built for adoption attorney Lydia A. Suprun to modernize her practice and make her services more accessible to clients. Designed and developed by Shell Script, a senior project team from California State University, Sacramento, the site enables clients to schedule appointments, make secure payments, and learn more about Lydia’s work.
+
+The project bridges real-world business needs with modern web development practices using Django, MySQL, and Bootstrap to deliver a reliable, responsive, and user-friendly experience. Built with future maintainability in mind, the platform allows Lydia to easily manage her content and continue growing her practice well beyond the completion of this project.
+
 ## Getting Started 🚀
 
 ### 🛠️ Prerequisites 
@@ -82,6 +88,10 @@ Through their dashboard, admin can:
 - Make edits to the content of the site
 
 ## 🧱 Architecture Overview
+
+<p align="center">
+  <img src="assets/erd.png" alt="Entity Relationship Diagram" width="600"/>
+</p>
 
 ### Project Application (`Lydias_Law_Site`)
 - Stores the main project configuration, including:
