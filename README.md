@@ -130,6 +130,12 @@ Through their dashboard, admin can:
 - Framework: [Django](https://www.djangoproject.com/)
 - Database: [MySQL](https://www.mysql.com/)
 
+## 🔒 Security and Privacy
+- Beacuse the site handles user accounts, appoinments, and payments, it includes basic security measures to protect client data:
+  - Passwords are hashed and never soted in plain text
+  - Payment processing is handled through a secure thrid party provider, so no credit card information is stored on the site
+  - Input validation and access controls help prevent unauthorized access
+
 ## Contributors
 
 - [Hunter Powell](https://github.com/hunterpowell)
