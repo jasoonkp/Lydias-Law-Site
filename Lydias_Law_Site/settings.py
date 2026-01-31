@@ -147,6 +147,13 @@ ACCOUNT_SIGNUP_FIELDS = [
     "first-name", "last-name", "phone-number"  # optional fields
 ]
 
+# Google login requirements
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCAILACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
 # Email Verification Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
