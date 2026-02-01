@@ -107,7 +107,7 @@ TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates", BASE_DIR / "users" / "templates"
 
 # Base Login/Logout Redirects (keeping these for safety)
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "client/dashboard"
+LOGIN_REDIRECT_URL = "/client/dashboard/"
 LOGOUT_REDIRECT_URL = "home"
 
 # Auth Login/Logout Redirects
@@ -149,10 +149,13 @@ ACCOUNT_SIGNUP_FIELDS = [
 
 # Google login requirements
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCAILACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_FORMS = {
+    "signup": "users.forms.CustomSignupForm"
+}
 
 # Email Verification Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
