@@ -46,6 +46,7 @@ urlpatterns = [
     path("logout/", users_logout_view, name="logout"),
     path('accounts/confirm-email/<str:key>/', email_confirm_view, name='account_confirm_email'),
     path("administrator/appointment_confirmation/", views.admin_appointment_confirmation, name="admin_appointment_confirmation"),
+    path("administrator/create_invoices/", views.admin_create_invoices, name="admin_create_invoices"),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),

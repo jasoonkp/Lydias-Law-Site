@@ -55,6 +55,8 @@ def admin_editor(r): return render(r, "admin/editor.html")
 def admin_history(r): return render(r, "admin/history.html")
 # @login_required
 def admin_appointment_confirmation(r): return render(r, "admin/appointment_confirmation.html")
+# @login_required
+def admin_create_invoices(r): return render(r, "admin/create_invoice.html")
 
 # Client Views
 #@login_required
