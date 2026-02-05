@@ -28,7 +28,19 @@ class Invoice(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.PositiveIntegerField(help_text="minor units (cents)")
-    paid = models.BooleanField(default=False)    
+
+    class Status(models.TextChoices):
+        # Status values used by Stripe webhook updates.
+        PENDING = "PENDING", "Pending"
+        PAID = "PAID", "Paid"
+        PAYMENT_FAILED = "PAYMENT_FAILED", "Payment Failed"
+
+    # Primary invoice state used throughout the app.
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    # Backwards-compatible flag for legacy code that checks paid/unpaid.
+    paid = models.BooleanField(default=False)
+    # Stripe's invoice ID so we can link webhooks to our invoices.
+    stripe_invoice_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
 
     # Output Readability
     def __str__(self):
@@ -37,3 +49,21 @@ class Invoice(models.Model):
     class Meta:
         db_table = "invoices"
         ordering = ["-created_at"]
+
+
+class StripeWebhookEvent(models.Model):
+    """
+    Records Stripe webhook events for idempotency and debugging.
+    Stripe retries events, so we must detect duplicates.
+    """
+    id = models.BigAutoField(primary_key=True)
+    # Stripe's event ID is unique across all events.
+    event_id = models.CharField(max_length=255, unique=True, db_index=True)
+    event_type = models.CharField(max_length=100)
+    received_at = models.DateTimeField(auto_now_add=True)
+    # Full payload for troubleshooting and audits.
+    payload = models.JSONField()
+
+    class Meta:
+        db_table = "stripe_webhook_events"
+        ordering = ["-received_at"]
