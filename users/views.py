@@ -148,9 +148,12 @@ def get_user_balance_dollars(user_id):
     Converts from cents to dollars and rounds to 2 decimal places.
     """
     # get all unpaid invoices for this user
-    total_cents = Invoice.objects.filter(user_id=user_id, paid=False).aggregate(
-        total=Coalesce(Sum("amount"), 0)
-    )["total"]
+    total_cents = (
+        # Any invoice that is not PAID counts toward the unpaid balance.
+        Invoice.objects.filter(user_id=user_id)
+        .exclude(status=Invoice.Status.PAID)
+        .aggregate(total=Coalesce(Sum("amount"), 0))["total"]
+    )
 
     # convert to dollars and round to 2 decimal places
     balance_dollars = (Decimal(total_cents) / Decimal("100")).quantize(
