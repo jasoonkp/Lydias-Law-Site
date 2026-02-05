@@ -14,6 +14,31 @@ from .models import Invoice, StripeWebhookEvent
 logger = logging.getLogger(__name__)
 
 
+def get_or_create_stripe_customer_id(user):
+    stripe.api_key = settings.STRIPE_API_KEY
+
+    # locks the user's row to prevent duplicate stripe customers for one user
+    with transaction.atomic():
+        user = type(user).objects.select_for_update().get(pk=user.pk)
+
+    # check if client has stripe customer id
+    if user.provider_customer_id:
+        return user.provider_customer_id
+
+    # create Stripe customer id if it doesn't exist
+    customer = stripe.Customer.create(
+        email=user.email,
+        name=f"{user.first_name} {user.last_name}",
+        metadata={"user_id": str(user.id)},
+    )
+
+    # save Stripe customer id
+    user.provider_customer_id = customer.id
+    user.save()
+
+    return customer.id
+
+
 @csrf_exempt
 def stripe_webhook(request):
     """
@@ -38,7 +63,7 @@ def stripe_webhook(request):
         return JsonResponse({"error": "Missing signature"}, status=400)
 
     try:
-        event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+        stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
     except ValueError:
         logger.warning("Invalid Stripe webhook payload.")
         return JsonResponse({"error": "Invalid payload"}, status=400)
