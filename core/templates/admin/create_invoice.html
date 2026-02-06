@@ -214,7 +214,7 @@ input, textarea {
 <!-- Form container -->
 <div class="invoice-container">
 <!-- NEEDED IN HTML for POST - security reasons -->
-<form method="POST">
+<form method="POST" id="invoice-form">
 {% csrf_token %}
 
 
@@ -284,6 +284,8 @@ input, textarea {
 </form>
 </div>
 
+<div id="invoice-response"></div>
+
 
 <script>
 function formatCurrency(value) {
@@ -337,6 +339,40 @@ function removeItem(button) {
     button.parentElement.remove();
     calculateTotal();
 }
+
+// Short script for easy error checking and dynamic response.
+// Displays success and error messages to front-end.
+const form = document.getElementById("invoice-form");
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch("{% url 'admin_create_invoices' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const responseDiv = document.getElementById("invoice-response");
+
+        if (data.success) {
+            window.location.href = data.redirect_url;
+        } else {
+            responseDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+        responseDiv.innerHTML = `<p>Network error: ${error.message}</p>`;
+    }
+});
 </script>
 
 {% endblock %}

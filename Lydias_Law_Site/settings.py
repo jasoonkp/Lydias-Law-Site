@@ -35,6 +35,8 @@ CALENDLY_CLIENT_PASSWORD = env("CALENDLY_CLIENT_PASSWORD")
 CALENDLY_WEBHOOK_KEY = env("CALENDLY_WEBHOOK_KEY")
 # Stripe webhook secret for signature verification (from Stripe dashboard).
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
 
 # Uncomment below if using ngrok to test webhook
 
