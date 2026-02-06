@@ -7,7 +7,7 @@
 <div class="no-padding">
 <section class="hero" style="background-image: url('{% static "images/home_header.jpg" %}');">
     <div class="hero-text">
-          <h1>{{ content.frontPageHeader }}</h1>
+          <h1>{{ content.frontPageHeader|safe }}</h1>
     </div>
 </section>
 </div>
@@ -15,7 +15,7 @@
 <!-- Front Page Banner Description -->
  <section>
   <div class="green-bar py-4">
-      <p class="text-center mb-0">{{ content.frontPageDescription }}</p>
+      <p class="text-center mb-0">{{ content.frontPageDescription|safe }}</p>
   </div>
 </section>
 

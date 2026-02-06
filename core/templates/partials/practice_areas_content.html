@@ -120,7 +120,7 @@
     </div>
     <div class="practice-area-content">
       <div class="practice-area-text">
-        {{ content.stepParentAdoptionDescription|linebreaks }}
+        {{ content.stepParentAdoptionDescription|safe }}
       </div>
     </div>
   </div>
@@ -133,7 +133,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        {{ content.adultAdoptionDescription|linebreaks }}
+        {{ content.adultAdoptionDescription|safe }}
       </p>
     </div>
   </div>
@@ -146,7 +146,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        {{ content.guardianshipDescription|linebreaks }}
+        {{ content.guardianshipDescription|safe }}
       </p>
     </div>
   </div>
@@ -159,7 +159,7 @@
     </div>
     <div class="practice-area-content">
       <p class="practice-area-text">
-        {{ content.guardianshipToAdoptionDescription|linebreaks }}
+        {{ content.guardianshipToAdoptionDescription|safe }}
       </p>
     </div>
   </div>

@@ -1,16 +1,492 @@
 {% extends "admin/base_admin.html" %}
+{% load static %}
 
-{% block title %}Editor – Admin{% endblock %}
+{% block title %}Content Editor – Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ------ EDITOR HEADER BANNER ----- */
+.editor-header-card {
+    background-color: #e8f2f0;
+    width: 100%;
+}
+
+.editor-header {
+    font-family: serif;
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: black;
+}
+
+/* ------- MAIN FORM CONTAINER -------*/
+.editor-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto 60px auto;
+    padding: 0 20px;
+}
+
+/* ------- ACCORDION STYLING ------- */
+.editor-accordion .accordion-item {
+    border: 1px solid #cfdedb;
+    margin-bottom: 12px;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.editor-accordion .accordion-button {
+    background-color: #2d7a73;
+    color: white;
+    font-family: serif;
+    font-size: 1.4rem;
+    padding: 18px 24px;
+}
+
+.editor-accordion .accordion-button:not(.collapsed) {
+    background-color: #115A5C;
+    color: white;
+    box-shadow: none;
+}
+
+.editor-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.editor-accordion .accordion-button::after {
+    filter: brightness(0) invert(1);
+}
+
+.editor-accordion .accordion-body {
+    background-color: #ffffff;
+    padding: 30px;
+}
+
+/* ------- FORM FIELD STYLING ------- */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    font-family: serif;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+}
+
+.form-group .form-control {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #cfdedb;
+    background: #f7fbfa;
+    font-size: 1.1rem;
+}
+
+.form-group .form-control:focus {
+    border-color: #2d7a73;
+    box-shadow: 0 0 0 2px rgba(45, 122, 115, 0.15);
+}
+
+.form-group .form-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 6px;
+}
+
+/* Character counter */
+.char-counter {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.char-counter.warning {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+/* Error styling */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* ------- SUBMIT BUTTON ------- */
+.btn-save {
+    background: #d9ebe7;
+    color: black;
+    width: 100%;
+    max-width: 300px;
+    margin: 30px auto;
+    padding: 16px 0;
+    font-size: 1.3rem;
+    font-family: serif;
+    border-radius: 32px;
+    font-weight: 500;
+    border: 1px solid #849e99;
+    cursor: pointer;
+    display: block;
+}
+
+.btn-save:hover {
+    background: #5da39a;
+    color: white;
+}
+
+/* ------- ALERT STYLING ------- */
+.alert {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-family: serif;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* ------- LAST UPDATED INFO ------- */
+.last-updated {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+
+/* ------- MOBILE VIEW ------- */
+@media (max-width: 768px) {
+    .editor-header {
+        font-size: 2rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .editor-accordion .accordion-button {
+        font-size: 1.2rem;
+        padding: 14px 18px;
+    }
+
+    .editor-accordion .accordion-body {
+        padding: 20px;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="h3 mb-4">Editor</h1>
-    <div class="card">
-      <div class="card-body">
-        <p class="text-muted">Content editor coming soon...</p>
-      </div>
+<!-- Page Header -->
+<div class="editor-header-card">
+    <div class="editor-header">
+        Content Editor
     </div>
-  </div>
 </div>
+
+<div class="editor-container">
+    <!-- Success/Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" id="editor-form">
+        {% csrf_token %}
+
+        <!-- Include CKEditor media (JS/CSS) -->
+        {{ form.media }}
+
+        <div class="accordion editor-accordion" id="editorAccordion">
+
+            <!-- Home Page Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingHome">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseHome" aria-expanded="true" aria-controls="collapseHome">
+                        Home Page
+                    </button>
+                </h2>
+                <div id="collapseHome" class="accordion-collapse collapse show"
+                     aria-labelledby="headingHome" data-bs-parent="#editorAccordion">
+                    <div class="accordion-body">
+                        <div class="form-group">
+                            <label for="{{ form.frontPageHeader.id_for_label }}">
+                                {{ form.frontPageHeader.label }}
+                            </label>
+                            {{ form.frontPageHeader }}
+                            <div class="char-counter" data-max="140" data-input="{{ form.frontPageHeader.id_for_label }}">
+                                <span class="current">0</span>/140 characters
+                            </div>
+                            {% if form.frontPageHeader.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.frontPageHeader.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            {% if form.frontPageHeader.help_text %}
+                                <small class="form-text">{{ form.frontPageHeader.help_text }}</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.frontPageDescription.id_for_label }}">
+                                {{ form.frontPageDescription.label }}
+                            </label>
+                            {{ form.frontPageDescription }}
+                            {% if form.frontPageDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.frontPageDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            {% if form.frontPageDescription.help_text %}
+                                <small class="form-text">{{ form.frontPageDescription.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingAbout">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAbout" aria-expanded="false" aria-controls="collapseAbout">
+                        About Page
+                    </button>
+                </h2>
+                <div id="collapseAbout" class="accordion-collapse collapse"
+                     aria-labelledby="headingAbout" data-bs-parent="#editorAccordion">
+                    <div class="accordion-body">
+                        <div class="form-group">
+                            <label for="{{ form.nameTitle.id_for_label }}">
+                                {{ form.nameTitle.label }}
+                            </label>
+                            {{ form.nameTitle }}
+                            <div class="char-counter" data-max="120" data-input="{{ form.nameTitle.id_for_label }}">
+                                <span class="current">0</span>/120 characters
+                            </div>
+                            {% if form.nameTitle.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.nameTitle.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.aboutMeDescription.id_for_label }}">
+                                {{ form.aboutMeDescription.label }}
+                            </label>
+                            {{ form.aboutMeDescription }}
+                            {% if form.aboutMeDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.aboutMeDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.officeLocation.id_for_label }}">
+                                {{ form.officeLocation.label }}
+                            </label>
+                            {{ form.officeLocation }}
+                            <div class="char-counter" data-max="200" data-input="{{ form.officeLocation.id_for_label }}">
+                                <span class="current">0</span>/200 characters
+                            </div>
+                            {% if form.officeLocation.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.officeLocation.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            {% if form.officeLocation.help_text %}
+                                <small class="form-text">{{ form.officeLocation.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Areas Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingPractice">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapsePractice" aria-expanded="false" aria-controls="collapsePractice">
+                        Practice Areas
+                    </button>
+                </h2>
+                <div id="collapsePractice" class="accordion-collapse collapse"
+                     aria-labelledby="headingPractice" data-bs-parent="#editorAccordion">
+                    <div class="accordion-body">
+                        <div class="form-group">
+                            <label for="{{ form.stepParentAdoptionDescription.id_for_label }}">
+                                {{ form.stepParentAdoptionDescription.label }}
+                            </label>
+                            {{ form.stepParentAdoptionDescription }}
+                            {% if form.stepParentAdoptionDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.stepParentAdoptionDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.adultAdoptionDescription.id_for_label }}">
+                                {{ form.adultAdoptionDescription.label }}
+                            </label>
+                            {{ form.adultAdoptionDescription }}
+                            {% if form.adultAdoptionDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.adultAdoptionDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.guardianshipDescription.id_for_label }}">
+                                {{ form.guardianshipDescription.label }}
+                            </label>
+                            {{ form.guardianshipDescription }}
+                            {% if form.guardianshipDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.guardianshipDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.guardianshipToAdoptionDescription.id_for_label }}">
+                                {{ form.guardianshipToAdoptionDescription.label }}
+                            </label>
+                            {{ form.guardianshipToAdoptionDescription }}
+                            {% if form.guardianshipToAdoptionDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.guardianshipToAdoptionDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.independentAdoptionDescription.id_for_label }}">
+                                {{ form.independentAdoptionDescription.label }}
+                            </label>
+                            {{ form.independentAdoptionDescription }}
+                            {% if form.independentAdoptionDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.independentAdoptionDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFooter">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFooter" aria-expanded="false" aria-controls="collapseFooter">
+                        Footer
+                    </button>
+                </h2>
+                <div id="collapseFooter" class="accordion-collapse collapse"
+                     aria-labelledby="headingFooter" data-bs-parent="#editorAccordion">
+                    <div class="accordion-body">
+                        <div class="form-group">
+                            <label for="{{ form.footerDescription.id_for_label }}">
+                                {{ form.footerDescription.label }}
+                            </label>
+                            {{ form.footerDescription }}
+                            {% if form.footerDescription.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.footerDescription.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            {% if form.footerDescription.help_text %}
+                                <small class="form-text">{{ form.footerDescription.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Save Button -->
+        <button type="submit" class="btn-save">
+            Save All Changes
+        </button>
+    </form>
+
+    <!-- Last Updated Info -->
+    {% if content.updated_at %}
+    <div class="last-updated">
+        Last updated: {{ content.updated_at|date:"F j, Y, g:i a" }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for limited text fields
+    const charCounters = document.querySelectorAll('.char-counter');
+    charCounters.forEach(function(counter) {
+        const max = parseInt(counter.dataset.max);
+        const inputId = counter.dataset.input;
+        const input = document.getElementById(inputId);
+        const currentSpan = counter.querySelector('.current');
+
+        if (!input) return;
+
+        function updateCounter() {
+            const length = input.value.length;
+            currentSpan.textContent = length;
+            if (length > max) {
+                counter.classList.add('warning');
+                input.classList.add('is-invalid');
+            } else {
+                counter.classList.remove('warning');
+                input.classList.remove('is-invalid');
+            }
+        }
+
+        // Initialize counter
+        updateCounter();
+
+        // Update on input
+        input.addEventListener('input', updateCounter);
+    });
+
+    // Expand accordion section if it contains errors
+    const errorFields = document.querySelectorAll('.invalid-feedback');
+    errorFields.forEach(function(error) {
+        const accordion = error.closest('.accordion-collapse');
+        if (accordion && !accordion.classList.contains('show')) {
+            accordion.classList.add('show');
+            const button = document.querySelector(`[data-bs-target="#${accordion.id}"]`);
+            if (button) {
+                button.classList.remove('collapsed');
+                button.setAttribute('aria-expanded', 'true');
+            }
+        }
+    });
+});
+</script>
 {% endblock %}
