@@ -157,11 +157,11 @@ def create_invoice_items(stripe_customer_id, descriptions, quantities, unit_pric
     # is calculated during the creation of the stripe invoice.
     for desc, quantity, price in zip(descriptions, quantities, unit_prices):
         try:
-            price = int(price)
+            price_cents = int(float(price) * 100)
             quantity = int(quantity)
 
             stripe.InvoiceItem.create(
-                unit_amount_decimal=price,
+                unit_amount_decimal=price_cents,
                 quantity=quantity,
                 currency="usd", # Assuming only accepting usd.
                 customer=stripe_customer_id,
@@ -213,14 +213,15 @@ def create_invoice(request):
             Webhook isn't working for finalize_invoice event type,
             so this is being done manually right now.
             '''
-            # stripe.Invoice.finalize_invoice(stripe_invoice)
+
+            stripe_invoice = stripe.Invoice.finalize_invoice(stripe_invoice.id)
 
             # Creates and saves new invoice DB object for created stripe invoice.
             Invoice.objects.create(
                 user=user,
                 amount=stripe_invoice.amount_due,
                 stripe_invoice_id=stripe_invoice.id,
-                # hosted_invoice_url=stripe_invoice.hosted_invoice_url,
+                hosted_invoice_url=stripe_invoice.hosted_invoice_url,
                 status=Invoice.Status.PENDING,  # Defaults to pending, webhook handles changes.
             )
 
@@ -228,6 +229,9 @@ def create_invoice(request):
                 {
                     "success": True,
                     "redirect_url": "/administrator/invoice_confirmation/",
+                    "hosted_invoice_url": stripe_invoice.hosted_invoice_url,
+                    "stripe_invoice_id": stripe_invoice.id,
+                    
                 }
             )
 
