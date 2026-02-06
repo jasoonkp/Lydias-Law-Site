@@ -1,22 +1,24 @@
+from datetime import datetime
 import json
 import logging
 
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 import stripe
-
+from users.models import User
 from .models import Invoice, StripeWebhookEvent
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Standard Django logger for recording webhook activity.
 logger = logging.getLogger(__name__)
 
 
 def get_or_create_stripe_customer_id(user):
-    stripe.api_key = settings.STRIPE_API_KEY
-
     # locks the user's row to prevent duplicate stripe customers for one user
     with transaction.atomic():
         user = type(user).objects.select_for_update().get(pk=user.pk)
@@ -37,7 +39,6 @@ def get_or_create_stripe_customer_id(user):
     user.save()
 
     return customer.id
-
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -149,3 +150,93 @@ def stripe_webhook(request):
         event_type,
     )
     return JsonResponse({"status": "success"}, status=200)
+
+def create_invoice_items(stripe_customer_id, descriptions, quantities, unit_prices):
+    # Creates an invoice item object for each unique line item.
+    # Quanitity and unit_price are taken into consideration, total amount
+    # is calculated during the creation of the stripe invoice.
+    for desc, quantity, price in zip(descriptions, quantities, unit_prices):
+        try:
+            price = int(price)
+            quantity = int(quantity)
+
+            stripe.InvoiceItem.create(
+                unit_amount_decimal=price,
+                quantity=quantity,
+                currency="usd", # Assuming only accepting usd.
+                customer=stripe_customer_id,
+                description=desc,
+            )
+        except ValueError:
+            return JsonResponse({"success": False, "error": "Invalid quantity or price."})
+
+def create_invoice(request):
+    if request.method == "POST":
+        # Customer Information.
+        user_email = request.POST.get("email")
+        # Invoice Details.
+        issue_date = request.POST.get("issue_date")
+        due_date = request.POST.get("due_date")
+        customer_notes = request.POST.get("customer_notes")
+        # List Items Information.
+        descriptions = request.POST.getlist("description[]")
+        quantities = request.POST.getlist("quantity[]")
+        unit_prices = request.POST.getlist("unit_price[]")
+
+        try:
+            # Get user.
+            user = User.objects.get(email=user_email)
+
+            # Check if user has existing Stripe ID.
+            stripe_customer_id = get_or_create_stripe_customer_id(user)
+
+            # Create invoice items based on line items.
+            create_invoice_items(stripe_customer_id, descriptions, quantities, unit_prices)
+
+            # Sets due date as a datetime object.
+            # Stripe requires this to be a UNIX timestamp integer, so.. ya.
+            due_date_timestamp = int(datetime.strptime(due_date, "%Y-%m-%d").timestamp())
+
+            # Actually creates the overall stripe invoice object.
+            stripe_invoice = stripe.Invoice.create(
+                customer=stripe_customer_id,
+                collection_method = "send_invoice",
+                # Auto advance automatically finalizes the invoice.
+                # This may need to change if we want to add another layer of confirmation
+                # before charging users, if Lydia wants this feature.
+                auto_advance=False,
+                due_date=due_date_timestamp,
+                pending_invoice_items_behavior="include", # Pulls all pending invoice items into invoice.
+            )
+
+            '''
+            Webhook isn't working for finalize_invoice event type,
+            so this is being done manually right now.
+            '''
+            # stripe.Invoice.finalize_invoice(stripe_invoice)
+
+            # Creates and saves new invoice DB object for created stripe invoice.
+            Invoice.objects.create(
+                user=user,
+                amount=stripe_invoice.amount_due,
+                stripe_invoice_id=stripe_invoice.id,
+                # hosted_invoice_url=stripe_invoice.hosted_invoice_url,
+                status=Invoice.Status.PENDING,  # Defaults to pending, webhook handles changes.
+            )
+
+            return JsonResponse(
+                {
+                    "success": True,
+                    "redirect_url": "/administrator/invoice_confirmation/",
+                }
+            )
+
+        except User.DoesNotExist:
+            return JsonResponse({"success": False, "error": "User not found"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return render(request, "admin/create_invoice.html")
+
+def invoice_confirmation(request):
+    return render(request, "admin/invoice_confirmation.html")

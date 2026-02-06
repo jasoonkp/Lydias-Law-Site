@@ -9,6 +9,8 @@ from users.views import logout_view as users_logout_view
 from users.views import instant_email_confirm_view as email_confirm_view
 from users.views import client_dashboard as users_client_dashboard
 from users.views import admin_dashboard as users_admin_dashboard
+from finances.views import create_invoice as finances_create_invoice
+from finances.views import invoice_confirmation as finances_invoice_confirmation
 
 ''' IMPORTANT FOR ALL WHO READ '''
 # There seems to be a potential conflicts with different views that have been made for the same pages.
@@ -46,7 +48,8 @@ urlpatterns = [
     path("logout/", users_logout_view, name="logout"),
     path('accounts/confirm-email/<str:key>/', email_confirm_view, name='account_confirm_email'),
     path("administrator/appointment_confirmation/", views.admin_appointment_confirmation, name="admin_appointment_confirmation"),
-    path("administrator/create_invoices/", views.admin_create_invoices, name="admin_create_invoices"),
+    path("administrator/create_invoices/", finances_create_invoice, name="admin_create_invoices"),
+    path("administrator/invoice_confirmation/", finances_invoice_confirmation, name="admin_invoice_confirmation"),
 
     # client pages 
     path("client/about/", about, {'client': True}, name="client_about"),

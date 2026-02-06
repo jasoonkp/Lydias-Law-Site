@@ -41,6 +41,8 @@ class Invoice(models.Model):
     paid = models.BooleanField(default=False)
     # Stripe's invoice ID so we can link webhooks to our invoices.
     stripe_invoice_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    # Stripe's invoice URL to easily find this invoice in the future.
+    hosted_invoice_url = models.URLField(max_length=500, null=True, blank=True)
 
     # Output Readability
     def __str__(self):
