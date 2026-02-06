@@ -3,14 +3,18 @@ from .models import WebsiteContent
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseServerError
 from django.conf import settings
+from django.http import HttpResponse
 
 # Create your views here.
+
+def get_latest_website_content():
+    return WebsiteContent.objects.order_by("-versionNumber").first()
 
 # Home Page request
 def home(request):
     try:
         # Attempt to get the latest content
-        content = WebsiteContent.objects.order_by('-versionNumber').first()
+        content = get_latest_website_content()
 
         if not content:
             # Fallback if no content exists
@@ -23,9 +27,9 @@ def home(request):
 
         # Render the normal about page
         return render(request, 'home.html', {
-            'content': content,
             "role": role,
-            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY
+            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY,            
+            'content': content,
         })
 
     except Exception as e:
@@ -40,7 +44,7 @@ def home(request):
 def about(request, client=False):
     try:
         # Attempt to get the latest content from the WebsiteContent table
-        content = WebsiteContent.objects.order_by('-versionNumber').first()
+        content = get_latest_website_content()
 
         # Fallback if no content exists
         if not content:
@@ -103,12 +107,14 @@ def contact(request, client=False):
         page = 'contact.html'
         if client:
             page = 'client/contact.html'
+        content = location
 
         # Render contact page
         return render(request, page, {
             'location': location,
             'lydia': lydia,
-            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY
+            "GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY,
+            'content': content,            
         })
     
     except Exception as e:
