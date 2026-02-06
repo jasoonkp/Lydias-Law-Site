@@ -50,7 +50,37 @@ def admin_transactions(r): return render(r, "admin/transactions.html")
 # @login_required
 def admin_clients(r): return render(r, "admin/clients.html")
 # @login_required
-def admin_editor(r): return render(r, "admin/editor.html")
+def admin_editor(request):
+    """
+    Admin editor view for editing WebsiteContent.
+    Fetches the latest content version and allows editing.
+    """
+    from .forms import WebsiteContentForm
+
+    # get the latest WebsiteContent or create default if none exists
+    content = WebsiteContent.objects.order_by('-versionNumber').first()
+
+    if content is None:
+        content = WebsiteContent.objects.create(
+            frontPageHeader="Welcome",
+            frontPageDescription="Default description"
+        )
+
+    if request.method == 'POST':
+        form = WebsiteContentForm(request.POST, instance=content)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Website content updated successfully!')
+            return redirect('admin_editor')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = WebsiteContentForm(instance=content)
+
+    return render(request, "admin/editor.html", {
+        'form': form,
+        'content': content,
+    })
 # @login_required
 def admin_history(r): return render(r, "admin/history.html")
 # @login_required
