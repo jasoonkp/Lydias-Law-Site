@@ -18,6 +18,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from appointments.models import Appointments
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
+from sitecontent.views import get_latest_website_content
 
 
 # Directs to login page
@@ -200,12 +201,14 @@ def admin_get_next_three_appointments(user=None):
 @login_required
 def client_dashboard(request):
     user = request.user
+    content = get_latest_website_content()
     balance_dollars = get_user_balance_dollars(user.id)
     upcoming_appts = get_next_three_appointments(user.id)   
     return render(request, "client/dashboard.html", {
         "user": user,
         "balance_dollars": balance_dollars,
         "upcoming_appts": upcoming_appts,
+        "content": content,
     })
 
 # Helper: only allow staff/admin users
@@ -217,8 +220,12 @@ def is_admin_user(user):
 # Admin dashboard view
 @login_required
 def admin_dashboard(r): 
+    content = get_latest_website_content()
     upcoming_appts = admin_get_next_three_appointments(r.user)
-    return render(r, "admin/dashboard.html", {"upcoming_appts": upcoming_appts})
+    return render(r, "admin/dashboard.html", {
+        "upcoming_appts": upcoming_appts,
+        "content": content
+    })
 
 
 # Email confirmation redirection view
