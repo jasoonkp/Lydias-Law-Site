@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "appointments",
     "sitecontent",
     "finances",
+    "django_ckeditor_5"
 ]
 
 
@@ -234,3 +235,67 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': ['heading', '|', 'bold', 'italic', 'link',
+                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+                    }
+    },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|', 'bulletedList', 'numberedList',
+            '|', 'blockQuote',
+        ],
+        'toolbar': {
+            'items': [
+                'heading', '|', 'outdent', 'indent', '|', 'bold', 'italic',
+                'link', 'underline', 'subscript', 'superscript', 'highlight',
+                '|', 'codeBlock', 'sourceEditing',
+                'insertImage', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                'mediaEmbed', 'removeFormat', 'insertTable',
+            ],
+            'shouldNotGroupWhenFull': 'true'
+        },
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|', 'imageStyle:alignLeft',
+                'imageStyle:alignRight', 'imageStyle:alignCenter', 
+                'imageStyle:side', '|'
+            ],
+            'styles': [
+                'full', 'side', 'alignLeft', 'alignRight', 'alignCenter',
+            ]
+        },
+        'table': {
+            'contentToolbar': [
+                'tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 
+                'tableCellProperties'
+            ],
+            
+        },
+        'heading': {
+            'options': [
+                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' },
+            ]
+        },    
+        'fontColor': {
+            'colors': [
+                {'color': "#000000", "label": "Black"},
+                {'color': "#333333", "label": "Dark Gray"},
+                {'color': "#FFFFFF", "label": "White"},
+                {'color': "#2d7a73", "label": "Teal"},
+                {'color': "#115a5c", "label": "Dark Teal"},
+            ]
+        },           
+    }
+}
