@@ -33,6 +33,8 @@ GOOGLE_MAPS_API_KEY = env("GOOGLE_MAPS_API_KEY")
 CALENDLY_CLIENT_ID = env("CALENDLY_CLIENT_ID")
 CALENDLY_CLIENT_PASSWORD = env("CALENDLY_CLIENT_PASSWORD")
 CALENDLY_WEBHOOK_KEY = env("CALENDLY_WEBHOOK_KEY")
+# Stripe webhook secret for signature verification (from Stripe dashboard).
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
 
 # Uncomment below if using ngrok to test webhook
 
