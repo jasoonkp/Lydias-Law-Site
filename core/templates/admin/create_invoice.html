@@ -364,10 +364,21 @@ form.addEventListener("submit", async (event) => {
         const responseDiv = document.getElementById("invoice-response");
 
         if (data.success) {
-            window.location.href = data.redirect_url;
+        // Opens new tab with stripe invoice
+        if (data.hosted_invoice_url) {
+        window.open(data.hosted_invoice_url, '_blank');
+        window.location.href = "{% url 'admin_invoice_confirmation' %}";
+        responseDiv.innerHTML = `<p style="color: green;">Invoice created successfully! A new tab has been opened with the Stripe invoice.</p>`;
+        form.reset();
+        document.getElementById("invoice-total").innerText = "$0.00";
+    } else {
+        responseDiv.innerHTML = `<p>Invoice created, but no hosted link returned.</p>`;
+    }
+
         } else {
-            responseDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        responseDiv.innerHTML = `<p>Error: ${data.error}</p>`;
         }
+
     } catch (error) {
         console.error("Network error:", error);
         responseDiv.innerHTML = `<p>Network error: ${error.message}</p>`;
