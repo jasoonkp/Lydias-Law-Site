@@ -78,7 +78,7 @@
     <form method="POST" class="invoice-form">
         {% csrf_token %}
         
-        <label for="invoice_id">Please enter your invoice number</label>
+        <label for="invoice_id">Please enter your Invoice ID</label>
         <input type="text" name="invoice_id" id="invoice_id" placeholder="Enter Invoice ID">
 
         <button type="submit" onclick="{% url 'client_practice_areas' %}">Submit</button>
