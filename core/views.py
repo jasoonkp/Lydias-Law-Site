@@ -13,6 +13,8 @@ from allauth.account.models import EmailAddress, EmailConfirmation, get_emailcon
 from django.views.decorators.csrf import csrf_exempt
 from sitecontent.models import WebsiteContent
 from django.conf import settings
+from finances.models import Invoice
+
 
 ''' Are these needed anymore if site content is covering them?
     Home, About, and Contact are all being handled by site content views,
@@ -96,15 +98,40 @@ def client_account(r): return render(r, "client/account.html")
 #@login_required
 def client_contact(r): return render(r, "client/contact.html")
 #@login_required
-def client_payment(r): return render(r, "client/payment.html")
+#def client_payment(r): return render(r, "client/payment.html")
 #@login_required
 def client_practice_areas(r):
     content = WebsiteContent.objects.latest('created_at')
     return render(r, "client/practice_areas.html", {"content": content})
 #@login_required
 def client_schedule(r): return render(r, "client/schedule.html")
+
 #@login_required
-def client_transactions(r): return render(r, "client/transactions.html")
+def client_invoices(r): 
+    user = r.user
+
+   # Current invoice to pay (pending)
+    current_invoice = Invoice.objects.filter(user=user, status=Invoice.Status.PENDING).order_by('created_at').first()
+    
+    # Convert amount to dollars for display
+    if current_invoice:
+        current_invoice.display_amount = current_invoice.amount / 100
+
+    # Past invoices (paid or failed), newest first, limit 10
+    past_invoices = Invoice.objects.filter(user=user)
+    if current_invoice:
+        past_invoices = past_invoices.exclude(id=current_invoice.id)
+    past_invoices = past_invoices.order_by('-created_at')[:10]
+
+    # Convert past invoice amounts to dollars
+    for inv in past_invoices:
+        inv.display_amount = inv.amount / 100
+
+    return render(r, "client/invoices.html", {
+        "current_invoice": current_invoice,
+        "past_invoices": past_invoices,
+    })
+
 #@login_required
 def client_privacy(r):
     return render(r, "client/privacy.html")

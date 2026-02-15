@@ -1,0 +1,65 @@
+{% extends 'client/base_client.html' %}
+{% block title %}Invoices{% endblock %}
+
+{% block content %}
+<style>
+  .invoice-card {
+      background-color: #d4e8e4;
+      box-shadow: 0 2px 6px rgba(0,0,0,0,1);
+      border-radius: 15px;
+      padding: 1.5rem;
+    }
+</style>
+
+<!--Header -->
+<div class="p-3 mb-3 rounded" style="background-color: #e8f2f0;">
+  <h1 class="text-center fw-normal" style="font-family: serif; padding: 1rem 0 0 1rem; font-size: 3rem;">
+    Invoices
+  </h1>
+</div>
+
+<div class="row justify-content-center mt-4">
+  <div class="col-11 col-md-9 col-lg-5">
+
+    <!-- Current invoice to pay -->
+    {% if current_invoice %}
+    <div class="invoice-card p-3 mb-3 shadow-sm">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
+        <div class="mb-2 mb-md-0">
+          <div class="fw-bold fs-5">
+            Amount Due: ${{ current_invoice.display_amount|floatformat:2 }}
+          </div>
+          <small class="text-muted">
+            Issued Date: {{current_invoice.created_at|date:"M d, Y" }} | Status: {{ current_invoice.get_status_display }}
+          </small>
+        </div>
+        <a class="btn btn-custom px-4 py-2 rounded-pill ms-auto my-1">
+          Pay Now
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- List of past invoices -->
+    <div class="card shadow-sm">
+      <div class="card-header fw-bold">Past Invoices</div>
+      <div class="list-group list-group-flush">
+        {% for inv in past_invoice %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <div>Amount: ${{ inv.display_amount|floatformat:2 }}</div>
+            <small class="text-muted">
+              Issued Date: {{ inv.created_at|date:"M d, Y" }} | Status: {{ inv.get_status_display}}
+            </small>
+          </div>
+        </div>
+        {% empty %}
+        <div class="list-group-item text-center text-muted">
+          No past invoices.
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
