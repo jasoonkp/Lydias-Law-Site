@@ -1,0 +1,88 @@
+{% load static %}
+
+<style>
+/* Outer green container */
+.invoice-container {
+    background-color: #e8f2f0 !important;
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    font-family: serif;
+}
+
+/* Header banner */
+.invoice-header-card {
+    background-color: #e8f2f0;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.invoice-header {
+    font-family: serif;
+    text-align: center;
+    padding: 2rem;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: black;
+}
+
+/* Form styling */
+.invoice-form {
+    text-align: center;
+}
+
+.invoice-form label {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.invoice-form input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.invoice-form button {
+    background-color: #2d7a73;
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.invoice-form button:hover {
+    background-color: #24665f;
+}
+</style>
+
+
+
+
+<div class="invoice-header-card">
+    <div class="invoice-header">
+        Pay Invoices
+    </div>
+</div>
+
+<div class="invoice-container">
+    <form method="POST" class="invoice-form">
+        {% csrf_token %}
+        
+        <label for="invoice_id">Please enter your Invoice ID</label>
+        <input type="text" name="invoice_id" id="invoice_id" placeholder="Enter Invoice ID">
+
+        <button type="submit" onclick="{% url 'client_practice_areas' %}">Submit</button>
+    </form>
+</div>
+
+
