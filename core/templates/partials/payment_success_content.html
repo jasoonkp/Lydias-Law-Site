@@ -1,0 +1,38 @@
+
+{% block content %}   
+{% load static %}
+
+<style>
+.serif-text {
+    font-family: serif;
+}
+</style>
+
+    <main class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+
+        <!-- Outside container -->
+         <div style="max-width: 900px; width: 100%; text-align: center;">
+
+            <!-- Container for logo on left and text on right -> stacked on mobile -->
+                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mb-4">
+
+                        <!-- Container for Logo -->
+                        <div class=" mb-3 mb-md-0 me-md-4">
+                            <img src="{% static 'images/logo.png' %}" alt="Logo" width="200px" >
+                        </div>
+
+                        <!-- Container for Text-->
+                        <div class="serif-text text-center text-md-start">
+                            <h1 class="mb-2">Payment Confirmed!</h1>  
+
+                            <!-- Container for Close Button -->
+                            <div class="d-flex justify-content-center">
+                                <a href="/" class=" serif-text btn btn-custom px-4 py-2 rounded-pill mt-4">Close</a>
+                            </div>              
+
+                        </div>
+                    </div>
+
+         </div> <!-- close outer container-->       
+    </main> <!-- close main -->
+{% endblock %}
