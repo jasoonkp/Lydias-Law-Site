@@ -22,7 +22,7 @@
   <div class="col-11 col-md-9 col-lg-5">
 
     <!-- Current invoice to pay -->
-    {% if current_invoice %}
+    {% if current_invoice and stripe_url %}
     <div class="invoice-card p-3 mb-3 shadow-sm">
       <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
         <div class="mb-2 mb-md-0">
@@ -33,7 +33,7 @@
             Issued Date: {{current_invoice.created_at|date:"M d, Y" }} | Status: {{ current_invoice.get_status_display }}
           </small>
         </div>
-        <a class="btn btn-custom px-4 py-2 rounded-pill ms-auto my-1">
+        <a href="{{ stripe_url }}" target="blank" class="btn btn-custom px-4 py-2 rounded-pill ms-auto my-1">
           Pay Now
         </a>
       </div>
