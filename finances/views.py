@@ -7,6 +7,8 @@ from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from users.views import is_admin_user
 
 import stripe
 from users.models import User
@@ -244,3 +246,95 @@ def create_invoice(request):
 
 def invoice_confirmation(request):
     return render(request, "admin/invoice_confirmation.html")
+
+# Retrieve strip invoice
+def stripe_get_invoice(stripe_invoice_id: str):
+    return stripe.Invoice.retrieve(stripe_invoice_id)
+
+# List Client Invoices
+def stripe_list_client_invoices(user, limit=50):
+    return stripe.Invoice.list(customer=user.provider_customer_id, limit=limit)
+
+@login_required
+def admin_transactions(request):
+    # Ensures only visible to admins (PermissionDenied if not)
+    is_admin_user(request.user)
+
+    # Fetch from local DB so we can link to Django users
+    # Use select_related to get the user email in one database hit
+    invoices = Invoice.objects.select_related("user").all().order_by("-created_at")
+
+   # helper attributes so template logic works
+    for inv in invoices:
+        # Convert cents (stripe) to dollars for UI
+        inv.amount_dollars = inv.amount / 100.0 if inv.amount else 0.0
+        # Ensure status is uppercase for templates checks
+        inv.display_status = str(inv.status).upper()    
+    return render(request, "admin/transactions.html", {"invoices": invoices })
+
+@login_required
+def admin_stripe_invoice_detail(request, stripe_invoice_id):
+    """
+    Admin-only: Retrieve a Stripe invoice by stripe invoice ID
+    Sends invoice info to frontend as JSON
+    """
+    is_admin_user(request.user)
+
+    try: 
+        inv = stripe_get_invoice(stripe_invoice_id)
+    except stripe.error.StripeError as e:
+        return JsonResponse({"error": "Stripe error", "message": str(e)}, status=502)
+
+    return JsonResponse({
+        "id": inv.get("id"),
+        "status": inv.get("status"),
+        "amount_due": inv.get("amount_due"),    #cents
+        "amount_paid": inv.get("amount_paid"),  #cents
+        "currency": inv.get("currency"),
+        "hosted_invoice_url": inv.get("hosted_invoice_url"),
+        "invoice_pdf": inv.get("invoice_pdf"),
+        "created": inv.get("created"),   #unix timestamp
+        "customer": inv.get("customer"),
+    })
+
+@login_required
+def admin_stripe_invoices_for_user(request, user_id):
+    """
+    Admin-only: Retrieve all stripe invoices for a local user id
+    Uses user's stripe customer id -> provider_customer_id
+    Sends invoice list to frontend as JSON
+    """
+    is_admin_user(request.user)
+
+    try: 
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+    
+    if not user.provider_customer_id:
+        return JsonResponse({"error": "User has no Stripe customer ID"}, status=400)
+    
+    try:
+        res = stripe.Invoice.list(customer=user.provider_customer_id, limit=50)
+    except stripe.error.StripeError as e:
+        return JsonResponse({"error": "Stripe error", "message": str(e)}, status=502)
+
+    invoices = []
+    for inv in res.get("data", []):
+        invoices.append({
+             "id": inv.get("id"),
+            "status": inv.get("status"),
+            "amount_due": inv.get("amount_due"),   
+            "amount_paid": inv.get("amount_paid"),  
+            "currency": inv.get("currency"),
+            "hosted_invoice_url": inv.get("hosted_invoice_url"),
+            "invoice_pdf": inv.get("invoice_pdf"),
+            "created": inv.get("created"),   
+        })
+
+    return JsonResponse({
+        "user_id": user_id,
+        "stripe_customer_id": user.provider_customer_id,
+        "count": len(invoices),
+        "invoices": invoices,
+    })

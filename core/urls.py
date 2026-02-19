@@ -11,6 +11,7 @@ from users.views import client_dashboard as users_client_dashboard
 from users.views import admin_dashboard as users_admin_dashboard
 from finances.views import create_invoice as finances_create_invoice
 from finances.views import invoice_confirmation as finances_invoice_confirmation
+from finances import views as finance_views
 
 ''' IMPORTANT FOR ALL WHO READ '''
 # There seems to be a potential conflicts with different views that have been made for the same pages.
@@ -41,7 +42,7 @@ urlpatterns = [
     path("administrator/", users_admin_dashboard, name="admin_dashboard"),
     path("administrator/dashboard/", users_admin_dashboard, name="admin_dashboard"),
     path("administrator/schedule/", views.admin_schedule, name="admin_schedule"),
-    path("administrator/transactions/", views.admin_transactions, name="admin_transactions"),
+    path("administrator/transactions/", finance_views.admin_transactions, name="admin_transactions"),
     path("administrator/clients/", views.admin_clients, name="admin_clients"),
     path("administrator/editor/", views.admin_editor, name="admin_editor"),
     path("administrator/history/", views.admin_history, name="admin_history"),

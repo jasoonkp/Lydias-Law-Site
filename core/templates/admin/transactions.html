@@ -2,15 +2,139 @@
 
 {% block title %}Transactions – Admin{% endblock %}
 
+{% block extra_css %}
+<style>
+/* ------ CREATE TRANSACTION HEADER BANNER ----- */
+.transaction-header-card {
+    background-color: #e8f2f0 !important;
+    width: 100%;
+}
+
+.transaction-header {
+    font-family: serif;
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: black;
+}
+ /* ------ CREATE TABLE ----- */
+ .table-container{ padding: 0 2rem;}
+ .status-badge{ 
+    padding: 0.5em 0.75em; 
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .container-fluid {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    margin-bottom: 2% !important;
+  }
+  /* Make table header more professional*/
+  thead th {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    border-top: none !important;
+  }
+  /* Round corners for table card*/
+  .card {
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+
+  /* Custom Badge Styling */
+  .status-badge{
+    padding: 6px 14px;
+    border-radius: 50px; /* Pill shape */
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    min-width: 90px;
+  }
+
+  .badge-paid{
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+  }
+
+  .badge-pending {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.badge-failed {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="h3 mb-4">Transactions</h1>
-    <div class="card">
-      <div class="card-body">
-        <p class="text-muted">Transaction management coming soon...</p>
-      </div>
+<!-- Page Header -->
+ <div class="transaction-header-card">
+    <div class="transaction-header">
+        Transactions
     </div>
-  </div>
 </div>
+
+<!-- Invoice Container -->
+ <div class="container-fluid px-5 mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Client</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Invoice</th>
+              <th>Created</th>
+              <th>Void</th>
+            </tr>      
+          </thead>
+          <tbody>
+            {% for inv in invoices %}
+            <tr>
+              <td>#{{ inv.id }}</td>
+              <td>{{ inv.client_name }}</td>
+              <td>${{ inv.amount_dollars|floatformat:2 }}</td>
+              <td>
+                {% if inv.display_status == "PAID" %}
+                  <span class="status-badge badge-paid">Paid</span>
+                {% elif inv.display_status == "PENDING" %}
+                  <span class="status-badge badge-pending">Pending</span>
+                {% else %}
+                  <span class="status-badge badge-failed">Failed</span>
+                  {% endif %}
+              </td>
+              <td>
+                {% if inv.hosted_invoice_url %}
+                  <a href="{{ inv.hosted_invoice_url }}" target="_blank">View on Stripe</a>
+                {% else %}
+                  <p style="padding-left: 2rem; font-weight: 800;">-</p>
+                {% endif %}          
+              </td>
+              <td>{{ inv.created_at|date:"M j, Y g:i A" }}</td>
+              <td> 
+                <!-- ****ADD VOID DETAILS HERE ****-->
+
+              </td> 
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6">No Invoices found</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>  
+ </div>
 {% endblock %}
