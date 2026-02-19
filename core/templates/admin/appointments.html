@@ -1,0 +1,190 @@
+{% extends "admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Appointments - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+  .appt-card {
+    background-color: #C3D5D6;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: .75rem;
+  }
+  .appt-date-day {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #555;
+    line-height: 1;
+  }
+  .appt-date-num {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #1a1a1a;
+  }
+  .appt-info-label {
+    font-size: .7rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .appt-info-value {
+    font-size: .9rem;
+    color: #1a1a1a;
+  }
+  .panel-card {
+    border-radius: .5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-3">
+
+  <!-- Header -->
+  <div class="p-3 mb-3 panel-card" style="background-color:#e8f2f0;">
+    <h1 class="fw-normal m-0" style="font-family: serif; font-size: 2rem;">
+      Appointment Details
+    </h1>
+  </div>
+
+  <!-- Filters -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label for="status" class="form-label">Status</label>
+          <select name="status" id="status" class="form-select">
+            <option value="">All</option>
+            {% for value, label in status_choices %}
+              <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>
+                {{ label }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="date_from" class="form-label">From</label>
+          <input type="date" name="date_from" id="date_from" class="form-control"
+                 value="{{ date_from }}">
+        </div>
+        <div class="col-md-3">
+          <label for="date_to" class="form-label">To</label>
+          <input type="date" name="date_to" id="date_to" class="form-control"
+                 value="{{ date_to }}">
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn text-white rounded-pill px-4"
+                  style="background-color: #2d7a73;">Filter</button>
+          <a href="{% url 'admin_appointments' %}" class="btn btn-outline-secondary rounded-pill px-4">Clear</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Appointment Cards -->
+  {% for appt in page_obj %}
+    {% with invitee=appt.invitees.all.0 %}
+    <div class="appt-card d-flex align-items-center gap-4">
+
+      <!-- Date -->
+      <div class="text-center" style="min-width: 3.5rem;">
+        <div class="appt-date-day">{{ appt.start_time|date:"D" }}</div>
+        <div class="appt-date-num">{{ appt.start_time|date:"j" }}</div>
+        <div class="appt-date-day">{{ appt.start_time|date:"M" }}</div>
+      </div>
+
+      <!-- Time + Location -->
+      <div style="min-width: 6rem;">
+        <div class="appt-info-value">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-1 text-secondary" viewBox="0 0 16 16">
+            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+          </svg>
+          {{ appt.start_time|date:"g:i A" }}
+        </div>
+        <div class="appt-info-value mt-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-1 text-secondary" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+          </svg>
+          {{ appt.calendly_location_type|default:"Online" }}
+        </div>
+      </div>
+
+      <!-- Invitee Name -->
+      <div style="min-width: 7rem;">
+        <div class="appt-info-label">Name</div>
+        <div class="appt-info-value">{{ invitee.name|default:"--" }}</div>
+      </div>
+
+      <!-- Phone -->
+      <div style="min-width: 8rem;">
+        <div class="appt-info-label">Phone</div>
+        <div class="appt-info-value">{{ invitee.phone_number|default:"--" }}</div>
+      </div>
+
+      <!-- Email -->
+      <div style="min-width: 10rem;">
+        <div class="appt-info-label">Email</div>
+        <div class="appt-info-value">{{ invitee.email|default:"--" }}</div>
+      </div>
+
+      <!-- Comments -->
+      <div class="flex-grow-1">
+        <div class="appt-info-label">Comments</div>
+        <div class="appt-info-value text-truncate" style="max-width: 200px;">
+          {{ appt.comments|default:"--" }}
+        </div>
+      </div>
+
+      <!-- Status badge -->
+      <div>
+        <span class="badge rounded-pill
+          {% if appt.status == 'CONFIRMED' %}bg-success
+          {% elif appt.status == 'PENDING' %}bg-warning text-dark
+          {% elif appt.status == 'CANCELLED' %}bg-danger
+          {% elif appt.status == 'COMPLETED' %}bg-info
+          {% else %}bg-secondary{% endif %}">
+          {{ appt.get_status_display }}
+        </span>
+      </div>
+
+      <!-- View link (cancel button placeholder — LLW-63) -->
+      <div class="ms-auto d-flex gap-2 align-items-center">
+        <a href="{% url 'admin_appointment_detail' appt.pk %}"
+           class="btn btn-sm btn-outline-secondary rounded-pill px-3">View</a>
+      </div>
+
+    </div>
+    {% endwith %}
+  {% empty %}
+    <div class="text-center text-muted py-5">No appointments found.</div>
+  {% endfor %}
+
+  <!-- Pagination -->
+  {% if page_obj.has_other_pages %}
+  <nav class="mt-3">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}&date_from={{ date_from }}&date_to={{ date_to }}">Previous</a>
+        </li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}&status={{ current_status }}&date_from={{ date_from }}&date_to={{ date_to }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ current_status }}&date_from={{ date_from }}&date_to={{ date_to }}">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+</div>
+{% endblock %}

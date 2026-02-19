@@ -1,11 +1,12 @@
 # views.py is responsible for defining how the app ( this file, views.py, is in the app "core") interacts with users' requests like for data processing, rendering pages, responding to actions
 # essentialy: user interactions -> tangible responses
 
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
+from django.core.paginator import Paginator
 from allauth.account.utils import complete_signup
 from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
@@ -14,6 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 from sitecontent.models import WebsiteContent
 from django.conf import settings
 from finances.models import Invoice
+from appointments.models import Appointments, Invitee
+from users.views import is_admin_user
 
 
 ''' Are these needed anymore if site content is covering them?
@@ -88,6 +91,50 @@ def admin_history(r): return render(r, "admin/history.html")
 def admin_appointment_confirmation(r): return render(r, "admin/appointment_confirmation.html")
 # @login_required
 def admin_create_invoices(r): return render(r, "admin/create_invoice.html")
+
+@login_required
+def admin_appointments(request):
+    is_admin_user(request.user)
+
+    qs = Appointments.objects.select_related('user_id').prefetch_related('invitees').all()
+
+    # Filter by status
+    status_filter = request.GET.get('status', '')
+    if status_filter and status_filter in Appointments.Status.values:
+        qs = qs.filter(status=status_filter)
+
+    # Filter by date range
+    date_from = request.GET.get('date_from', '')
+    date_to = request.GET.get('date_to', '')
+    if date_from:
+        qs = qs.filter(start_time__date__gte=date_from)
+    if date_to:
+        qs = qs.filter(start_time__date__lte=date_to)
+
+    paginator = Paginator(qs, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin/appointments.html', {
+        'page_obj': page_obj,
+        'status_choices': Appointments.Status.choices,
+        'current_status': status_filter,
+        'date_from': date_from,
+        'date_to': date_to,
+    })
+
+@login_required
+def admin_appointment_detail(request, pk):
+    is_admin_user(request.user)
+
+    appointment = get_object_or_404(
+        Appointments.objects.select_related('user_id').prefetch_related('invitees'),
+        pk=pk
+    )
+
+    return render(request, 'admin/appointment_detail.html', {
+        'appointment': appointment,
+    })
 
 # Client Views
 #@login_required
