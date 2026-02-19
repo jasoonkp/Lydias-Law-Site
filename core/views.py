@@ -49,8 +49,6 @@ def login(r):
 # @login_required
 def admin_schedule(r): return render(r, "admin/schedule.html")
 # @login_required
-def admin_transactions(r): return render(r, "admin/transactions.html")
-# @login_required
 def admin_clients(r): return render(r, "admin/clients.html")
 # @login_required
 def admin_editor(request):

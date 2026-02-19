@@ -51,6 +51,14 @@ class Invoice(models.Model):
     class Meta:
         db_table = "invoices"
         ordering = ["-created_at"]
+    
+    # To get and show client's name on transaction page for admin
+    # If name is not listed, email is shown, if no email -> unknown
+    @property
+    def client_name(self):
+        if self.user and (self.user.first_name or self.user.last_name):
+            return f"{self.user.first_name} {self.user.last_name}"
+        return self.user.email if self.user else "Unknown"
 
 
 class StripeWebhookEvent(models.Model):
