@@ -29,6 +29,7 @@ urlpatterns = [
     path("schedule/", views.schedule, name="schedule"),
     path("privacy/", views.privacy, name="privacy"),
     path("appointment_confirmation/", views.appointment_confirmation, name="appointment_confirmation"),
+    path("payment/success/", views.payment_success, name="payment_success"),
 
     # users pages
     path("users/", include("users.urls")),
