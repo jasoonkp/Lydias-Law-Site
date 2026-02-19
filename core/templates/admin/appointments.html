@@ -153,11 +153,47 @@
 
       <!-- View link (cancel button placeholder — LLW-63) -->
       <div class="ms-auto d-flex gap-2 align-items-center">
+        {% if appt.status == 'PENDING' or appt.status == 'CONFIRMED' %}
+          <button type="button"
+                  class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cancelModal-{{ appt.pk }}">
+            Cancel
+          </button>
+        {% endif %}
         <a href="{% url 'admin_appointment_detail' appt.pk %}"
            class="btn btn-sm btn-outline-secondary rounded-pill px-3">View</a>
       </div>
 
     </div>
+
+    {% if appt.status == 'PENDING' or appt.status == 'CONFIRMED' %}
+      <!-- Cancel confirmation modal -->
+      <div class="modal fade" id="cancelModal-{{ appt.pk }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <form method="post" action="{% url 'admin_appointment_cancel' appt.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <div class="modal-header">
+                <h5 class="modal-title">Cancel appointment?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p class="mb-2 text-muted">This will set the appointment status to <strong>Cancelled</strong>.</p>
+                <label for="reason-{{ appt.pk }}" class="form-label">Cancellation reason</label>
+                <textarea id="reason-{{ appt.pk }}" name="reason" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Back</button>
+                <button type="submit" class="btn text-white rounded-pill px-4" style="background-color: #b02a37;">Confirm cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
     {% endwith %}
   {% empty %}
     <div class="text-center text-muted py-5">No appointments found.</div>

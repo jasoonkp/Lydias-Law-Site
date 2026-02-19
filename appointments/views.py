@@ -1,11 +1,17 @@
 from datetime import timedelta
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.shortcuts import redirect
 from django.utils.dateparse import parse_datetime
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Appointments, Invitee
 from users.models import User
+from users.views import is_admin_user
 import json
+import secrets
 
 
 @csrf_exempt
@@ -143,3 +149,43 @@ def calendly_webhook(request):
     )
 
     return JsonResponse({"status": "ok"})
+
+
+@login_required
+def calendly_oauth_start(request):
+    is_admin_user(request.user)
+    redirect_uri = request.build_absolute_uri(reverse("calendly_oauth_callback"))
+    state = secrets.token_urlsafe(24)
+    request.session["calendly_oauth_state"] = state
+
+    from .calendly import build_oauth_authorize_url
+
+    return redirect(build_oauth_authorize_url(redirect_uri=redirect_uri, state=state))
+
+
+@login_required
+def calendly_oauth_callback(request):
+    is_admin_user(request.user)
+
+    expected_state = request.session.get("calendly_oauth_state")
+    state = request.GET.get("state")
+    if expected_state and state != expected_state:
+        messages.error(request, "Calendly OAuth state mismatch.")
+        return redirect("admin_appointments")
+
+    code = request.GET.get("code")
+    if not code:
+        messages.error(request, "Missing Calendly OAuth code.")
+        return redirect("admin_appointments")
+
+    redirect_uri = request.build_absolute_uri(reverse("calendly_oauth_callback"))
+    try:
+        from .calendly import exchange_code_for_token, upsert_oauth_token
+
+        token_data = exchange_code_for_token(code=code, redirect_uri=redirect_uri)
+        upsert_oauth_token(token_data)
+        messages.success(request, "Calendly connected (token stored).")
+    except Exception:
+        messages.error(request, "Calendly OAuth failed. Check server logs.")
+
+    return redirect("admin_appointments")

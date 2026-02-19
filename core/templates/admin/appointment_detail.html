@@ -19,9 +19,20 @@
 <div class="container-fluid px-4 py-3">
 
   <!-- Back link -->
-  <a href="{% url 'admin_appointments' %}" class="btn btn-outline-secondary rounded-pill mb-3">
-    &larr; Back to Appointments
-  </a>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{% url 'admin_appointments' %}" class="btn btn-outline-secondary rounded-pill">
+      &larr; Back to Appointments
+    </a>
+
+    {% if appointment.status == 'PENDING' or appointment.status == 'CONFIRMED' %}
+      <button type="button"
+              class="btn btn-outline-danger rounded-pill px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#cancelModal">
+        Cancel appointment
+      </button>
+    {% endif %}
+  </div>
 
   <!-- Header -->
   <div class="p-3 mb-3 panel-card" style="background-color:#e8f2f0;">
@@ -70,7 +81,46 @@
               <th>Comments</th>
               <td>{{ appointment.comments|default:"None" }}</td>
             </tr>
+            {% if appointment.cancellation_reason %}
+            <tr>
+              <th>Cancellation Reason</th>
+              <td>{{ appointment.cancellation_reason }}</td>
+            </tr>
+            {% endif %}
+            {% if appointment.cancelled_at %}
+            <tr>
+              <th>Cancelled At</th>
+              <td>{{ appointment.cancelled_at|date:"M d, Y g:i A" }}</td>
+            </tr>
+            {% endif %}
           </table>
+
+          <form method="post" action="{% url 'admin_appointment_update_status' appointment.pk %}" class="mt-3">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-7">
+                <label for="statusSelect" class="form-label mb-1">Update status</label>
+                <select id="statusSelect" name="status" class="form-select">
+                  {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if appointment.status == value %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-5">
+                <button type="submit" class="btn text-white rounded-pill w-100" style="background-color: #2d7a73;">
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div id="cancelReasonWrapper" class="mt-2" style="display:none;">
+              <label for="statusCancelReason" class="form-label mb-1">Cancellation reason</label>
+              <textarea id="statusCancelReason" name="reason" class="form-control" rows="3"></textarea>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -125,5 +175,53 @@
     </div>
   </div>
 
+  {% if appointment.status == 'PENDING' or appointment.status == 'CONFIRMED' %}
+    <!-- Cancel confirmation modal -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form method="post" action="{% url 'admin_appointment_cancel' appointment.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <div class="modal-header">
+              <h5 class="modal-title">Cancel appointment?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-2 text-muted">This will set the appointment status to <strong>Cancelled</strong>.</p>
+              <label for="reason" class="form-label">Cancellation reason</label>
+              <textarea id="reason" name="reason" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Back</button>
+              <button type="submit" class="btn text-white rounded-pill px-4" style="background-color: #b02a37;">Confirm cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    const statusSelect = document.getElementById("statusSelect");
+    const reasonWrapper = document.getElementById("cancelReasonWrapper");
+    const reasonField = document.getElementById("statusCancelReason");
+    if (!statusSelect || !reasonWrapper || !reasonField) return;
+
+    function sync() {
+      const isCancelled = statusSelect.value === "CANCELLED";
+      reasonWrapper.style.display = isCancelled ? "block" : "none";
+      reasonField.required = isCancelled;
+      if (!isCancelled) reasonField.value = "";
+    }
+
+    statusSelect.addEventListener("change", sync);
+    sync();
+  })();
+</script>
 {% endblock %}
