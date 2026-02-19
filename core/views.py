@@ -116,6 +116,9 @@ def client_invoices(r):
     # Convert amount to dollars for display
     if current_invoice:
         current_invoice.display_amount = current_invoice.amount / 100
+        stripe_url = current_invoice.hosted_invoice_url
+    else:
+        stripe_url = None
 
     # Past invoices (paid or failed), newest first, limit 10
     past_invoices = Invoice.objects.filter(user=user)
@@ -129,6 +132,7 @@ def client_invoices(r):
 
     return render(r, "client/invoices.html", {
         "current_invoice": current_invoice,
+        "stripe_url": stripe_url,
         "past_invoices": past_invoices,
     })
 
