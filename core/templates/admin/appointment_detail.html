@@ -1,0 +1,129 @@
+{% extends "admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Appointment {{ appointment.confirmation_number }} - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+  .panel-card {
+    border-radius: .5rem;
+  }
+  .detail-table th {
+    width: 40%;
+    color: #555;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-3">
+
+  <!-- Back link -->
+  <a href="{% url 'admin_appointments' %}" class="btn btn-outline-secondary rounded-pill mb-3">
+    &larr; Back to Appointments
+  </a>
+
+  <!-- Header -->
+  <div class="p-3 mb-3 panel-card" style="background-color:#e8f2f0;">
+    <h1 class="fw-normal m-0" style="font-family: serif; font-size: 2rem;">
+      Appointment Details
+    </h1>
+  </div>
+
+  <div class="row g-4">
+    <!-- Appointment Info -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header fw-bold" style="background-color: #C3D5D6;">Appointment</div>
+        <div class="card-body">
+          <table class="table table-borderless detail-table mb-0">
+            <tr>
+              <th>Confirmation #</th>
+              <td><code>{{ appointment.confirmation_number|default:"--" }}</code></td>
+            </tr>
+            <tr>
+              <th>Start Time</th>
+              <td>{{ appointment.start_time|date:"M d, Y g:i A" }}</td>
+            </tr>
+            <tr>
+              <th>Duration</th>
+              <td>{{ appointment.duration }}</td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td>
+                <span class="badge
+                  {% if appointment.status == 'CONFIRMED' %}bg-success
+                  {% elif appointment.status == 'PENDING' %}bg-warning text-dark
+                  {% elif appointment.status == 'CANCELLED' %}bg-danger
+                  {% elif appointment.status == 'COMPLETED' %}bg-info
+                  {% else %}bg-secondary{% endif %}">
+                  {{ appointment.get_status_display }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>Approved</th>
+              <td>{{ appointment.approved|yesno:"Yes,No" }}</td>
+            </tr>
+            <tr>
+              <th>Comments</th>
+              <td>{{ appointment.comments|default:"None" }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invitee Info -->
+    <div class="col-md-6">
+      {% for invitee in appointment.invitees.all %}
+      <div class="card mb-3">
+        <div class="card-header fw-bold" style="background-color: #C3D5D6;">Invitee: {{ invitee.name }}</div>
+        <div class="card-body">
+          <table class="table table-borderless detail-table mb-0">
+            <tr>
+              <th>Name</th>
+              <td>{{ invitee.name }}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{{ invitee.email }}</td>
+            </tr>
+            <tr>
+              <th>Phone</th>
+              <td>{{ invitee.phone_number|default:"--" }}</td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td>{{ invitee.status }}</td>
+            </tr>
+            <tr>
+              <th>Canceled</th>
+              <td>{{ invitee.canceled|yesno:"Yes,No" }}</td>
+            </tr>
+            {% if invitee.cancellation_reason %}
+            <tr>
+              <th>Cancellation Reason</th>
+              <td>{{ invitee.cancellation_reason }}</td>
+            </tr>
+            {% endif %}
+            {% if invitee.reschedule_url %}
+            <tr>
+              <th>Reschedule URL</th>
+              <td><a href="{{ invitee.reschedule_url }}" target="_blank">Link</a></td>
+            </tr>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+      {% empty %}
+      <div class="card">
+        <div class="card-body text-muted">No invitees recorded for this appointment.</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
