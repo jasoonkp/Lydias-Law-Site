@@ -5,7 +5,7 @@ import logging
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from users.views import is_admin_user
@@ -406,4 +406,4 @@ def create_checkout_session(request, invoice_id):
 		cancel_url="http://localhost:8000/dashboard/",
 	)
 
-    return JsonResponse({"checkout_url": session.url})
+    return redirect(session.url)

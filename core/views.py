@@ -38,7 +38,11 @@ def practice_areas(r):
 def about(r): return render(r, "about.html")
 def services(r): return render(r, "services.html")
 def contact(r): return render(r, "contact.html", {"GOOGLE_MAPS_API_KEY": settings.GOOGLE_MAPS_API_KEY})
-def payment(r): return render(r, "payment.html")
+def payment(r): 
+    if r.method == "POST":
+        invoice_id = r.POST.get("invoice_id")
+        return redirect("create_checkout_session", invoice_id=invoice_id)
+    return render(r, "payment.html")
 def schedule(r): return render(r, "schedule.html")
 def privacy(r): return render(r, "privacy.html")
 def appointment_confirmation(r): return render (r, "appointment_confirmation.html")
