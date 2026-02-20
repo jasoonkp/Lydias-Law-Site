@@ -105,7 +105,7 @@ def stripe_webhook(request):
     event_type = event_data.get("type")
     invoice_obj = event_data.get("data", {}).get("object", {})
 
-    if event_type in {"invoice.paid", "invoice.payment_failed"}:
+    if event_type in {"invoice.paid", "invoice.payment_failed", "invoice.voided"}:
         # Stripe invoice metadata can include our local invoice ID.
         metadata = invoice_obj.get("metadata") or {}
         local_invoice_id = metadata.get("local_invoice_id") or metadata.get("invoice_id")
@@ -136,6 +136,9 @@ def stripe_webhook(request):
         elif event_type == "invoice.payment_failed":
             # Payment failed means the invoice is still unpaid.
             invoice.status = Invoice.Status.PAYMENT_FAILED
+            invoice.paid = False
+        elif event_type == "invoice.voided":
+            invoice.status = Invoice.Status.VOIDED
             invoice.paid = False
 
         invoice.save(update_fields=["status", "paid"])
@@ -338,3 +341,40 @@ def admin_stripe_invoices_for_user(request, user_id):
         "count": len(invoices),
         "invoices": invoices,
     })
+
+@login_required
+def void_invoice(request, stripe_invoice_id):
+    """
+    Admin-only: void an open Stripe invoice and update the local DB.
+    Only PENDING invoices can be voided; PAID invoices cannot.
+    """
+    is_admin_user(request.user)
+
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        invoice = Invoice.objects.get(stripe_invoice_id=stripe_invoice_id)
+    except Invoice.DoesNotExist:
+        return JsonResponse({"error": "Invoice not found"}, status=404)
+
+    if invoice.status == Invoice.Status.VOIDED:
+        return JsonResponse({"error": "Invoice is already voided"}, status=400)
+    if invoice.status == Invoice.Status.PAID:
+        return JsonResponse({"error": "Cannot void a paid invoice"}, status=400)
+
+    try:
+        stripe.Invoice.void_invoice(stripe_invoice_id)
+    except stripe.error.StripeError as e:
+        return JsonResponse({"error": "Stripe error", "message": str(e)}, status=502)
+
+    invoice.status = Invoice.Status.VOIDED
+    invoice.save(update_fields=["status"])
+
+    logger.info(
+        "Invoice voided. invoice_id=%s stripe_invoice_id=%s admin=%s",
+        invoice.id,
+        stripe_invoice_id,
+        request.user.email,
+    )
+    return JsonResponse({"status": "voided"})

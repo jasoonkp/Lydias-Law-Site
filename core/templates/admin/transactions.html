@@ -72,6 +72,35 @@
     color: #842029;
     border: 1px solid #f5c2c7;
 }
+
+.badge-voided {
+    background-color: #e2e3e5;
+    color: #41464b;
+    border: 1px solid #d3d6d8;
+}
+
+.btn-void {
+    padding: 4px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.btn-void:hover:not(:disabled) {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-void:disabled {
+    border-color: #adb5bd;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
 </style>
 {% endblock %}
 
@@ -110,9 +139,11 @@
                   <span class="status-badge badge-paid">Paid</span>
                 {% elif inv.display_status == "PENDING" %}
                   <span class="status-badge badge-pending">Pending</span>
+                {% elif inv.display_status == "VOIDED" %}
+                  <span class="status-badge badge-voided">Voided</span>
                 {% else %}
                   <span class="status-badge badge-failed">Failed</span>
-                  {% endif %}
+                {% endif %}
               </td>
               <td>
                 {% if inv.hosted_invoice_url %}
@@ -122,10 +153,18 @@
                 {% endif %}          
               </td>
               <td>{{ inv.created_at|date:"M j, Y g:i A" }}</td>
-              <td> 
-                <!-- ****ADD VOID DETAILS HERE ****-->
-
-              </td> 
+              <td>
+                {% if inv.stripe_invoice_id %}
+                  <button
+                    class="btn-void"
+                    data-stripe-id="{{ inv.stripe_invoice_id }}"
+                    data-inv-id="{{ inv.id }}"
+                    {% if inv.display_status == "PAID" or inv.display_status == "VOIDED" %}disabled{% endif %}
+                  >Void</button>
+                {% else %}
+                  <span style="color:#adb5bd;">—</span>
+                {% endif %}
+              </td>
             </tr>
             {% empty %}
             <tr>
@@ -137,4 +176,70 @@
       </div>
     </div>  
  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      for (const cookie of document.cookie.split(";")) {
+        const c = cookie.trim();
+        if (c.startsWith(name + "=")) {
+          cookieValue = decodeURIComponent(c.slice(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.querySelectorAll(".btn-void").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      const stripeId = btn.dataset.stripeId;
+      const invId = btn.dataset.invId;
+
+      if (!confirm("Are you sure you want to void Invoice #" + invId + "? This cannot be undone.")) {
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Voiding\u2026";
+
+      try {
+        const response = await fetch(
+          "/api/admin/stripe/invoice/" + stripeId + "/void/",
+          {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (response.ok && data.status === "voided") {
+          const row = btn.closest("tr");
+          const badgeCell = row.querySelector(".status-badge");
+          if (badgeCell) {
+            badgeCell.className = "status-badge badge-voided";
+            badgeCell.textContent = "Voided";
+          }
+          btn.textContent = "Voided";
+        } else {
+          alert("Failed to void invoice: " + (data.message || data.error || "Unknown error"));
+          btn.disabled = false;
+          btn.textContent = "Void";
+        }
+      } catch (err) {
+        alert("Network error. Please try again.");
+        btn.disabled = false;
+        btn.textContent = "Void";
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

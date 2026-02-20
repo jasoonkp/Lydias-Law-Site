@@ -34,6 +34,7 @@ class Invoice(models.Model):
         PENDING = "PENDING", "Pending"
         PAID = "PAID", "Paid"
         PAYMENT_FAILED = "PAYMENT_FAILED", "Payment Failed"
+        VOIDED = "VOIDED", "Voided"
 
     # Primary invoice state used throughout the app.
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
