@@ -378,3 +378,32 @@ def void_invoice(request, stripe_invoice_id):
         request.user.email,
     )
     return JsonResponse({"status": "voided"})
+
+def create_checkout_session(request, invoice_id):
+    try:
+        invoice = Invoice.objects.get(id=invoice_id)
+    except Invoice.DoesNotExist:
+        return JsonResponse({"error": "Invoice not found"}, status=404)
+
+    if invoice.status == Invoice.Status.PAID or invoice.paid:
+        return JsonResponse({"error": "Invoice already paid"}, status=400)
+
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        payment_method_types=["card"],
+        line_items=[{
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": f"Invoice #{invoice.id}",
+                },
+                "unit_amount": invoice.amount,
+            },
+            "quantity": 1,
+        }],
+        metadata={"invoice_id": str(invoice.id)},
+        success_url="http://localhost:8000/payment/success/",
+		cancel_url="http://localhost:8000/dashboard/",
+	)
+
+    return JsonResponse({"checkout_url": session.url})
