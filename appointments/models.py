@@ -96,6 +96,23 @@ class Appointments(models.Model):
         
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
 
+    # Admin cancellation (LLW-63)
+    cancellation_reason = models.TextField(blank=True, null=True)
+    cancelled_at = models.DateTimeField(blank=True, null=True)
+
+    # Valid status transitions (LLW-64)
+    ALLOWED_STATUS_TRANSITIONS = {
+        Status.PENDING: {Status.CONFIRMED, Status.CANCELLED},
+        Status.CONFIRMED: {Status.COMPLETED, Status.NO_SHOW, Status.CANCELLED},
+        Status.CANCELLED: set(),
+        Status.NO_SHOW: set(),
+        Status.COMPLETED: set(),
+    }
+
+    @classmethod
+    def can_transition_status(cls, from_status: str, to_status: str) -> bool:
+        return to_status in cls.ALLOWED_STATUS_TRANSITIONS.get(from_status, set())
+
 
     # Creating confirmation numbers function
     def create_confirmation_number():
@@ -148,4 +165,20 @@ class Invitee(models.Model):
         return f"{self.name} ({self.email})"
 
 
-    
+class CalendlyOAuthToken(models.Model):
+    """
+    Stores Calendly OAuth tokens for server-to-server API usage.
+    This is scaffolded for future production use; local dev can keep the API disabled.
+    """
+
+    access_token = models.TextField()
+    refresh_token = models.TextField(blank=True, null=True)
+    token_type = models.CharField(max_length=20, default="Bearer")
+    scope = models.TextField(blank=True, null=True)
+    expires_at = models.DateTimeField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]

@@ -1,5 +1,170 @@
-# tests.py holds unit tests to ensure this application's (this app is "core") components work as expected.
-# these tests ensure reliability and stability of the codebase
-from django.test import TestCase
+from datetime import timedelta
 
-# Create your tests here.
+from django.contrib.messages import get_messages
+from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
+
+from appointments.models import Appointments, Invitee
+from users.models import User
+
+
+class AdminAppointmentActionsTests(TestCase):
+    def setUp(self):
+        self.admin_user = User.objects.create_user(
+            email="admin@example.com",
+            password="pw",
+            first_name="Admin",
+            last_name="User",
+            is_staff=True,
+            is_active=True,
+        )
+        self.client_user = User.objects.create_user(
+            email="client@example.com",
+            password="pw",
+            first_name="Client",
+            last_name="User",
+            is_staff=False,
+            is_active=True,
+        )
+
+        self.appt_pending = Appointments.objects.create(
+            user_id=self.client_user,
+            start_time=timezone.now() + timedelta(days=1),
+            status=Appointments.Status.PENDING,
+        )
+        self.invitee = Invitee.objects.create(
+            appointment=self.appt_pending,
+            name="Test Invitee",
+            email="invitee@example.com",
+            phone_number="5551112222",
+        )
+
+    def _messages(self, response):
+        return [m.message for m in get_messages(response.wsgi_request)]
+
+    def test_cancel_requires_staff(self):
+        non_staff = User.objects.create_user(
+            email="nonstaff@example.com",
+            password="pw",
+            first_name="Non",
+            last_name="Staff",
+            is_staff=False,
+            is_active=True,
+        )
+        self.client.force_login(non_staff)
+        url = reverse("admin_appointment_cancel", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"reason": "No longer needed"})
+        self.assertEqual(resp.status_code, 403)
+
+    def test_cancel_requires_reason(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_cancel", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"reason": ""}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.assertEqual(self.appt_pending.status, Appointments.Status.PENDING)
+        self.assertIn("Cancellation reason is required.", self._messages(resp))
+
+    def test_cancel_requires_pending_or_confirmed(self):
+        appt = Appointments.objects.create(
+            user_id=self.client_user,
+            start_time=timezone.now() + timedelta(days=2),
+            status=Appointments.Status.COMPLETED,
+        )
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_cancel", args=[appt.pk])
+        resp = self.client.post(url, data={"reason": "Test"}, follow=True)
+
+        appt.refresh_from_db()
+        self.assertEqual(appt.status, Appointments.Status.COMPLETED)
+        self.assertIn("Only Pending or Confirmed appointments can be cancelled.", self._messages(resp))
+
+    def test_cancel_success_updates_appointment_and_invitees(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_cancel", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"reason": "Client requested"}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.invitee.refresh_from_db()
+
+        self.assertEqual(self.appt_pending.status, Appointments.Status.CANCELLED)
+        self.assertEqual(self.appt_pending.cancellation_reason, "Client requested")
+        self.assertIsNotNone(self.appt_pending.cancelled_at)
+        self.assertTrue(self.invitee.canceled)
+        self.assertEqual(self.invitee.cancellation_reason, "Client requested")
+        self.assertIn("Appointment cancelled.", self._messages(resp))
+
+    def test_cancel_with_calendly_uri_adds_expected_skip_message(self):
+        self.appt_pending.calendly_event_uri = "https://api.calendly.com/scheduled_events/TEST"
+        self.appt_pending.save(update_fields=["calendly_event_uri"])
+
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_cancel", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"reason": "Client requested"}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.assertEqual(self.appt_pending.status, Appointments.Status.CANCELLED)
+        self.assertIn("Calendly cancellation skipped (site not live yet — expected).", self._messages(resp))
+
+    def test_status_update_blocks_invalid_transition(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_update_status", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"status": Appointments.Status.COMPLETED}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.assertEqual(self.appt_pending.status, Appointments.Status.PENDING)
+        self.assertIn("That status change isn’t allowed.", self._messages(resp))
+
+    def test_status_update_allows_pending_to_confirmed(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_update_status", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"status": Appointments.Status.CONFIRMED}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.assertEqual(self.appt_pending.status, Appointments.Status.CONFIRMED)
+        self.assertIn("Status updated.", self._messages(resp))
+
+    def test_status_update_cancel_requires_reason(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_update_status", args=[self.appt_pending.pk])
+        resp = self.client.post(url, data={"status": Appointments.Status.CANCELLED, "reason": ""}, follow=True)
+
+        self.appt_pending.refresh_from_db()
+        self.assertEqual(self.appt_pending.status, Appointments.Status.PENDING)
+        self.assertIn("Cancellation reason is required.", self._messages(resp))
+
+    def test_status_update_cancel_success(self):
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_update_status", args=[self.appt_pending.pk])
+        resp = self.client.post(
+            url,
+            data={"status": Appointments.Status.CANCELLED, "reason": "No longer needed"},
+            follow=True,
+        )
+
+        self.appt_pending.refresh_from_db()
+        self.invitee.refresh_from_db()
+
+        self.assertEqual(self.appt_pending.status, Appointments.Status.CANCELLED)
+        self.assertEqual(self.appt_pending.cancellation_reason, "No longer needed")
+        self.assertIsNotNone(self.appt_pending.cancelled_at)
+        self.assertTrue(self.invitee.canceled)
+        self.assertEqual(self.invitee.cancellation_reason, "No longer needed")
+        self.assertIn("Status updated to Cancelled.", self._messages(resp))
+
+    def test_status_update_terminal_state_is_blocked(self):
+        appt = Appointments.objects.create(
+            user_id=self.client_user,
+            start_time=timezone.now() + timedelta(days=3),
+            status=Appointments.Status.CANCELLED,
+            cancellation_reason="Already cancelled",
+            cancelled_at=timezone.now(),
+        )
+        self.client.force_login(self.admin_user)
+        url = reverse("admin_appointment_update_status", args=[appt.pk])
+        resp = self.client.post(url, data={"status": Appointments.Status.CONFIRMED}, follow=True)
+
+        appt.refresh_from_db()
+        self.assertEqual(appt.status, Appointments.Status.CANCELLED)
+        self.assertIn("That status change isn’t allowed.", self._messages(resp))

@@ -12,11 +12,13 @@ from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation, get_emailconfirmation_model
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from sitecontent.models import WebsiteContent
 from django.conf import settings
 from finances.models import Invoice
 from appointments.models import Appointments, Invitee
 from users.views import is_admin_user
+from django.utils import timezone
 
 
 ''' Are these needed anymore if site content is covering them?
@@ -134,7 +136,135 @@ def admin_appointment_detail(request, pk):
 
     return render(request, 'admin/appointment_detail.html', {
         'appointment': appointment,
+        "status_choices": Appointments.Status.choices,
     })
+
+
+@require_POST
+@login_required
+def admin_appointment_cancel(request, pk):
+    is_admin_user(request.user)
+
+    appointment = get_object_or_404(
+        Appointments.objects.prefetch_related("invitees"),
+        pk=pk,
+    )
+
+    if appointment.status not in (Appointments.Status.PENDING, Appointments.Status.CONFIRMED):
+        messages.warning(request, "Only Pending or Confirmed appointments can be cancelled.")
+        return redirect(request.POST.get("next") or reverse("admin_appointment_detail", args=[pk]))
+
+    reason = (request.POST.get("reason") or "").strip()
+    if not reason:
+        messages.error(request, "Cancellation reason is required.")
+        return redirect(request.POST.get("next") or reverse("admin_appointment_detail", args=[pk]))
+
+    appointment.status = Appointments.Status.CANCELLED
+    appointment.cancellation_reason = reason
+    appointment.cancelled_at = timezone.now()
+    appointment.save(update_fields=["status", "cancellation_reason", "cancelled_at"])
+
+    # Mirror cancellation info onto invitees (if present)
+    appointment.invitees.update(canceled=True, cancellation_reason=reason)
+
+    # Best-effort Calendly cancellation (feature-flagged / offline-safe)
+    if appointment.calendly_event_uri:
+        try:
+            from appointments.calendly import cancel_scheduled_event, calendly_api_enabled
+
+            if not calendly_api_enabled():
+                messages.info(
+                    request,
+                    "Calendly cancellation skipped (site not live yet — expected).",
+                )
+            else:
+                ok = cancel_scheduled_event(
+                    calendly_event_uri=appointment.calendly_event_uri,
+                    cancellation_reason=reason,
+                )
+                if not ok:
+                    messages.warning(
+                        request,
+                        "Appointment cancelled locally. Calendly cancellation failed (best effort).",
+                    )
+        except Exception:
+            # Never block local cancellation on Calendly issues
+            messages.warning(
+                request,
+                "Appointment cancelled locally. Calendly cancellation was skipped/failed (expected if site isn't live yet).",
+            )
+
+    messages.success(request, "Appointment cancelled.")
+    return redirect(request.POST.get("next") or reverse("admin_appointment_detail", args=[pk]))
+
+
+@require_POST
+@login_required
+def admin_appointment_update_status(request, pk):
+    is_admin_user(request.user)
+
+    appointment = get_object_or_404(Appointments.objects.prefetch_related("invitees"), pk=pk)
+    next_url = request.POST.get("next") or reverse("admin_appointment_detail", args=[pk])
+
+    new_status = (request.POST.get("status") or "").strip()
+    valid_values = set(Appointments.Status.values)
+    if new_status not in valid_values:
+        messages.error(request, "Invalid status.")
+        return redirect(next_url)
+
+    if new_status == appointment.status:
+        messages.info(request, "Status unchanged.")
+        return redirect(next_url)
+
+    if not Appointments.can_transition_status(appointment.status, new_status):
+        messages.warning(request, "That status change isn’t allowed.")
+        return redirect(next_url)
+
+    if new_status == Appointments.Status.CANCELLED:
+        reason = (request.POST.get("reason") or "").strip()
+        if not reason:
+            messages.error(request, "Cancellation reason is required.")
+            return redirect(next_url)
+
+        appointment.status = Appointments.Status.CANCELLED
+        appointment.cancellation_reason = reason
+        appointment.cancelled_at = timezone.now()
+        appointment.save(update_fields=["status", "cancellation_reason", "cancelled_at"])
+        appointment.invitees.update(canceled=True, cancellation_reason=reason)
+
+        if appointment.calendly_event_uri:
+            try:
+                from appointments.calendly import cancel_scheduled_event, calendly_api_enabled
+
+                if not calendly_api_enabled():
+                    messages.info(
+                        request,
+                        "Calendly cancellation skipped (site not live yet — expected).",
+                    )
+                else:
+                    ok = cancel_scheduled_event(
+                        calendly_event_uri=appointment.calendly_event_uri,
+                        cancellation_reason=reason,
+                    )
+                    if not ok:
+                        messages.warning(
+                            request,
+                            "Appointment cancelled locally. Calendly cancellation failed (best effort).",
+                        )
+            except Exception:
+                messages.warning(
+                    request,
+                    "Appointment cancelled locally. Calendly cancellation was skipped/failed (expected if site isn't live yet).",
+                )
+
+        messages.success(request, "Status updated to Cancelled.")
+        return redirect(next_url)
+
+    # Non-cancel transitions
+    appointment.status = new_status
+    appointment.save(update_fields=["status"])
+    messages.success(request, "Status updated.")
+    return redirect(next_url)
 
 # Client Views
 #@login_required
