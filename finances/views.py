@@ -5,7 +5,7 @@ import logging
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from users.views import is_admin_user
@@ -378,3 +378,32 @@ def void_invoice(request, stripe_invoice_id):
         request.user.email,
     )
     return JsonResponse({"status": "voided"})
+
+def create_checkout_session(request, invoice_id):
+    try:
+        invoice = Invoice.objects.get(id=invoice_id)
+    except Invoice.DoesNotExist:
+        return JsonResponse({"error": "Invoice not found"}, status=404)
+
+    if invoice.status == Invoice.Status.PAID or invoice.paid:
+        return JsonResponse({"error": "Invoice already paid"}, status=400)
+
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        payment_method_types=["card"],
+        line_items=[{
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": f"Invoice #{invoice.id}",
+                },
+                "unit_amount": invoice.amount,
+            },
+            "quantity": 1,
+        }],
+        metadata={"invoice_id": str(invoice.id)},
+        success_url="http://localhost:8000/payment/success/",
+		cancel_url="http://localhost:8000/dashboard/",
+	)
+
+    return redirect(session.url)
